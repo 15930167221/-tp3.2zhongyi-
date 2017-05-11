@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>审核处方</title>
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/check.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+    <link href="__PUBLIC__/css/subsf.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+</head>
+<script>
+    document.oncontextmenu=new Function("event.returnValue=false;");
+</script>
+<script>
+function cfmx(num){
+    $.post("__CONTROLLER__/cfdetail",{"presc_no":num},function(res){
+        var yfxx='';
+        for(var i=0;i<res.length;i++){
+            yfxx+='<div style="width:645px"><div class="d1"><div class="d2">'+res[i]['drug_no']+'</div><div class="d3">'+res[i]['usage']+'</div><div class="d4">'+res[i]['drug_name']+'</div><div class="d5">'+res[i]['amount']+res[i]['drug_units']+'</div></div></div>';
+        }
+        $('#cfmxtab').html(yfxx);
+    },"json");
+}
+</script>
+<body>
+<div class="bg">
+    <div class="yuyue">
+        <div class="yyfont">
+            <span class="glyphicon glyphicon-list-alt" style="line-height:45px;margin-left:8px;"></span><span style="line-height:45px;margin-left:8px;font-size:15px;color:#000;font-weight:bold;">处方审核列表</span>
+        </div>
+    </div>
+    <div class="yyinf center">
+        <div class="yytab" id="check">
+            <table border="0" width="100%" style="table-layout: fixed;">
+                <tr>
+                    <th width="20%">提交日期</th>
+                    <th width="12%">提交人单位</th>
+                    <th width="10%">提交人</th>
+                    <th width="15%">患者信息</th>
+                    <th width="10%">病历信息</th>
+                    <th width="10%">处方明细</th>
+                    <th width="8%">审核状态</th>
+                    <th width="15%">操作</th>
+                </tr>
+                <volist name="res" id="vo">
+                <tr class="sty1" name="tableSty">
+                    <td>{$vo.tj_date}</td>
+                    <td>{$vo.hospital}</td>
+                    <td>{$vo.operator}</td>   
+                    <td>
+                        <if condition="$vo.patient_id neq ''">
+                            <span data-toggle="modal" data-target="#myModal1" onClick="brinfo({$vo.patient_id},{$vo.xh})">{$vo.br_info}</span>
+                        <else />
+                            <span data-toggle="modal" data-target="#myModal2" onClick="hzimg({$vo.presc_no})">
+                                <img src="{$vo.hzsrc}"/>
+                            </span>
+                        </if>
+                    </td>
+                    <td>
+                        <if condition="$vo.blh neq ''">
+                            <span data-toggle="modal" id=".binglh" onClick="tankuang({$vo.blh},{$vo.xh})" data-target="#myModal3">
+                                {$vo.blh}
+                            </span>
+                        <else />
+                            <span data-toggle="modal" data-target="#myModal2" onClick="blimg({$vo.presc_no})">
+                                <img src="{$vo.blsrc}"/>
+                            </span>
+                        </if>
+                    </td>
+                    <td>
+                        <span data-toggle="modal" data-target="#myModal4" onClick="cfmx({$vo.presc_no})">查看详情</span>
+                    </td>
+                    <td>
+                        <if condition="$vo.indicate eq 1">
+                            未审
+                        <elseif condition="$vo.indicate eq 2"/>
+                            已通过审核
+                        </if>  
+                    </td>    
+                    <td align="center"> 
+                        <span onClick="href({$vo.presc_no})">审核</span>
+                    </td>
+                </tr>
+                </volist> 
+            </table>
+        </div>
+        <div class="botpage">
+            <div class="botdiv">
+                <div class="pagediv">{$page}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--患者信息-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div style="width:35%;height:80%;background:#fff;margin-top:2%;margin-left:25%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">患者详细信息</h4>
+            </div>
+            <div class="modal-body">
+                <table cellpadding="0" cellspacing="0" class="mbt">
+                    <tr>
+                        <td>姓名</td>
+                        <td colspan="3"><input id="hzname" type="text" readonly="readonly"></td>
+                    <tr>
+                        <td>性别</td>
+                        <td colspan="3">
+                            <input id="hzxb" type="text" readonly="readonly">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>年龄</td>
+                        <td colspan="3"><input id="hznl" type="text" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>出生年月</td>
+                        <td colspan="3"><input id="hzborndate" type="text" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>身份证号</td>
+                        <td colspan="3"><input id="hzidcard" type="text" class="lontext" readonly="readonly" style="width:100%;"></td>
+                    </tr>
+                    <tr>
+                        <td>单位</td>
+                        <td colspan="3"><input id="hzdw" type="text" class="lontext" readonly="readonly" style="width:100%;"></td>
+                    </tr>
+                    <tr>
+                        <td>电话</td>
+                        <td colspan="3" width="30%"><input id="hztel" type="text" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>E-Mail</td>
+                        <td colspan="3"><input id="hzemail" type="text" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>传真</td>
+                        <td><input id="hzcz" type="text" readonly="readonly"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--患者/病历图片信息-->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2"></h4>
+            </div>
+            <div style="width:100%;height:80%;overflow:scroll;background:#fff;text-align:center;" id="imginfo">
+            </div>
+        </div>
+    </div>
+</div>
+<!--病历信息-->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog1">
+        <div class="box">
+            <div class="right">
+                <div class="right-center">
+                    <div class="health-file center">
+                        <!--startprint-->
+                        <table cellspacing="1" class="jkda-table">
+                            <div class="title1">中医健康档案</div>
+                            <div class="title2">
+                                <div class="one">
+                                    <span>就诊日期：</span>
+                                    <span id="jzrq"></span>
+                                </div>
+                                <div class="two">
+                                    <span>病历号：</span>
+                                    <span id="blnum"></span>
+                                </div>
+                            </div>
+                            <tr>
+                                <th width="8%"><label for="name">姓名</label></th>
+                                <td colspan="2" width="10%"><span id="name"></span></td>
+                                <th width="6%"><label for="sex">性别</label></th>
+                                <td width="7%"><span id="sex"></span></td>
+                                <th width="7%"><label for="age">年龄</label></th>
+                                <td width="7%"><span id="age"></span></td>
+                                <th width="7%"><label for="birthday">出生日期</label></th>
+                                <td width="11%"><span id="birthday"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="userID">身份证号</label></th>
+                                <td colspan="3"><span id="userID"></span></td>
+                                <th colspan="2"><label for="phone">联系方式</label></th>
+                                <td colspan="3"><span id="phone"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="duo">工作单位</label></th>
+                                <td colspan="8">
+                                    <span>
+                                        <textarea name="dw" id="duo" rows="1" disabled="disabled"></textarea>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="main">主诉</label></th>
+                                <td colspan="8">
+                                    <span>
+                                        <textarea name="zs" id="main" rows="1" disabled="disabled"></textarea>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="jws11">既往史</label></th>
+                                <td colspan="8">
+                                    <span id="jws11"></span>,
+                                    <span id="sj1">确认时间：</span>
+                                    <span id="qrsj1"></span>
+                                    <!--既往病史结束，传染病史开始-->
+                                    <span id="crbs"></span>,
+                                    <span>确认时间：</span>
+                                    <span id="qrsj2"></span>
+                                </td>
+                            </tr>
+                            <tr style="position:relative;">
+                                <th rowspan="2"><label for="yw1">家庭史</label></th>
+                                <td colspan="5">
+                                    <span><label for="yw1">父亲：</label></span>
+                                    <span>
+                                        <span class="wu">[</span>
+                                        <span id="yw1"></span>
+                                        <span class="wu">]</span>
+                                    </span>/
+                                    <span id="jtsFQ"></span>
+                                </td>
+                                <td colspan="3">
+                                    <span><label for="yw2">母亲：</label></span>
+                                    <span>
+                                        <span class="wu">[</span>
+                                        <span id="yw2"></span>
+                                        <span class="wu">]</span>
+                                    </span>/
+                                    <span id="jtsMQ"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">
+                                    <span><label for="yw3">兄弟姐妹：</label></span>
+                                    <span>
+                                        <span class="wu">[</span>
+                                        <span id="yw3"></span>
+                                        <span class="wu">]</span>
+                                    </span>/
+                                    <span id="jtsXD"></span>
+                                </td>
+                                <td colspan="3">
+                                    <span><label for="yw4">子女：</label></span>
+                                    <span>
+                                        <span class="wu">[</span>
+                                        <span id="yw4"></span>
+                                        <span class="wu">]</span>
+                                    </span>/
+                                    <span id="jtsZN"></span>
+                                </td>
+                            </tr>
+                            <tr style="position:relative;">
+                                <th><label for="gms">过敏史</label></th>
+                                <td colspan="6" style="width:395px;">
+                                    <span>
+                                        <textarea name="gms" id="gms" disabled="disabled"></textarea>
+                                    </span>
+                                </td>
+                                <th><label for="weight">体重</label></th>
+                                <td>
+                                    <span id="weight"></span><span>KG</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="tw">生命体征</label></th>
+                                <td colspan="2">
+                                    <span><label for="tw">体温:</label></span>
+                                    <span id="tw"></span>
+                                    <span>℃</span>
+                                </td>
+                                <td colspan="2">
+                                    <span><label for="mb">脉搏:</label></span>
+                                    <span id="mb"></span>
+                                    <span>次/分</span>
+                                </td>
+                                <td colspan="2">
+                                    <span><label for="hx">呼吸:</label></span>
+                                    <span id="hx"></span>
+                                    <span>次/分</span>
+                                </td>
+                                <td colspan="2">
+                                    <span><label for="xy">血压:</label></span>
+                                    <span id="xy"></span>/
+                                    <span id="xy1"></span>
+                                    <span>mmHg</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="3"><label for="wshen">整体状况</label></th>
+                                <th><label for="wshen">忘神</label></th>
+                                <td colspan="7"><span id="wshen"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="wse">忘色</label></th>
+                                <td colspan="7"><span id="wse"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="5%"><label for="tt">忘形</label></th>
+                                <th width="5%"><label for="tt">体态</label></th>
+                                <td colspan="2"><span id="tt"></span></td>
+                                <th colspan="2"><label for="tx">体形</label></th>
+                                <td colspan="2"><span id="tx"></span></td>
+                            </tr>
+                            <tr>
+                                <th rowspan="5"><label for="zl">现在状况</label></th>
+                                <th><label for="zl">睡眠</label></th>
+                                <th><label for="zl">质量</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <textarea name="xz_smzl" id="zl" rows="2" disabled></textarea>
+                                    </span>
+                                </td>
+                                <th colspan="2"><label for="sj">时间</label></th>
+                                <td colspan="2"><span id="sj"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="sy">食欲</label></th>
+                                <td colspan="7"><span id="sy"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="kw">口味</label></th>
+                                <td colspan="7"><span id="kw"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="dbc">大便</label></th>
+                                <th><label for="dbc">便次</label></th>
+                                <td colspan="2"><span id="dbc"></span></td>
+                                <th colspan="2"><label for="bz">便质</label></th>
+                                <td colspan="2"><span id="bz"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="xbc">小便</label></th>
+                                <th><label for="xbc">便次</label></th>
+                                <td colspan="2"><span id="xbc"></span></td>
+                                <th colspan="2"><label for="bs">便色</label></th>
+                                <td colspan="2"><span id="bs"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="xq">情致</label></th>
+                                <th><label for="xq">性情</label></th>
+                                <td colspan="3"><span id="xq"></span></td>
+                                <th colspan="2"><label for="xg">性格</label></th>
+                                <td colspan="2"><span id="xg"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="xj">心悸</label></th>
+                                <td colspan="8">
+                                    <span class="wu">[</span>
+                                    <span id="xj"></span>
+                                    <span class="wu">]</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="2"><label for="ss">舌诊</label></th>
+                                <th><label for="ss">舌色</label></th>
+                                <td><span id="ss"></span></td>
+                                <th><label for="st">舌体</label></th>
+                                <td colspan="2"><span id="st"></span></td>
+                                <th colspan="2"><label for="dt">动态</label></th>
+                                <td><span id="dt"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="tz">苔质</label></th>
+                                <td><span id="tz"></span></td>
+                                <th><label for="ts">苔色</label></th>
+                                <td colspan="5"><span id="ts"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="mz">脉诊</label></th>
+                                <td colspan="8"><span id="mz"></span></td>
+                            </tr>
+                            <tr>
+                                <th><label for="tzbs">体质诊断</label></th>
+                                <td colspan="8">
+                                    <span>
+                                        <textarea name="tzzd" id="tzbs" rows="1" disabled style="width:600px;"></textarea>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="zyzd">中医诊断</label></th>
+                                <td colspan="4" height="40">
+                                    <span>
+                                        <textarea name="zyzd" id="zyzd" rows="1" disabled></textarea>
+                                    </span>
+                                </td>
+                                <th><label for="xyzd">西医诊断</label></th>
+                                <td colspan="3">
+                                    <span>
+                                        <textarea name="xyzd" id="xyzd" rows="1" disabled></textarea>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="zybz">辩证</label></th>
+                                <td colspan="4" height="40">
+                                    <span id="zybz"></span>
+                                </td>
+                                <th><label for="zyzz">治则</label></th>
+                                <td colspan="3" height="40">
+                                    <span id="zyzz"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>处置</th>
+                                <td colspan="8">
+                                    <div class="chufang">
+                                        <!--中医诊断循环-->
+                                    </div>
+                                    <div class="xiyao">
+                                        <!--西医诊治循环-->
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>其他治疗计划</th>
+                                <td colspan="8">
+                                    <span>
+                                        <textarea name="elsePlan" id="qtjh" rows="2" disabled></textarea>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--endprint-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-dismiss="modal" class="chahao">
+            <button  class="btn" >&times;</button>
+        </div>
+    </div>
+</div>
+<!--处方明细-->
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">        
+    <div style="width:63%;height:80%;background:#fff;margin-top:5%;margin-left:15%;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">处 方 明 细</h4>
+        </div>
+        <div id="cfscroll"> 
+            <center>
+                <table id="cfmxtab" style="background:#fff;text-align:center;">
+                </table>
+            </center>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+function tankuang(obj,num){
+    $.ajax({
+        type:"post",
+        url:"{:U('ShenFang/zxsf')}",
+        dataType:"json",
+        data:{"br_id":obj,"xh":num},
+        success:function(jkres){
+            $("#jzrq").text(jkres[0]['jz_date']);
+            $("#blnum").text(jkres[0]['br_id']);
+            $("#name").text(jkres[0]['br_name']);
+            $("#sex").text(jkres[0]['xb']);
+            $("#age").text(jkres[0]['nl']);
+            $("#birthday").text(jkres[0]['cs_date'].substring(0,10));
+            $("#userID").text(jkres[0]['pass']);
+            $("#phone").text(jkres[0]['tel']);
+            $("#duo").text(jkres[0]['dw']);
+            $("#main").text(jkres[0]['zs']);
+            $("#jws11").text(jkres[0]['jws']);
+            $("#qrsj1").text(jkres[0]['jws_date']);
+            $("#crbs").text(jkres[0]['crbs']);
+            $("#qrsj2").text(jkres[0]['crbs_date']);
+            $("#yw1").text(jkres[0]['jts_fq1']);
+            $("#jtsFQ").text(jkres[0]['jts_fq2']);
+            $("#yw2").text(jkres[0]['jts_mq1']);
+            $("#jtsMQ").text(jkres[0]['jts_mq2']);
+            $("#yw3").text(jkres[0]['jts_xdjm1']);
+            $("#jtsXD").text(jkres[0]['jts_xdjm2']);
+            $("#yw4").text(jkres[0]['jts_zn1']);
+            $("#jtsZN").text(jkres[0]['jts_zn2']);
+            $("#gms").text(jkres[0]['gms']);
+            $("#weight").text(jkres[0]['weight']);
+            $("#tw").text(jkres[0]['temperature']);
+            $("#mb").text(jkres[0]['pulse']);
+            $("#hx").text(jkres[0]['breath']);
+            $("#xy").text(jkres[0]['blood_pre1']);
+            $("#xy1").text(jkres[0]['blood_pre2']);
+            $("#wshen").text(jkres[0]['zt_wshen']);
+            $("#wse").text(jkres[0]['zt_wse']);
+            $("#tt").text(jkres[0]['zt_tt']);
+            $("#tx").text(jkres[0]['zt_tx']);
+            $("#zl").text(jkres[0]['xz_smzl']);
+            $("#sj").text(jkres[0]['xz_smsj']);
+            $("#sy").text(jkres[0]['xz_sy']);
+            $("#kw").text(jkres[0]['xz_kw']);
+            $("#dbc").text(jkres[0]['xz_dbbc']);
+            $("#bz").text(jkres[0]['xz_dbbz']);
+            $("#xbc").text(jkres[0]['xz_xbbc']);
+            $("#bs").text(jkres[0]['xz_xbbs']);
+            $("#xq").text(jkres[0]['qz_xq']);
+            $("#xg").text(jkres[0]['qz_xg']);
+            $("#xj").text(jkres[0]['xj']);
+            $("#ss").text(jkres[0]['sz_ss']);
+            $("#st").text(jkres[0]['sz_st']);
+            $("#dt").text(jkres[0]['sz_dt']);
+            $("#tz").text(jkres[0]['sz_tz']);
+            $("#ts").text(jkres[0]['sz_ts']);
+            $("#mz").text(jkres[0]['mz']);
+            $("#tzbs").text(jkres[0]['tzzd']);
+            $("#zyzd").text(jkres[0]['zyzd']);
+            $("#xyzd").text(jkres[0]['xyzd']);
+            $("#zybz").text(jkres[0]['zybz']);
+            $("#zyzz").text(jkres[0]['zyzz']);
+            $("#qtjh").html(jkres[0]['elseplan']);
+            //处方
+            var str = '';
+            for(var i=0;i<jkres[1].length;i++){
+                str += "<div style='margin-top:10px;'><span>【中药处方"+(i+1)+"】：</span><span><b>"+jkres[1][i]['presc_name']+"</b></span><span>(<span>"+jkres[1][i]['dose']+"</span><span>剂</span>)</span></div><div class='zylb'>";
+                for(var j=0;j<jkres[1][i]['drug_name'].length;j++){
+                    str += "<ul><li><span>"+jkres[1][i]['drug_name'][j]+"</span><span> "+jkres[1][i]['amount'][j]+"</span><span> "+jkres[1][i]['drug_units'][j]+"</span><span> "+jkres[1][i]['usage'][j]+"</span></ul></li>";
+                }
+                str += "</div><div style='clear:both;'><span>【医嘱】：<span></span>"+jkres[1][i]['order_text']+"</span></div>";
+            }
+            $(".chufang").html(str);
+            var str1 = '';
+            for(var k=0;k<jkres[2].length;k++){
+                if(jkres[2][k]['fs'] != ''){
+                    str1 += "<div style='margin-top:10px;'><span>【西药处方"+(k+1)+"】</span><span>：共"+jkres[2][k][0]['fs']+"天</span></div>";
+                }else{
+                       str1 += "<div><span>【西药处方"+(k+1)+"】</span></div>";
+                }
+                for(var l=0;l<jkres[2][k].length;l++){
+                    str1 += "<table class='xytab'><tr><td width='25%'>"+jkres[2][k][l]['yp_name']+"</td><td width='25%'>"+jkres[2][k][l]['yp_spec']+"</td><td width='10%'>"+jkres[2][k][l]['yp_total_amount']+"/"+jkres[2][k][l]['danwei']+"</td><td width='12.5%'>"+jkres[2][k][l]['yp_yc_amount']+"/次</td><td width='17.5%'>"+jkres[2][k][l]['yp_useage']+"</td><td width='10%'>"+jkres[2][k][l]['yp_pl_day']+"</td></tr></table>";
+                        
+                }
+                str1 += "<div style='clear:both;margin-bottom:10px;'>【备注】："+jkres[2][k][0]['yp_mem']+"</div>";
+            }
+
+            $(".xiyao").html(str1);
+        }
+    });
+}
+</script>
+<script>
+function href(num){
+    window.location.href="__CONTROLLER__/endcheck?presc_no="+num;
+}
+function brinfo(id,xh){
+    $.ajax({
+        type:"post",
+        url:"__CONTROLLER__/hzinfo",
+        dataType:"json",
+        data:{"patient_id":id,"xh":xh},
+        success:function(e){
+            $('#hzname').val(e['br_name']);
+            $('#hzxb').val(e['xb']);
+            $('#hznl').val(e['nl']);
+            $('#hzborndate').val(e['cs_date']);
+            $('#hzidcard').val(e['pass']);
+            $('#hzdw').val(e['dw']);
+            $('#hztel').val(e['tel']);
+            $('#hzemail').val(e['e_mail']);
+            $('#hzcz').val(e['fax']);
+        }
+    });
+}
+function hzimg(num){
+    $.ajax({
+        type:"post",
+        url:"__CONTROLLER__/imginfo",
+        dataType:"json",
+        data:{"presc_no":num},
+        success:function(e){
+            var str='<img src="'+e['hzurl']+'">';
+            $('#myModalLabel2').html('患者信息');
+            $('#imginfo').html(str);
+        }
+    });
+}
+function blimg(num){
+    $.ajax({
+        type:"post",
+        url:"__CONTROLLER__/imginfo",
+        dataType:"json",
+        data:{"presc_no":num},
+        success:function(e){
+            var str='<img src="'+e['blurl']+'">';
+            $('#myModalLabel2').html('病历信息');
+            $('#imginfo').html(str);
+        }
+    });
+}
+</script>
+</html>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+<script src="__PUBLIC__/js/tr.js"></script>

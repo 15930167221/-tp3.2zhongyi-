@@ -1,0 +1,166 @@
+<include file="Layout/header"/>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-admin-add" action="{:U('Admin/TabooYaoliang/doAdd')}" method="post">
+        <input type="hidden" name="ypCode" value="" id="ypCode">
+        <input type="hidden" name="inputCode" value="" id="inputCode">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>药品名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" autocomplete="off" value="" placeholder="" id="ypName" name="name">
+            </div>
+        </div>
+        <!--隐藏的查询框-->
+        <div id="cxHid">
+            <table width="100%">
+                <thead>
+                <tr>
+                    <th>药品名称</th>
+                    <th>拼音码</th>
+                    <th>药品代码</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>禁忌数量(克)：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" autocomplete="off" value="" placeholder="" id="ypNum" name="ypNum">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <button  class="btn btn-primary radius" type="submit" id="save"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+                <button onClick="layer_close();" class="btn btn-default radius" type="button" id="close">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</article>
+<include file="Layout/footer"/>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+    $("#form-admin-add").validate({
+        rules:{
+            name:{
+                required:true,
+                minlength:1,
+                maxlength:16
+            },
+            ypName:{
+                required:true,
+                minlength:1,
+                maxlength:16
+            },
+            ypNum:{
+                required:true,
+                number:true,
+                min:1,
+                max:200
+            },
+        },
+        onkeyup:false,
+//        focusCleanup:true,
+        success:"valid",
+        submitHandler:function(form){
+            var name=$("#ypName").val();
+            var inputCode=$("#inputCode").val();
+            var ypCode=$("#ypCode").val();
+            var bz=$("#ypNum").val();
+            $(form).ajaxSubmit({
+                url:"{:U('Admin/TabooYaoliang/doAdd')}",
+                type:"post",
+                data:{'name':name,'inputCode':inputCode,'ypCode':ypCode,'bz':bz},
+                dataType:"json",
+                success:function(data){
+                    if(data.status){
+                        layer.msg(data.msg,{icon:1,time:1000},function(){
+                            //刷新
+                            parent.window.location.reload();
+                            //关闭弹框
+//                            var index = parent.layer.getFrameIndex(window.name);
+//                            parent.layer.close(index);
+                        });
+                    }else{
+                        layer.msg(data.msg,{icon:0,time:2000});
+                    }
+                }
+            });
+//            var index = parent.layer.getFrameIndex(window.name);
+//            alert(index);
+//            parent.$('.btn-refresh').click();
+//            parent.layer.close(index);
+        }
+    });
+    //    ajax查询
+    $(document).on('input','#ypName',function(){
+        $("#cxHid").show(function(){});
+        var val=$(this).val();
+        var str="";
+        $.ajax({
+            url:"{:U('Admin/TabooYunfu/selectAjax')}",
+            type:"post",
+            data:{'value':val},
+            dataType:"json",
+            success:function(data){
+                $.each(data,function(index,item){
+                    str += '<tr class="sty1" name="tableSty"><td>'+item.drug_name+'</td><td>'+item.input_code+'</td><td>'+item.drug_code+'</td></tr>';
+                })
+                $("#tbody").html(str);
+            }
+        })
+    })
+    //选中变色并且弹框隐藏
+    $(document).on("click",".sty1",function(){
+        var tsty1=document.getElementsByName("tableSty");
+        for(var i=0;i<tsty1.length;i++){
+            tsty1[i].className="sty1";
+        }
+        $(this).attr("class","sty2");
+        var name=$(".sty2 td:eq(0)").html();
+        var inputCode=$(".sty2 td:eq(1)").html();
+        var ypCode=$(".sty2 td:eq(2)").html();
+
+        $("#ypName").val(name);
+        $("#inputCode").val(inputCode);
+        $("#ypCode").val(ypCode);
+        $("#cxHid").hide(function(){});
+    });
+    //弹框隐藏
+    $(document).click(function(){
+        $("#cxHid").hide(function(){});
+    })
+    //点击保存ajax
+//    $("#save").click(function(){
+//        var name=$("#ypName").val();
+//        var inputCode=$("#inputCode").val();
+//        var ypCode=$("#ypCode").val();
+//        var bz=$("#ypNum").val();
+//        $.ajax({
+//            url:"{:U('Admin/TabooYaoliang/doAdd')}",
+//            type:"post",
+//            data:{'name':name,'inputCode':inputCode,'ypCode':ypCode,'bz':bz},
+//            dataType:"json",
+//            success:function(data){
+//                if(data.status){
+//                    layer.msg(data.msg,{icon:1,time:1000},function(){
+//                        //刷新
+//                        parent.window.location.reload();
+//                        //关闭弹框
+//                        var index = parent.layer.getFrameIndex(window.name);
+//                        parent.layer.close(index);
+//                    });
+//                }else{
+//                    layer.msg(data.msg,{icon:0,time:2000});
+//                }
+//            }
+//        })
+//    })
+</script>

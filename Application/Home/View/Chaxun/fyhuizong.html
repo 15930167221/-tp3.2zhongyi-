@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>费用汇总查询_中医健康管理系统</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/easyui.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/chaxun.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/font.css">
+	<!--<script type="text/javascript" src="__PUBLIC__/muban/assets/jedate/jedate.js"></script>-->
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.easyui.min.js"></script>
+	<script src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+	<script>
+		function preview(oper){
+			if (oper < 10){
+				bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+				sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
+				eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
+				prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取htm
+				prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+				window.document.body.innerHTML=prnhtml;
+				window.print();
+				window.document.body.innerHTML=bdhtml;
+			}else{
+				window.print();
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="top">
+		<div class="title">
+			<span class="glyphicon glyphicon-search" style="font-size:16px;"></span>
+			<span>费用汇总统计</span>
+		</div>
+		<div class="tool">
+			<button  id="tj" name="query" class="btn btn-success" type="button">✔ 统计</button>
+			<button  name="print" type="button" class="btn btn-success" onclick="preview(1);" style="background-color: #ff6501!important;">℗ 打印</button>
+			<!--<button  name="clear" onclick="window.location.reload()" class="btn btn-success" type="button">↻ 清除</button>-->
+			<p id="demo"></p>
+		</div>
+	</div>
+	<form>
+	<div class="fyhz_cxtj">
+		<span>日期范围:</span>
+			<input id="start" name="start" type="text" readonly  > <b>至</b>
+			<input id="end" name="end" type="text" readonly onClick="jeDate({dateCell:'#end',format:'YYYY-MM-DD',isinitVal:true,initAddVal:[0]})">
+			<!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#start',{isinitVal:true,initAddVal:[-30],format: 'YYYY-MM-DD'});
+                </script>
+			&nbsp;&nbsp;
+			<label><input type="radio" name="data" value="year">&nbsp;按年</label>
+			&nbsp;&nbsp;
+			<label><input type="radio" name="data" value="month">&nbsp;按月</label>
+			&nbsp;&nbsp;
+			<label><input type="radio" name="data" value="day" checked>&nbsp;按日</label>
+	</div>
+	</form>
+
+	<div class="fyhz_center" style="overflow: auto;clear: both;">
+		<table class="table table-striped">
+			<tr>
+				<th width="50%">日期</th>
+				<th width="50%">合计</th>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript">
+    	//jeDate.skin('gray');
+		$("#tj").click(function(){
+			var startTime=$("#start").val();
+			var endTime=$("#end").val();
+			var nyr="";
+			var staDate = new Date(startTime);
+			var endDate = new Date(endTime);
+			$("input[type='radio']").each(function(){
+				if($(this).is(':checked')){
+					nyr=$(this).val();
+				}
+			})
+			if(staDate.getTime()>endDate.getTime()){
+				layer.alert("日期出错，请您重新选择！",{icon: 2});
+			}else{
+				if(startTime==""||endTime==""||nyr==""){
+					layer.alert("请检查您的查询条件！",{icon: 7});
+				}else{
+					$.ajax({
+						url:"{:U('Chaxun/fyhuizongAjax')}",
+						data:{'startTime':startTime,'endTime':endTime,'date':nyr},
+						type:"post",
+						dataType:"json",
+						success:function(data){
+							$(".fyhz_center").html(data);
+							$(".fyhz_center table").addClass("table table-striped");
+							$(".fyhz_center table tr:last-child td").css("borderBottom","1px solid #ddd");
+						}
+					})
+				}
+			}
+		})
+		$.jeDate("#start",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+		$.jeDate("#end",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+	</script>
+	<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</body>
+</html>

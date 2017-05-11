@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+			.inp{
+				width:400px;
+				height:40px;
+			}
+			.sub{
+				width:100px;
+				height:35px;
+				cursor:pointer;
+			}
+		</style>
+	</head>
+	<body>
+	  <form action='{:U("Admin/Tujing/doEdit")}' method="post">
+	  	<br/><br/>
+		&nbsp;&nbsp;&nbsp;途径名称：<input type="text"  placeholder="请填写途径名称" name="name" class="inp"><br/><br/><br/>
+		
+		<center><input type="reset" value="重置" class="sub">&nbsp;&nbsp;&nbsp;<input type="submit" value="提交" class="sub"></center>
+	</body>
+</html>

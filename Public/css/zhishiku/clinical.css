@@ -1,0 +1,71 @@
+/*左*/
+.waiweizuo{
+	/*border: 1px red solid;*/
+	float: left;
+	width: 22%;
+}
+	/*左上*/
+	.zuoshang{
+		/*border: 1px red solid;*/
+		height: 45px;
+		line-height: 45px;
+		text-align: center;
+		font-size: 20px;
+		color: #DAA520;
+		/*background-color: #F3F5F7;*/
+	}
+	.zuozhong{
+		border: 1px #DDDDDD solid;
+		height: 540px;
+		overflow: auto;
+	}
+/*中*/
+.waiweizhong{
+	/*border: 1px red solid;*/
+	float: left;
+	width: 55%;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+	/*中上*/
+	.zhongshang{
+		height: 45px;
+		line-height: 45px;
+		text-align: center;
+		font-size: 30px;
+		color: #FF9303;
+		/*background-color: #F3F5F7;*/
+
+	}
+	.zhongxia{
+		border: 1px #DDDDDD solid;
+		height: 460px;
+		overflow: auto;
+		/*background-color: #FAF7F7;	*/
+	}
+/*右*/
+.waiweiyou{
+	/*border: 1px red solid;*/
+	float: left;
+	width: 22%;
+}
+	/*右上*/
+	.youshang{
+		/*border: 1px red solid;*/
+		height: 45px;
+		line-height: 45px;
+		text-align: center;
+		font-size: 20px;
+		color: #0075D6;
+		/*background-color: #F3F5F7;*/
+
+	}
+	.youzhong{
+		border: 1px #ddd solid;
+		height: 540px;
+		overflow: auto;
+	}
+/*清除浮动*/
+.qczuiwaiwfd{
+	clear: both;
+}

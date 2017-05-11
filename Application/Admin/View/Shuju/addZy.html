@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+			.inp{
+				width:35%;
+				height:40px;
+			}
+			.sub{
+				width:100px;
+				height:35px;
+				cursor:pointer;
+			}
+		</style>
+		<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+	</head>
+	<body>
+	  <form action='{:U("Admin/China/doAdd")}' method="post">
+	  	<br/><br/>
+	  	&nbsp;&nbsp;&nbsp;药品编码：<input type="text"  placeholder="请填写药品输入码" name="drug_code" class="inp" readonly="readonly" value="<php>echo $newId;</php>">
+		&nbsp;&nbsp;&nbsp;名　　称：<input type="text"  placeholder="请填写药品名称" name="name" class="inp" id="mingC"><br/><br/><br/>
+		&nbsp;&nbsp;&nbsp;别　　名：<input type="text"  placeholder="请填写药品别名" name="other" class="inp">
+		&nbsp;&nbsp;&nbsp;单　　价：<input type="text"  placeholder="请填写药品单价" name="price" value="0" class="inp"><br/><br/><br/>
+		&nbsp;&nbsp;&nbsp;输入　码：<input type="text"  placeholder="请填写药品输入码" name="inputCode" id="pym" readonly="readonly" class="inp">
+		&nbsp;&nbsp;&nbsp;标　　志：<select class='inp' name="bz"><option value='0'>用户添加</option><option value='1'>系统自带</option></select><br/><br/><br/>
+		<div>&nbsp;&nbsp;&nbsp;注意事项：
+		<textarea placeholder="请填写注意事项" name="zysx" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;来　　源：
+		<textarea placeholder="请填写来源" name="ly" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;性　　状：
+		<textarea placeholder="请填写性状" name="xz" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;炮　　制：
+		<textarea placeholder="请填写炮制" name="pz" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;性　　味：
+		<textarea placeholder="请填写性味" name="xw" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;归　　经：
+		<textarea placeholder="请填写归经" name="gj" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;功　　能：
+		<textarea placeholder="请填写功能" name="gn" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;主　　治：
+		<textarea placeholder="请填写主治" name="zz" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;用法用量：
+		<textarea placeholder="请填写用法用量" name="yfyl" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;特殊用法：
+		<textarea placeholder="请填写特殊用法" name="tsyf" style="width:75%; height:80px;"></textarea>
+		</div>
+		<div>&nbsp;&nbsp;&nbsp;贮　　藏：
+		<textarea placeholder="请填写贮藏" name="zc" style="width:75%; height:80px;"></textarea>
+		</div>
+
+
+		
+		<center><input type="reset" value="重置" class="sub">&nbsp;&nbsp;&nbsp;<input type="submit" value="提交" class="sub"></center>
+		</form>
+	</body>
+	<script type="text/javascript">
+		$(function(){
+			$(document).on('input','#mingC',function(){
+				var nam = $(this).val();
+				 $.ajax({
+                    type:'POST',
+                    dataType: 'json',
+                    url:'{:U("Admin/China/spellCode")}',
+                    data:{val:nam},
+                    success: function (result) {
+                       $('#pym').val(result);
+                    }
+                })
+			});
+		});
+	</script>
+</html>

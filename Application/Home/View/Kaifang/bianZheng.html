@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<!-- 自己写的css -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/yeMiancss/kaiFang6.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+<!-- bootstrap的引用 -->
+<link href="__PUBLIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
+<!-- 分页效果 -->
+    <link href="__PUBLIC__/css/mypage.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <!-- 分页结束 -->
+    <!-- 弹出框样式 -->
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<body oncontextmenu="self.event.returnValue=false" onselectstart="return false">
+<!-- 头 -->
+<!-- 遮罩层 -->
+<div class="zhezhao" style="display:none;width:100%;height:100%;background-color:#444444;z-index:3;position:absolute;"></div>
+<div style="margin-left:42px;height:43px;line-height:43px;background-color:#E1E1E1;">
+	<span style="margin-left: 8px;color: #333; top:3px;" class="glyphicon glyphicon-list-alt"></span><span style="font-size: 16px;color: #333;font-weight:bold;margin-left: 8px;">辩证开方</span>
+    <span style="margin-left:66%; ">
+    	<!-- 按钮 -->
+		<input type="checkbox" class="chufanghbtjchenggong" id="chuFangHeBing">
+		<label for="chuFangHeBing">处方合并</label>&nbsp;&nbsp;
+
+	
+		<a id="xdcffuzhi" href="#"><button class="btn btn-success" style="margin-top:-5px;width:100px;background-color:#30BEB2; border:none;"><b>选定此方</b></button></a>
+    </span>
+</div>
+<!-- 中 -->
+<div class="zhongjinade">
+	<div class="zhongzuo" >
+		<!-- 折叠 -->
+		<div style="background-color: #fff;" >
+				<div class="panel-heading" style="background-color: #E2ECF8;height: 30px;padding-top: 5px;">
+					<h4 class="panel-title">
+					<a >
+						<b>选择症状</b>
+					</a>
+					</h4>
+				</div>
+					<!-- 内容 -->
+					<br>
+					<div class="input_box">
+					    <input id="fenleifuzhizhuzheng" class="input_text" type="text" placeholder="请选择主症">
+					    <span style="height:30px;cursor:pointer; " class="input_btn" data-toggle="modal" data-target="#myZhilModal">主症</span>
+					    <!-- 隐藏主症的tree用作兼症的条件 -->
+							<input id="fenleifuzhizhuzhengyincang" type="hidden">
+					</div>
+					<br>
+					<br>
+					<div class="input_box">
+					    <input  id="jianzhengdenameyincang" class="input_text" type="text" placeholder="请选择兼症">
+					    <span id="jianzhenchufsj" data-toggle="modal"  class="input_btn" data-toggle="modal" data-target="#myZhilModal"style="height:30px; cursor:pointer;" >兼症</span>
+					   <!-- 隐藏主症的tree用作兼症的条件 -->
+							<input id="jianzhengdetreeyincang" type="hidden">
+					</div>
+					<br>
+					<br>
+					<div class="input_box">
+					    <input  id="shexiangdenameyincang" class="input_text" type="text" placeholder="请选择舌象">
+					    <span id="shexiangchufsj" data-toggle="modal"  class="input_btn" data-toggle="modal" data-target="#myZhilModal" style="height:30px;cursor:pointer; ">舌象</span>
+					    <!-- 隐藏主症的tree用作兼症的条件 -->
+							<input id="shexiangdetreeyincang" type="hidden">
+					</div>
+					<br>
+					<br>
+					<div class="input_box">
+					    <input  id="maixiangdenameyincang" class="input_text" type="text" placeholder="请选择脉相">
+					    <span  id="maixiangchufsj" data-toggle="modal"  class="input_btn" data-toggle="modal" data-target="#myZhilModal" style="height:30px;cursor:pointer; ">脉象</span>
+					    <!-- 隐藏主症的tree用作兼症的条件 -->
+							<input id="maixiangdetreeyincang" type="hidden">
+					</div>
+					<br>
+					<br>
+					<form class="form-inline" style="text-align: center;">
+						<div class="input_box">
+						    <input  id="bianzfuzhi" class="input_text" type="text" >
+						    <span  id="biangzhenganniu" class="input_btn" style="height:30px; cursor:pointer;">辩证</span>
+						</div>
+					</form>
+				<!-- 主症模态框内容开始 -->
+				<div class="modal fade" id="myZhilModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<!-- 滚动监听 -->
+						<div data-spy="scroll" data-target="#navbar-example" data-offset="0" style="height:440px; margin-top: -20px; width:600px; overflow:auto; border-radius:10px; background-color:#FFF ">
+							<!-- 选项卡 -->
+							<ul id="myTabmot" class="nav nav-tabs">
+								<li class="active">
+								<a href="#homemot" data-toggle="tab">
+									        分类
+								</a>
+								</li>
+								<li>
+								<a href="#iosmot" id="jiasuzhujs" data-toggle="tab">
+									   		检索
+								</a>
+								</li>
+								<li>
+								<a href="#changyong" id="jiasuzhuchangyongxz" data-toggle="tab">常用选择</a>
+								</li>
+							</ul>
+							<div id="myTabContentmot" class="tab-content" style="margin-top: -21px;">
+								<div class="tab-pane fade in active" id="homemot">
+									<!-- 内容 -->
+									<div class="yzzbhsct" style="border:1px #DFD7D7 solid;float:left;width:140px;height:380px; overflow: auto; margin-top:11px;margin-right:15px;margin-left:10px;">
+										<!-- 滚动监听 -->
+										<div class="yzzbhsct" data-spy="scroll" data-target="#navbar-example" data-offset="0" class="mtfenlzuogdjt">
+											<volist name="data" id="vo">
+											<div style="border-bottom:1px #DDDDDD solid; text-align:center; height: 30px;line-height: 30px;">
+												<div style="text-align: center;" class="sty1" name="tableSty">
+														{$vo.name} 
+													<input type="hidden" value="{$vo.tree}">
+												</div>
+											</div>
+											</volist>
+										</div>
+									</div>
+									<!-- 全选按钮 -->
+									<div class="mtfenlyou">
+										<!-- 选项卡1 -->
+										<!-- 上 -->
+										<div style=" width:100%; height: 40px; ">
+											<!-- 按钮 -->
+												<input id="zxzfchazhao" placeholder="请输入症状名" type="text" style="margin-top:10px;margin-left:0px;width: 90px; border-radius: 5px;">
+												<button id="flzhengzfuzhizhuzheng" type="button" style="background-color: #30bdb5;width: 70px;border: 0px;border-radius: 2px;" data-dismiss="modal">确定</button>
+												<input type="radio" name="a1name" class="btn" id="yixuanSelectAllzhuzkyi">
+												<label for="yixuanSelectAllzhuzkyi">已选</label>
+												<input type="radio" name="a1name" class="btn" id="weixuanSelectAll">
+												<label for="weixuanSelectAll">未选</label>
+												<input type="radio" value="显示全部" name="a1name" class="btn" id="quanbuSelectAll">
+												<label for="quanbuSelectAll">显示全部</label>
+										</div>
+										<div class="yzzbhsct" style="overflow-y:scroll;border:1px #DFD7D7 solid;margin-top: 10px; width:400px; height: 340px;">
+										<!-- js添加结果 -->
+											<div>
+												<table id="xuanZlist" style="width: 100%;" class="zhzhengjiusdefenlei"></table>
+											</div>
+										</div>
+									</div>
+									<div class="quxiaofdmtfenl" >
+									</div>
+								</div>
+								<!-- 选项卡2 -->
+								<div class="tab-pane fade" id="iosmot">
+									<!-- 内容 -->
+									<div  style="overflow: auto; width: 100%;height: 397px;">
+										<div style=" width:100%; height: 50px; background-color: #f0f0f0; text-align: center; ">
+											<!-- 按钮 -->
+											<div style=" height: 50px; ">
+												<input id="zhuzjssousuo" placeholder="请输入症状名" type="text" style="margin-top:10px;margin-left:100px;  border-radius: 5px; width: 140px; "> 
+												<button id="zhuzjsquedfuzhi" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;" data-dismiss="modal">确定</button>
+													<input type="radio" name="a1name2" class="btn" id="zhuzjsyixuan">
+													<label for="zhuzjsyixuan">已选</label>
+													<input type="radio" name="a1name" class="btn" id="zhuzjsweixuan">
+													<label for="zhuzjsweixuan">未选</label>
+													<input type="radio" value="显示全部" name="a1name" class="btn" id="zhuzjsxsqb">
+													<label for="zhuzjsxsqb">显示全部</label>
+											</div>
+												
+											<div class="yzzbhsct1" style=" overflow:auto; text-align: center; width:90%; height: 320px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+												<table id="zhuzxjsfuzhi" width="100%;">
+												<!-- js添加结果 -->
+												
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- 选项卡3 -->
+								<div class="tab-pane fade" id="changyong">
+									<!-- 内容 -->
+									<div style="overflow: auto; width: 100%;height: 397px;">
+										<div style=" width:100%; height: 50px; background-color: #f0f0f0; text-align: center; ">
+											<!-- 按钮 -->
+											<div style=" height: 50px; ">
+												<input id="cysousuocy" placeholder="请输入症状名" type="text" style=" margin-left:100px; margin-top:10px;width: 140px; border-radius: 5px; ">
+												<button id="zhuzcyquedfuzhi" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;"  data-dismiss="modal">确定</button>
+													<input type="radio" name="a1name" class="btn" id="zhuzfenleiyix">
+													<label for="zhuzfenleiyix">已选</label>
+													<input type="radio" name="a1name" class="btn" id="zhuzfenleiweixuan">
+													<label for="zhuzfenleiweixuan">未选</label>
+													<input type="radio" value="显示全部" name="a1name" class="btn" id="zhuzfenleixsqubu">
+													<label for="zhuzfenleixsqubu">显示全部</label>
+											</div>
+												
+											<div style=" overflow:auto; text-align: center; width:93%; height: 310px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+												<table id="chyongxuzjigfuzhi" width="100%;">
+												<!-- js添加 -->
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div data-dismiss="modal" style=" width:40px; position:absolute; top:0px;right:12px;">
+							<button class="btn " style="margin-left:-15px; ">&times;</button>
+						</div>
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- 模态框内容结束 -->
+				<!-- 兼症模态框内容开始 -->
+				<div class="modal fade" id="jianzhengModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<!-- 滚动监听 -->
+					<div data-spy="scroll" data-target="#navbar-example" data-offset="0" style="height:440px; margin-top: 5px; margin-left:200px;  width:600px; overflow:auto; border-radius:10px; background-color:#FFF">
+					<!-- 选项卡 -->
+						<ul id="jzmyTabmot" class="nav nav-tabs">
+							<li class="active">
+							<a href="#jzhomemot" data-toggle="tab">
+								分类
+							</a>
+							</li>
+							<li>
+							<a href="#jziosmot" id="jianzjs" data-toggle="tab">
+								检索
+							</a>
+							</li>
+							<li>
+							<a href="#jzchangyong" id="jianzchangyxz" data-toggle="tab">常用选择</a>
+							</li>
+						</ul>
+						<div id="jzmyTabContentmot" class="tab-content" style="margin-top: -21px;">
+						<!-- 卡一 -->
+							<div class="tab-pane fade in active" id="jzhomemot">
+								<!-- 内容左 -->
+								<div class="mtfenlzuo">
+									<!-- 滚动监听 -->
+									<div data-spy="scroll" data-target="#navbar-example" data-offset="0" class="mtfenlzuogdjt">
+										<div style="border-bottom:1px #DDDDDD solid; text-align:center; ">
+											<div style="background-color: #E2ECF8;">主症</div>
+											<div style="border-bottom: 1px #DFD7D7 solid;" name="tableSty">
+												<!-- 通过点击兼症赋值 -->
+												<span id="djjianzhengfuzhi"></span>
+												<input type="hidden" value="">
+											</div>
+											<div id="jianzhengfenleiqita" style="cursor:pointer;">其他兼症</div>
+										</div>
+									</div>
+								</div>
+								<!-- 内容右 -->
+								<!-- 全选按钮 -->
+								<div class="mtfenlyou">
+									<!-- 选项卡1 -->
+									<!-- 上 -->
+									<div style=" width:70%; height: 40px; margin-left:150px; ">
+										<!-- 按钮 -->
+											<input id="jzsousuokuangfuzhi" placeholder="请输入症状名" type="text" style="margin-top:10px;margin-left:0px;width: 90px; border-radius: 5px; "> 
+											<button id="jzfenleidequedinganniu" type="button" style="background-color: #30bdb5;width: 70px;border: 0px;border-radius: 2px;" data-dismiss="modal">确定</button>
+											<input type="radio" name="a1name" class="btn" id="jianzfenleiyixuan">
+											<label for="jianzfenleiyixuan">已选</label>
+											<input type="radio" name="a1name" class="btn" id="jianzfenleiweixuan">
+											<label for="jianzfenleiweixuan">未选</label>
+											<input type="radio" value="显示全部" name="a1name" class="btn" id="jianzfenleixsqb">
+											<label for="jianzfenleixsqb">显示全部</label>
+									</div>
+									<div class="yzzbhsct"  style=" overflow-y:scroll;border:1px #DFD7D7 solid;margin-top: 10px; width:400px; height: 340px;">
+										<table id="jzflfuzhi" width="100%;">
+											<!-- <li style=" list-style-type:none; border: 1px #F0F0F0 solid; border-width: 0 0 1px 0;">
+											<label><input type="checkbox" value="1"> 1.时间都去哪儿了</label>
+											</li>
+											 -->
+										</table>
+									</div>
+								</div>
+							</div>
+						<!-- 卡二 -->
+							<div class="tab-pane fade" id="jziosmot">
+								<!-- 内容 -->
+								<div style="overflow: auto; width: 100%;height: 390px;">
+									<div style=" width:100%; height: 50px; background-color: #f0f0f0; text-align: center; ">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="kaerjzjssousuokuang" placeholder="请输入症状名" type="text" style="margin-top:10px; border-radius: 5px;margin-left:100px; width: 140px; "> 
+											<button id="jzjsquedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;"  data-dismiss="modal">确定</button>
+												<input type="radio" name="a1name" class="btn" id="jianzjiansyixuan">
+												<label for="jianzjiansyixuan">已选</label>
+												<input type="radio" name="a1name" class="btn" id="jianzjiansweixuan">
+												<label for="jianzjiansweixuan">未选</label>
+												<input type="radio" value="显示全部" name="a1name" class="btn" id="jianzjiansxiansqb">
+												<label for="jianzjiansxiansqb">显示全部</label>
+										</div>
+											
+										<div style=" overflow:auto; text-align: center; width:90%; height: 310px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+											<table class="jzjssousuozhifuzhi" width="100%;">
+											<!-- js添加 -->
+											</table>
+											
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							
+						<!-- 卡三 -->
+							<div class="tab-pane fade" id="jzchangyong">
+								<!-- 内容 -->
+								<div style="overflow: auto; width: 100%;height: 390px;">
+									<div style=" width:100%; height: 50px; background-color: #f0f0f0; text-align: center; ">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="jzcyxxfz" placeholder="请输入症状名" type="text" style="margin-top:10px; border-radius: 5px;margin-left:100px; width: 140px; "> 
+											<button id="jzcyxzdequedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;"  data-dismiss="modal">确定</button>
+												<input type="radio" name="a1name" class="btn" id="jianzcyxzyixuan">
+												<label for="jianzcyxzyixuan">已选</label>
+												<input type="radio" name="a1name" class="btn" id="jianzcyxzweixuan">
+												<label for="jianzcyxzweixuan">未选</label>
+												<input type="radio" value="显示全部" name="a1name" class="btn" id="jianzcyxzxsqb">
+												<label for="jianzcyxzxsqb">显示全部</label>
+										</div>
+											
+										<div style=" overflow:auto; text-align: center; width:90%; height: 310px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+											<table id="jzjzcyxxfzzhixing" width="100%;">
+											<!-- js添加 -->
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 模态框内容结束 -->
+				<!-- 舌象模态框内容开始 -->
+				<div class="modal fade" id="shexiangModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<!-- 滚动监听 -->
+					<div data-spy="scroll" data-target="#navbar-example" data-offset="0" style="height:440px; margin-top:5px; margin-left:200px;  width:600px; overflow:auto; border-radius:10px; background-color:#FFF">
+					<!-- 选项卡 -->
+						<ul id="shexiangmyTabmot" class="nav nav-tabs">
+							<li class="active">
+							<a href="#shexianghomemot" data-toggle="tab">
+								分类
+							</a>
+							</li>
+							<li>
+							<a href="#shexiangiosmot" id="jiasushexiang" data-toggle="tab">
+								检索
+							</a>
+							</li>
+							<li>
+							<a href="#shexiangchangyong" id="jiaseshexiangcy" data-toggle="tab">常用选择</a>
+							</li>
+						</ul>
+						<div id="jzmyTabContentmot" class="tab-content" style="margin-top: -21px;">
+						<!-- 卡一 -->
+							<div class="tab-pane fade in active" id="shexianghomemot">
+							<!-- 内容左 -->
+								<div class="mtfenlzuo">
+									<!-- 滚动监听 -->
+									<div data-spy="scroll" data-target="#navbar-example" data-offset="0" class="mtfenlzuogdjt">
+										<div style="border-bottom:1px #DDDDDD solid; text-align:center; ">
+											<div style="background-color: #E2ECF8;">主症</div>
+											<div name="tableSty">
+												<!-- 通过点击舌象按钮赋值 -->
+												<span id="djshexiangfuzhi"></span>
+												<input type="hidden" value="">
+											</div>
+
+										</div>
+										<div id="shexiangfenleiqita" style="border-bottom: 1px #DFD7D7 solid; cursor:pointer;text-align: center;">其他舌象</div>
+									</div>
+								</div>
+								<!-- 内容右 -->
+								<!-- 全选按钮 -->
+								<div class="mtfenlyou">
+									<!-- 选项卡1 -->
+									<!-- 上 -->
+									<div style="  width:70%; height: 40px; margin-left:150px; ">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="shexiangfenleisousuo" placeholder="请输入症状名" type="text" style="margin-top:10px;margin-left:0px;width: 90px; border-radius: 5px;"> 
+											<button id="shexiangfenleidequedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;" data-dismiss="modal">确定</button>
+												<input type="radio" name="a1name" class="btn" id="shexiangfenlyxuan">
+												<label for="shexiangfenlyxuan">已选</label>
+												<input type="radio" name="a1name" class="btn" id="shexiangfenlweixuan">
+												<label for="shexiangfenlweixuan">未选</label>
+												<input type="radio" value="显示全部" name="a1name" class="btn" id="shexiangfenlxsqb">
+												<label for="shexiangfenlxsqb">显示全部</label>
+										</div>
+											
+									</div>
+									<div class="yzzbhsct" style="  overflow-y:scroll;border:1px #DFD7D7 solid;margin-top: 10px; width:400px; height: 340px;">
+										<table id="shexiangflfuzhi" width="100%;">
+											<!-- <li style=" list-style-type:none; border: 1px #F0F0F0 solid; border-width: 0 0 1px 0;">
+											<label><input type="checkbox" value="1"> 1.时间都去哪儿了</label>
+											</li>
+											 -->
+										</table>
+									</div>
+								</div>
+							</div>
+						<!-- 卡二 -->
+							<div class="tab-pane fade" id="shexiangiosmot">
+								<!-- 内容 -->
+								<div style="overflow: auto; width: 100%;height: 390px;">
+									<div style=" width:100%; height: 40px; background-color: #f0f0f0; text-align: center; ">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="shexiangjssousuo" placeholder="请输入症状名" type="text" style="margin-left:100px; width: 140px; margin-top:10px; border-radius: 5px; "> 
+											<button id="shexiangjsquedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;" data-dismiss="modal">确定</button>
+											<input type="radio" name="a1name" class="btn" id="shexiangjiangsyixuan">
+											<label for="shexiangjiangsyixuan">已选</label>
+											<input type="radio" name="a1name" class="btn" id="shexiangjiangsweixuan">
+											<label for="shexiangjiangsweixuan">未选</label>
+											<input type="radio" value="显示全部" name="a1name" class="btn" id="shexiangjiangsxsqb">
+											<label for="shexiangjiangsxsqb">显示全部</label>
+										</div>
+										<div style=" overflow:auto; text-align: center; width:90%; height: 310px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+											<table id="shexiangjssousuofuzhi" width="100%;">
+											<!-- js添加 -->
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						<!-- 卡三 -->
+							<div class="tab-pane fade" id="shexiangchangyong">
+								<!-- 内容 -->
+								<div style="overflow: auto; width: 100%;height: 390px;">
+									<div style=" width:100%; height: 40px; background-color: #f0f0f0; text-align: center; ">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="shexiangcyxzsousuo" placeholder="请输入症状名" type="text" style=" margin-left:100px; width: 140px;margin-top:10px; border-radius: 5px;  "> 
+											<button id="shexiangcyxzdequedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;" data-dismiss="modal">确定</button>
+											<input type="radio" name="a1name" class="btn" id="jianzhengcyxzyixuan">
+											<label for="jianzhengcyxzyixuan">已选</label>
+											<input type="radio" name="a1name" class="btn" id="jianzhengcyxzweixuan">
+											<label for="jianzhengcyxzweixuan">未选</label>
+											<input type="radio" value="显示全部" name="a1name" class="btn" id="jianzhengcyxzxsqb">
+											<label for="jianzhengcyxzxsqb">显示全部</label>
+										</div>
+										<div style=" overflow:auto; text-align: center; width:90%; height: 310px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+											<table id="shexiangcyxzsousuokuangguzhi" width="100%;">
+											<volist name="shexiangcyxxdata" id="shexiangcyxxvo">
+											<tr style="border-bottom: 1px #DDDDDD solid;text-align: left;">
+												<td style=" width:50%;text-align: left;padding-left: 40px;">
+													<label><input type="checkbox" value="{$shexiangcyxxvo.tree}"><span>{$shexiangcyxxvo.name}</span></label>
+												</td>
+												<td style="padding-left: 125px;">
+													<span class="shexiangcyqucyajax" style="color: #FB6B12;">取消常用症状<input type="hidden" value="{$shexiangcyxxvo.tree}"></span>
+												</td>
+											</tr>
+											</volist>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 模态框内容结束 -->
+				<!-- 脉相模态框内容开始 -->
+				<div class="modal fade" id="maixiangModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<!-- 滚动监听 -->
+					<div data-spy="scroll" data-target="#navbar-example" data-offset="0" style="height:440px; margin-top:5px; margin-left:200px;  width:600px; overflow:auto; border-radius:10px; background-color:#FFF ">
+					<!-- 选项卡 -->
+						<ul id="shexiangmyTabmot" class="nav nav-tabs">
+							<li class="active">
+							<a href="#maixianghomemot" data-toggle="tab">
+								分类
+							</a>
+							</li>
+							<li>
+							<a href="#maixiangiosmot" id="jiasumaixiangjs" data-toggle="tab">
+								检索
+							</a>
+							</li>
+							<li>
+							<a href="#maixiangchangyong" id="jiasumaixiangchangyxz"  data-toggle="tab">常用选择</a>
+							</li>
+						</ul>
+						<div id="jzmyTabContentmot" class="tab-content" style="margin-top: -21px;">
+							<div class="tab-pane fade in active" id="maixianghomemot">
+								<!-- 内容左 -->
+								<div class="mtfenlzuo">
+									<!-- 滚动监听 -->
+									<div data-spy="scroll" data-target="#navbar-example" data-offset="0" class="mtfenlzuogdjt">
+										<div style="border-bottom:1px #DDDDDD solid; text-align:center; ">
+										<div style="background-color: #E2ECF8;">主症</div>
+											<div name="tableSty">
+												<!-- 通过点击脉象按钮赋值 -->
+												<span id="djmaixiangfuzhi"></span>
+												<input type="hidden" value="">
+											</div>
+
+										</div>
+										<div id="maixiangfenleiqita" style="border-bottom: 1px #DFD7D7 solid; cursor:pointer;text-align: center;">其他脉象</div>
+									</div>
+								</div>
+								<!-- 内容右 -->
+								<!-- 全选按钮 -->
+								<div class="mtfenlyou">
+									<!-- 选项卡1 -->
+									<!-- 上 -->
+									<div style="  width:70%; height: 40px; margin-left:150px;">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="maixiangfenleisousuo" placeholder="请输入症状名" type="text" style="margin-top:10px;margin-left:0px;width: 90px; border-radius: 5px;"> 
+											<button id="maixiangfenleidequedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;" data-dismiss="modal">确定</button>
+												<input type="radio" name="a1name" class="btn" id="maixiangfenlyixuan">
+												<label for="maixiangfenlyixuan">已选</label>
+												<input type="radio" name="a1name" class="btn" id="maixiangfenlweixuan">
+												<label for="maixiangfenlweixuan">未选</label>
+												<input type="radio" value="显示全部" name="a1name" class="btn" id="maixiangfenlxsqb">
+												<label for="maixiangfenlxsqb">显示全部</label>
+										</div>
+											
+									</div>
+									<div class="yzzbhsct" style="  overflow-y:scroll;border:1px #DFD7D7 solid;margin-top: 10px; width:400px; height: 340px;">
+										<table id="maixiangflfuzhi" width="100%;">
+											<!-- <li style=" list-style-type:none; border: 1px #F0F0F0 solid; border-width: 0 0 1px 0;">
+											<label><input type="checkbox" value="1"> 1.时间都去哪儿了</label>
+											</li>
+											 -->
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="maixiangiosmot">
+								<!-- 卡2内容 -->
+								<div style="overflow: auto; width: 100%;height: 390px;">
+									<div style=" width:100%; height: 40px; background-color: #f0f0f0; text-align: center; ">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="maixiangjssousuo" placeholder="请输入症状名" type="text" style="margin-top:10px; margin-left:100px; width: 140px; border-radius: 5px; "> 
+											<button id="maixiangjsquedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;" data-dismiss="modal">确定</button>
+												<input type="radio" name="a1name" class="btn" id="maixiangjiansuoyixuan">
+												<label for="maixiangjiansuoyixuan">已选</label>
+												<input type="radio" name="a1name" class="btn" id="maixiangjiansuoweixuan">
+												<label for="maixiangjiansuoweixuan">未选</label>
+												<input type="radio" value="显示全部" name="a1name" class="btn" id="maixiangjiansuoxsqb">
+												<label for="maixiangjiansuoxsqb">显示全部</label>
+										</div>
+											
+										<div style=" overflow:auto; text-align: center; width:90%; height: 310px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+											<table id="maixiangjssousuofuzhi" width="100%;">
+											<!-- js添加 -->
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="maixiangchangyong">
+								<!-- 内容 -->
+								<div style="overflow: auto; width: 100%;height: 390px;">
+									<div style=" width:100%; height: 40px; background-color: #f0f0f0; text-align: center; ">
+										<!-- 按钮 -->
+										<div style=" height: 50px; ">
+											<input id="maixiangcyxzsousuo" placeholder="请输入症状名" type="text" style=" margin-left:100px; width: 140px; margin-top:10px; border-radius: 5px;  "> 
+											<button id="maixiangcyxzdequedinganniu" type="button" style="width: 70px;background-color: #30bdb5;border-radius: 2px;border:0px;" data-dismiss="modal">确定</button>
+											<input type="radio" name="a1name" class="btn" id="maixiangcyxzyixuan">
+											<label for="maixiangcyxzyixuan">已选</label>
+											<input type="radio" name="a1name" class="btn" id="maixiangcyxzweixuan">
+											<label for="maixiangcyxzweixuan">未选</label>
+											<input type="radio" value="显示全部" name="a1name" class="btn" id="maixiangcyxzxsqb">
+											<label for="maixiangcyxzxsqb">显示全部</label>
+										</div>
+										<div style=" overflow:auto; text-align: center; width:90%; height: 310px;border: 1px #DFD7D7 solid;border-radius: 5px;margin-left:30px;margin-top: 20px;">
+											<table id="maixiangcyxzsousuokuangguzhi" width="100%;">
+											<!-- js -->
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 模态框内容结束 -->
+		</div>
+
+
+		<div style="margin-top:40px;width: 100%;height: 40%;">
+			<div data-spy="scroll" data-target="#navbar-example" id="tbgdt" data-offset="0" class="ka3YouShangDakuaiChuFang2">
+				<table style="width:100%; border: 1px #CCCCCC solid;" border='1' cellspacing="0">
+					<tr style="height: 30px;">
+						<th style="width:50px; text-align: center; background-color:#A5BDD7; ">
+							选择
+						</th>
+						<th style="width:200px; text-align: center; background-color:#A5BDD7;">
+							方剂名称
+						</th>
+					</tr>
+				</table>
+				<table id="cftreename" style="width:100%; border: 1px #CCCCCC solid;" border='1' cellspacing="0">
+					<tr style="height: 30px;display: none;">
+						<th style="width:50px; text-align: center;">
+							
+						</th>
+						<th style="width:200px; text-align: center;">
+							
+						</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="zhongyou">
+		<div class="zhongyoushang" >
+			<div class="zysbiaoge1">
+				<!-- 表格 -->
+				<div data-spy="scroll" data-target="#navbar-example" data-offset="0" id="tbgdt" class="ka3YouShangDakuaiChuFang">
+					<form action="ads">
+						<table id="bianzhengdejieguofuzhi" style="width:100%; border: 1px #CCCCCC solid;" border='1' cellspacing="0">
+						<tr style="height: 30px;">
+							<th style="width:50px; text-align: center; background-color:#E2ECF8; ">
+								选择
+							</th>
+							<th style="width:200px; text-align: center; background-color:#E2ECF8;">
+								证型
+							</th>
+							<th style="width:200px; text-align: center; background-color:#E2ECF8;">
+								治则
+							</th>
+							<th style="width:200px; text-align: center; background-color:#E2ECF8;">
+								选用类表
+							</th>
+							<th style="width:300px; text-align: center; background-color:#E2ECF8;">
+								备注
+							</th>
+						</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div style="width: 100%; height: 100%;">
+			<div  class="zhongyouxia">
+				<!-- 选项卡 -->
+				<!-- 选项卡 -->
+				<ul id="myTab" class="nav nav-tabs" style="height: 40px;">
+					<li class="active">
+					<a href="#home" data-toggle="tab" style="height: 40px;padding-top: 5px;">
+					<button style="width: 70px;height:30px;background-color: #30bdb5;border: 0px;color: #fff;border-radius: 5px;">药解</button>
+					</a>
+					</li>
+					<li><a href="#ios" data-toggle="tab" style="height: 40px;padding-top: 5px;">
+					<button style="width: 70px;height:30px;background-color: #30bdb5;border: 0px;color: #fff;border-radius: 5px;">方解</button>
+					</a>
+					</li>
+					<div style="margin-top: 10px;">
+						<strong style="margin-left: 30px;cursor:pointer;">方剂名称:<span class="fuzhichufangmingcheng" ></span></strong>
+					</div>
+				</ul>
+				<div style="height: 100%;" id="myTabContent" class="tab-content">
+					<div  style="height: 100%;" class="tab-pane fade in active" id="home">
+						<!-- 内容 -->
+						<!-- 下侧处方药解 -->
+						<div id="yzzbhsct" data-spy="scroll" data-target="#navbar-example" data-offset="0"      class="ka3xiaCeChuFang">
+							<table>
+							
+							<div class="xiacechufangyaopin"  style="width:700px;margin-top:5px;padding-left: 20px;"></div>
+							</table>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="ios">
+						<!-- 内容方解 -->
+						
+						<div id="fangjiedefuzhi" style="margin-top: 10px;">
+						</div>
+							
+					</div>
+				</div>
+			</div>
+			
+			<div class="qingchuzhongyouanniu">
+			</div>
+		</div>
+	</div>
+	<div class="qichuzhongfudong">
+	</div>
+	<!-- 药解 -->
+	<div class="yjdiv" >
+		<div class="yjdiv-top" >
+			<!--<img src="__PUBLIC__/muban/assets/ico/minus.png" width="20" height="20">-->
+			<span><b>药解</b></span>
+			<button type="button" class="close btn" onclick="clo()">&times;</button>
+		</div>
+		<div id="gdt">
+			<div class="yaojiemodal-tcon">
+				<table class="yaojiemodal-tcon-tab">
+					<tr>
+						<th align="right">
+							<span>药品名称</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="drug_name" value="" readonly>
+						</td>
+						<th align="right">
+							<span>输入码</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="input_code" value="" readonly>
+						</td>
+						<td rowspan="3">
+							<div id="photo" style="width:100px;height:90px;">
+								<img src="" style="width:100px; height:90px; border:none;">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th rowspan="2" align="right">
+							<span>别名</span><span>：</span>
+						</th>
+						<td rowspan="2">
+							<textarea id="other_name" style="width:90%; resize:none; border:none; outline:none; vertical-align:middle; margin-top:20px;" readonly></textarea>
+						</td>
+						<th align="right">
+							<span>单位</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="units" value="" readonly>
+						</td>
+					</tr>
+					<tr>
+						<th align="right">
+							<span>单价</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="price" value="" readonly>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="yaojiemodal-con">
+				<p><span class="b">来源：</span><span id="source"></span></p>
+				<p><span class="b">性状：</span><span id="xz"></span></p>
+				<p><span class="b">炮制：</span><span id="pz"></span></p>
+				<p>
+					<span class="b">性味：</span><span id="xw"></span>
+					<span class="b" style="margin-left:30%;">归经：</span><span id="gj"></span>
+				</p>
+				<p><span class="b">功能：</span><span id="gn"></span></p>
+				<p><span class="b">主治：</span><span id="zz"></span></p>
+				<p><span class="b">用量用法 ：</span><span id="yfyl"></span></p>
+				<p><span class="b">特殊用法 ：</span><span id="tsyf"></span></p>
+				<p><span class="b">注意事项：</span><span id="zysx"></span></p>
+				<p><span class="b">贮藏：</span><span id="zc"></span></p>
+				<p><span class="b">适应证：</span><span id="syz"></span></p>
+				<p><span class="b">临床应用：</span><span id="lcyy"></span></p>
+				<p><span class="b">鉴别用药 ：</span><span id="jbyy"></span></p>
+				<p><span class="b">现代研究：</span><span id="xdyj"></span></p>
+				<p><span class="b">常用代表方：</span><span id="cydbf"></span></p>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 点击主症 -->
+<script type="text/javascript">
+	// <!-- 点击主症 -->
+	$(document).on("click",".sty1",function(){
+		// 点击变色
+    var tsty1=document.getElementsByName("tableSty");
+    for(var i=0;i<tsty1.length;i++){
+        tsty1[i].className="sty1";
+    }
+    $(this).attr("class","sty2");
+    //ajax改变右侧值
+	var dianjizhuzheng = $(this).find("input").val();			    
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuajaxdianzz')}",
+			data:{"dianjizhuzheng":dianjizhuzheng},
+			dataType:'json',
+			success:function(dd){
+				str = '';
+				$.each(dd.res,function(idx,item){
+					str += '<tr width="100%" style="border-bottom:1px #F0F0F0 solid;"><td style="width:40%;padding-left:5%;"><label><input  class="sty3" type="radio" name="radio" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="width:60%;"><span class="flzhengzchangyongxux" style="color:#FB6B12;margin-left:45%;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"/></span></td></tr>';
+				});
+				$(".zhzhengjiusdefenlei").html(str);
+			}
+		});
+	});
+	//赋值将复选框点击后变为chenked=checked状态
+	$(document).on("click",".sty3",function(){
+		$(this).attr("checked","checked");
+	});
+	// 主症下搜索框搜索
+	$(document).on("input","#zxzfchazhao",function(){
+		var zxzfjg = $(this).val();//输入的值
+		var tjbmzxzf = $(".sty2").find('input').val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuajaxzhengxingss')}",
+			data:{"zxzfjg":zxzfjg,"tjbmzxzf":tjbmzxzf},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #F0F0F0 solid;"><td style="list-style-type:none;"><label><input style="margin-left:20px;" class="sty3" type="radio" name="radio" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="flzhengzchangyongxux" style="color:#FB6B12;margin-left:140px;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"/></span></td></tr>';
+				});
+				$("#xuanZlist").html(str);
+			}
+		});
+	});
+	//点击主症下的确定按钮
+	$(document).on("click","#flzhengzfuzhizhuzheng",function(){
+		//将兼症的属性赋值 使其能触发模态框
+		$("#jianzhenchufsj").attr("data-target","#jianzhengModal");
+		//将舌象的属性赋值 使其能触发模态框
+		$("#shexiangchufsj").attr("data-target","#shexiangModal");
+		//将脉相的属性赋值 使其能触发模态框
+		$("#maixiangchufsj").attr("data-target","#maixiangModal");
+		//以下是程序
+		var nj = document.getElementsByClassName("sty3");
+		var dozhuzheng='';
+		for (var i = 0; i < nj.length; i++) {
+			if (nj[i].checked) {
+				dozhuzheng += nj[i].value+' ';
+			}
+		}
+		//dozhuzheng是证型的tree号
+		//将tree放到隐藏域中用作兼症条件
+		$("#fenleifuzhizhuzhengyincang").val(dozhuzheng);
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/zhuzxcodezhuanhz')}",
+			data:{"dozhuzheng":dozhuzheng},
+			dataType:'json',
+			success:function(dd){
+				var str = "";
+				$.each(dd.res,function(idx,item){
+					str += item.name+' '; 
+				});
+				//赋值将证型名放到对应的主症框里
+				$("#fenleifuzhizhuzheng").val(str);
+				//主症改变后其他赋值为空
+				$("#jianzhengdenameyincang").val('');
+				$("#shexiangdenameyincang").val('');
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+			}
+		});
+	});
+	function shuxinyem(){
+		window.location.reload();
+	}
+	//点击主症下的设为常用选项按钮按钮
+	$(document).on("click",".flzhengzchangyongxux",function(){
+		var zhuzheng=$(this).find("input").val();
+		$.ajax({
+		type:"post",
+		url:"{:U('kaifang/yeliuajaxchangyongxz')}",
+		data:{"zhuzheng":zhuzheng},
+		dataType:'json',
+		success:function(dd){
+			layer.alert(dd,{icon:1});
+			setTimeout("window.location.reload();", 3000)
+		}
+	});
+	});
+	//主症下的检索
+	$(document).on("click","#jiasuzhujs",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/zhuzjiansuo')}",
+			data:{},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="text-align:left;height:30px;border-bottom:1px #DDD solid"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="radio" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="jssheweizhuchangyongxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.code+'"></span></td></tr>';
+				});
+				$("#zhuzxjsfuzhi").html(str);
+			}
+		});
+	});
+	//主症下检索的搜索框
+	$(document).on("input","#zhuzjssousuo",function(){
+		var tjzzjs = $(this).val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuzhuzhengjssousuokuang')}",
+			data:{"tjzzjs":tjzzjs},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="text-align:left;height:30px;border-bottom:1px #DDD solid"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="radio" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="jssheweizhuchangyongxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.code+'"></span></td></tr>';
+				});
+				$("#zhuzxjsfuzhi").html(str);
+			}
+		});
+	});
+	//主症下检索的确定按钮
+	$(document).on("click","#zhuzjsquedfuzhi",function(){
+		//将兼症的属性赋值 使其能触发模态框
+		$("#jianzhenchufsj").attr("data-target","#jianzhengModal");
+		var str = " ";
+		var dostr = " ";
+		//获取选中的input
+		$(" #zhuzxjsfuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 主症tree
+			str += zhuzjschftree + " ";
+			//主症name
+			dostr += zhuzjschfname +" ";
+		});
+		//隐藏tree用作兼症条件
+		$("#fenleifuzhizhuzhengyincang").val(str);
+		//将name赋值
+		$("#fenleifuzhizhuzheng").val(dostr);
+		//主症改变后其他赋值为空
+				$("#jianzhengdenameyincang").val('');
+				$("#shexiangdenameyincang").val('');
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+	//主症下检索设为常用选项
+	$(document).on("click",".jssheweizhuchangyongxz",function(){
+		var sheweicycode =$(this).find("input").val();
+		$.ajax({
+		type:"post",
+		url:"{:U('kaifang/yeliuajaxzhuzsheweicyxx')}",
+		data:{"sheweicycode":sheweicycode},
+		dataType:'json',
+		success:function(dd){
+			layer.alert(dd,{icon:1});
+			setTimeout("window.location.reload();", 3000);
+		}
+	});
+	});
+	
+	//主症下常用选项
+	$(document).on("click","#jiasuzhuchangyongxz",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/zhuzchangyxz')}",
+			data:{},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="radio" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="quxiaozhuchangyongxz" style="color:#FB6B12">取消常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+				});
+				$("#chyongxuzjigfuzhi").html(str);
+			}
+		});
+	});
+	//主症下取消常用选项
+	$(document).on("click",".quxiaozhuchangyongxz",function(){
+		var quxiaocycode =$(this).find("input").val();
+			$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuajaxzhuzquxcyxx')}",
+			data:{"quxiaocycode":quxiaocycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//主症下常用选择搜索
+	$(document).on("input","#cysousuocy",function(){
+	var cyxztj = $(this).val();//输入的值
+	$.ajax({
+		type:"post",
+		url:"{:U('kaifang/yeliuajaxzhuzcyxzss')}",
+		data:{"cyxztj":cyxztj},
+		dataType:'json',
+		success:function(dd){
+			var str = '';
+			$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="radio" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="quxiaozhuchangyongxz" style="color:#FB6B12">取消常用症状<input type="hidden" value="'+item.code+'"></span></td></tr>';
+				});
+			$("#chyongxuzjigfuzhi").html(str);
+		}
+	});
+	});
+	//主症下常用选择下的确定按钮
+	$(document).on("click","#zhuzcyquedfuzhi",function(){
+		//将兼症的属性赋值 使其能触发模态框
+		$("#jianzhenchufsj").attr("data-target","#jianzhengModal");
+		var str = " ";
+		var dostr = " ";
+		//获取选中的input
+		$(" #chyongxuzjigfuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 主症tree
+			str += zhuzjschftree + " ";
+			//主症name
+			dostr += zhuzjschfname +" ";
+		});
+		//隐藏tree用作兼症条件
+		$("#fenleifuzhizhuzhengyincang").val(str);
+		//将name赋值
+		$("#fenleifuzhizhuzheng").val(dostr);
+		//主症改变后其他赋值为空
+				$("#jianzhengdenameyincang").val('');
+				$("#shexiangdenameyincang").val('');
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	})
+</script>
+<!-- 点击兼症 -->
+<script type="text/javascript">
+	// 点击兼症的按钮
+	$(document).on("click","#jianzhenchufsj",function(){
+		//获取主症值
+		//fenleifuzhizhuzheng
+		var zhcztjhanzi = $("#fenleifuzhizhuzheng").val();
+		//获取主症的tree号
+		var zhcztj = $("#fenleifuzhizhuzhengyincang").val();
+		//判断主症的值是否存在
+		if (zhcztj) {
+			// 点击主症里的确定按钮时给兼症赋值
+			$("#djjianzhengfuzhi").html(zhcztjhanzi);
+			$.ajax({
+				type:"post",
+				url:"{:U('kaifang/yeliuAjaxJZdijzchs')}",
+				data:{"zhcztj":zhcztj},
+				dataType:'json',
+				success:function(dd){
+					var str = ' ';
+					$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="jzfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#jzflfuzhi").html(str);
+				}
+			});
+		}else{
+			// 点击主症了的确定按钮时给兼症赋值
+			layer.alert("未点击主症",{icon:7});
+		}
+		
+	});
+	// 兼症下分类搜索框搜索
+	$(document).on("input","#jzsousuokuangfuzhi",function(){
+		var zxzfjg = $(this).val();//输入的值
+		//获取主症的tree号
+		var zhuzhengTree = $("#fenleifuzhizhuzhengyincang").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxjzss')}",
+			data:{"zxzfjg":zxzfjg,"zhuzhengTree":zhuzhengTree},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="jzfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#jzflfuzhi").html(str);
+			}
+		});
+	});
+	//兼症下分类其他
+	$(document).on("click","#jianzhengfenleiqita",function(){
+			// 改变兼症分类下的值
+			$.ajax({
+				type:"post",
+				url:"{:U('Bianzheng/yeliujianzfenleiquta')}",
+				data:{},
+				dataType:'json',
+				success:function(dd){
+					var str = ' ';
+					$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="jzfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#jzflfuzhi").html(str);
+				}
+			});
+	});
+	//兼症下分类设为常用选项
+	$(document).on("click",".jzfenleisheweicyxx",function(){
+		var jzfenlsheweicycode =$(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxJZFensheweicyxx')}",
+			data:{"jzfenlsheweicycode":jzfenlsheweicycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//兼症下分类的确定按钮
+	$(document).on("click","#jzfenleidequedinganniu",function(){
+		
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #jzflfuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#jianzhengdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		//去掉开头空格s=s.substring(0,s.Length-1)；
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+
+		$("#jianzhengdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#shexiangdenameyincang").val('');
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+	//兼症下检索
+	$(document).on("click","#jianzjs",function(){
+		//获取主症的tree号
+		var zhcztj = $("#fenleifuzhizhuzhengyincang").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/jianzjiansuo')}",
+			data:{"zhcztj":zhcztj},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="jzjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+				});
+				$(".jzjssousuozhifuzhi").html(str);
+			}
+		});
+	});
+	//兼症下检索搜索框
+	$(document).on("input","#kaerjzjssousuokuang",function(){
+		//获取主症的tree号
+		var zhcztj = $("#fenleifuzhizhuzhengyincang").val();
+		var zxzfjg = $(this).val();//输入的值
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxjzjssousuofuzhi')}",
+			data:{"zxzfjg":zxzfjg,"zhcztj":zhcztj},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="jzjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$(".jzjssousuozhifuzhi").html(str);
+			}
+		});
+	});
+	//兼症下检索设为常用选择
+	$(document).on("click",".jzjssheweichxz",function(){
+		var jzjssheweicycode = $(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxJZjssheweicyxx')}",
+			data:{"jzjssheweicycode":jzjssheweicycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//兼症下检索的确定按钮
+	$(document).on("click","#jzjsquedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" .jzjssousuozhifuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#jianzhengdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#jianzhengdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#shexiangdenameyincang").val('');
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+	//兼症常用选择
+	$(document).on("click","#jianzchangyxz",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/jianzchangyxz')}",
+			data:{},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="jzcyqucyajax" style="color:#FB6B12">取消常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+				});
+				$("#jzjzcyxxfzzhixing").html(str);
+			}
+		});
+	});
+	//兼症下常用选择中取消常用选项
+	$(document).on("click",".jzcyqucyajax",function(){
+		var quxiaocycode =$(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/jzajaxcyQuXiancy')}",
+			data:{"quxiaocycode":quxiaocycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//兼症下常用选择中搜索框赋值
+	$(document).on("input","#jzcyxxfz",function(){
+		var jzshurutj = $(this).val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/jzajaxcysousuokuang')}",
+			data:{"jzshurutj":jzshurutj},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="jzcyqucyajax" style="color:#FB6B12">取消常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#jzjzcyxxfzzhixing").html(str);
+			}
+		});
+	});
+	//兼症下常用选择的确定按钮
+	$(document).on("click","#jzcyxzdequedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #jzjzcyxxfzzhixing input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#jianzhengdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#jianzhengdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#shexiangdenameyincang").val('');
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+</script>
+<!-- 点击舌象 -->
+<script type="text/javascript">
+	// 点击舌象的按钮
+	$(document).on("click","#shexiangchufsj",function(){
+		//获取主症值
+		//fenleifuzhizhuzheng
+		var zhcztjhanzi = $("#fenleifuzhizhuzheng").val();
+		//获取主症的tree号
+		var shexiangzhcztj = $("#fenleifuzhizhuzhengyincang").val();
+		//判断主症的值是否存在
+		if (shexiangzhcztj) {
+			// 点击兼症的按钮时赋值
+			$("#djshexiangfuzhi").html(zhcztjhanzi);
+			$.ajax({
+				type:"post",
+				url:"{:U('kaifang/yeliuAjaxshexiangdishexiangchs')}",
+				data:{"shexiangzhcztj":shexiangzhcztj},
+				dataType:'json',
+				success:function(dd){
+					var str = ' ';
+					$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="shexiangfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#shexiangflfuzhi").html(str);
+				}
+			});
+		}else{
+			// 点击主症了的确定按钮时给兼症赋值
+			layer.alert("未点击主症",{icon:7});
+		}
+		
+	});
+	// 舌象分类其他
+	$(document).on("click","#shexiangfenleiqita",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxshexiangfenleiqueding')}",
+			// data:{"jzjssheweicycode":jzjssheweicycode},
+			dataType:'json',
+			success:function(dd){
+				var str = ' ';
+					$.each(dd,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="shexiangfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#shexiangflfuzhi").html(str);
+			}
+		});
+	});
+	// 舌象下分类搜索框搜索
+	$(document).on("input","#shexiangfenleisousuo",function(){
+		var zxzfjg = $(this).val();//输入的值
+		//获取主症的tree号
+		var zhuzhengTree = $("#fenleifuzhizhuzhengyincang").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxshexiangss')}",
+			data:{"zxzfjg":zxzfjg,"zhuzhengTree":zhuzhengTree},
+			dataType:'json',
+			success:function(dd){
+				var str = ' ';
+					$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="shexiangfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#shexiangflfuzhi").html(str);
+			}
+		});
+	});
+	//舌象下分类设为常用选项
+	$(document).on("click",".shexiangfenleisheweicyxx",function(){
+		var shexiangfenlsheweicycode =$(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxshexiangFensheweicyxx')}",
+			data:{"shexiangfenlsheweicycode":shexiangfenlsheweicycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//舌象下分类的确定按钮
+	$(document).on("click","#shexiangfenleidequedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #shexiangflfuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#shexiangdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#shexiangdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+	//舌象下的检索
+	$(document).on("click","#jiasushexiang",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/shexiangjs')}",
+			data:{},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="shexiangjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+				});
+				$("#shexiangjssousuofuzhi").html(str);
+			}
+		});
+	});
+	//舌象下检索搜索框
+	$(document).on("input","#shexiangjssousuo",function(){
+		var zxzfjg = $(this).val();//输入的值
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxshexiangjssousuofuzhi')}",
+			data:{"zxzfjg":zxzfjg},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="shexiangjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#shexiangjssousuofuzhi").html(str);
+			}
+		});
+	});
+	//舌象下检索设为常用选择
+	$(document).on("click",".shexiangjssheweichxz",function(){
+		var jzjssheweicycode = $(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxshexiangjssheweicyxx')}",
+			data:{"jzjssheweicycode":jzjssheweicycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//舌象下检索的确定按钮
+	$(document).on("click","#shexiangjsquedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #shexiangjssousuofuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#shexiangdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#shexiangdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+	//舌象下的常用选择
+	$(document).on("click","#jiaseshexiangcy",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/shexiangchangyxz')}",
+			data:{},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="shexiangjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+				});
+				$("#shexiangcyxzsousuokuangguzhi").html(str);
+			}
+		});
+	});
+	//舌象下常用选择中搜索框赋值
+	$(document).on("input","#shexiangcyxzsousuo",function(){
+		var jzshurutj = $(this).val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/shexiangajaxcysousuokuang')}",
+			data:{"jzshurutj":jzshurutj},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="shexiangjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#shexiangcyxzsousuokuangguzhi").html(str);
+			}
+		});
+	});
+	//舌象下常用选择中取消常用选项
+	$(document).on("click",".shexiangcyqucyajax",function(){
+		var quxiaocycode =$(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/shexiangajaxcyQuXiancy')}",
+			data:{"quxiaocycode":quxiaocycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//舌象下常用选择的确定按钮
+	$(document).on("click","#shexiangcyxzdequedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #shexiangcyxzsousuokuangguzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#shexiangdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#shexiangdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#maixiangdenameyincang").val('');
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+</script>
+<!-- 点击脉相 -->
+<script type="text/javascript">
+	//脉相检索
+	$(document).on("click","#jiasumaixiangjs",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/maixiangjs')}",
+			data:{},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="maixiangjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+				});
+				$("#maixiangjssousuofuzhi").html(str);
+			}
+		});
+	});
+	//脉相常用选择
+	$(document).on("click","#jiasumaixiangchangyxz",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('Bianzheng/maixiangchangyxz')}",
+			data:{},
+			dataType:'json',
+			success:function(dd){
+				str ='';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="maixiangcyqucyajax" style="color:#FB6B12">取消常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+				});
+				$("#maixiangcyxzsousuokuangguzhi").html(str);
+			}
+		});
+	});
+	// 点击脉象的按钮
+	$(document).on("click","#maixiangchufsj",function(){
+		//获取主症值
+		//fenleifuzhizhuzheng
+		var zhcztjhanzi = $("#fenleifuzhizhuzheng").val();
+		//获取主症的tree号
+		var shexiangzhcztj = $("#fenleifuzhizhuzhengyincang").val();
+		//判断主症的值是否存在
+		if (shexiangzhcztj) {
+			// 点击兼症的按钮时赋值
+			$("#djmaixiangfuzhi").html(zhcztjhanzi);
+			$.ajax({
+				type:"post",
+				url:"{:U('kaifang/yeliuAjaxshexiangdimaixiangchs')}",
+				data:{"shexiangzhcztj":shexiangzhcztj},
+				dataType:'json',
+				success:function(dd){
+					var str = ' ';
+					$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="maixiangfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#maixiangflfuzhi").html(str);
+				}
+			});
+		}else{
+			// 点击主症了的确定按钮时给兼症赋值
+			layer.alert("未点击主症",{icon:1});
+		}
+		
+	});
+	// 脉象分类其他
+	$(document).on("click","#maixiangfenleiqita",function(){
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxmaixiangfenleiqueding')}",
+			// data:{"jzjssheweicycode":jzjssheweicycode},
+			dataType:'json',
+			success:function(dd){
+				var str = ' ';
+					$.each(dd,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="maixiangfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#maixiangflfuzhi").html(str);
+			}
+		});
+	});
+	// 脉象下分类搜索框搜索
+	$(document).on("input","#maixiangfenleisousuo",function(){
+		var zxzfjg = $(this).val();//输入的值
+		//获取主症的tree号
+		var zhuzhengTree = $("#fenleifuzhizhuzhengyincang").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxmaixiangss')}",
+			data:{"zxzfjg":zxzfjg,"zhuzhengTree":zhuzhengTree},
+			dataType:'json',
+			success:function(dd){
+				var str = ' ';
+					$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid"><td style="width:70%;padding-left:20px;"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td><span class="maixiangfenleisheweicyxx" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#maixiangflfuzhi").html(str);
+			}
+		});
+	});
+	//脉象下分类设为常用选项
+	$(document).on("click",".maixiangfenleisheweicyxx",function(){
+		var maixiangfenlsheweicycode =$(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxmaixiangFensheweicyxx')}",
+			data:{"maixiangfenlsheweicycode":maixiangfenlsheweicycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//脉象下分类的确定按钮
+	$(document).on("click","#maixiangfenleidequedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #maixiangflfuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#maixiangdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#maixiangdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+	//舌象下检索搜索框
+	$(document).on("input","#maixiangjssousuo",function(){
+		var zxzfjg = $(this).val();//输入的值
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxmaixiangjssousuofuzhi')}",
+			data:{"zxzfjg":zxzfjg},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+						str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="maixiangjssheweichxz" style="color:#FB6B12;cursor:pointer;">设为常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#maixiangjssousuofuzhi").html(str);
+			}
+		});
+	});
+	//脉象下检索设为常用选择
+	$(document).on("click",".maixiangjssheweichxz",function(){
+		var jzjsmaiweicycode = $(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/yeliuAjaxmaixiangjssheweicyxx')}",
+			data:{"jzjsmaiweicycode":jzjsmaiweicycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//脉象下检索的确定按钮
+	$(document).on("click","#maixiangjsquedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #maixiangjssousuofuzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#maixiangdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#maixiangdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+	//脉象下常用选择中取消常用选项
+	$(document).on("click",".maixiangcyqucyajax",function(){
+		var quxiaocycode =$(this).find("input").val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/maixiangajaxcyQuXiancy')}",
+			data:{"quxiaocycode":quxiaocycode},
+			dataType:'json',
+			success:function(dd){
+				layer.alert(dd,{icon:1});
+				setTimeout("window.location.reload();", 3000);
+			}
+		});
+	});
+	//舌象下常用选择中搜索框赋值
+	$(document).on("input","#maixiangcyxzsousuo",function(){
+		var jzshurutj = $(this).val();
+		$.ajax({
+			type:"post",
+			url:"{:U('kaifang/maixiangajaxcysousuokuang')}",
+			data:{"jzshurutj":jzshurutj},
+			dataType:'json',
+			success:function(dd){
+				str = ' ';
+				$.each(dd.res,function(idx,item){
+					str += '<tr style="border-bottom:1px #DDD solid;text-align:left"><td style="width:50%;text-align:left;padding-left:40px"><label><input type="checkbox" value="'+item.tree+'"><span>'+item.name+'</span></label></td><td style="padding-left:125px"><span class="maixiangcyqucyajax" style="color:#FB6B12">取消常用症状<input type="hidden" value="'+item.tree+'"></span></td></tr>';
+						});
+					$("#maixiangcyxzsousuokuangguzhi").html(str);
+			}
+		});
+	});
+	//脉象下常用选择的确定按钮
+	$(document).on("click","#maixiangcyxzdequedinganniu",function(){
+		// 获取兼症分类下点击的复选框
+		var jzfenleitjtree = ' ';
+		var jzfenleitjname = ' ';
+		$(" #maixiangcyxzsousuokuangguzhi input:checked").each(function(){
+			// 获取主症tree
+			var zhuzjschftree =$(this).val();
+			var zhuzjschfname =$(this).parent().find("span").html();
+			// 兼症tree
+			jzfenleitjtree += zhuzjschftree + " ";
+			//兼症name
+			jzfenleitjname += zhuzjschfname +" | ";
+		});
+		//将name放到兼症的框里中显示在页面
+		$("#maixiangdetreeyincang").val(jzfenleitjtree);
+		//将tree放到隐藏域中用作兼症条件
+		var dojzfenleitjname = jzfenleitjname.substring(1);
+		var dozuijzfenleitjname = dojzfenleitjname.substring(0,dojzfenleitjname.length-2);
+		$("#maixiangdenameyincang").val(dozuijzfenleitjname);
+		//改变后其他赋值为空
+				$("#bianzfuzhi").val('');
+				//证型治法为空
+				$("#bianzhengdejieguofuzhi").html('<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>');
+				$("#cftreename").html('');
+				$("#fangjiedefuzhi").html('');
+				$(".fuzhichufangmingcheng").html('');
+				$(".xiacechufangyaopin").html('');
+	});
+</script>
+<!-- 点击辩证 -->
+<script type="text/javascript">
+	$(document).on("click","#biangzhenganniu",function(){
+		//获取主症的tree号
+		var shexiangzhcztj = $("#fenleifuzhizhuzhengyincang").val();
+		// 判断主症是否存在
+		if (shexiangzhcztj) {
+			//获取兼症的tree号
+			var bianzhengjztreehao = $("#jianzhengdetreeyincang").val();
+			//判断兼症是否存在
+				//点击兼症的时候 ajax 传的控制器判断
+				$.ajax({
+					type:"post",
+					url:"{:U('Bianzheng/jianzhengtree')}",
+					data:{"bianzhengjztreehao":bianzhengjztreehao, "zhuzTree":shexiangzhcztj},
+					dataType:'json',
+					success:function(dd){	
+						var str = '<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>';
+						//将辩证的框里输入第一个证型
+						$("#bianzfuzhi").val(dd['0']['ze_name']);
+						for (var k in dd){
+
+							var leix = '';
+							if (dd[k]['fs'] < 0) {
+								leix = '任选';
+							} else {
+								switch(k){
+									case '0':
+										leix = '首选';
+										break;
+									case '1':
+										leix = '次选';
+										break;
+									case '2':
+										leix = '三选';
+										break;
+									case '3':
+										leix = '四选';
+										break;
+									case '4':
+										leix = '五选';
+										break;
+									case '5':
+										leix = '六选';
+										break;
+								}
+							}
+							var bzName = '';
+							if (dd[k]['bz_name'] == null) {
+								bzName = '';
+							} else {
+								bzName = dd[k]['bz_name'];
+							}
+							var zxName = '';
+							if (dd[k]['zx_name'] == null) {
+								zxName = '';
+							} else {
+								zxName = dd[k]['zx_name'];
+							}
+							str += '<tr style="height:20px;" class="styzhengx" name="zhengxtableSty"><td style="width:50px;text-align:center;"><img src="__PUBLIC__/muban/assets/img/xuan.png"  style="width:30px;"><input type="hidden" value="1"/></td><td style="width:200px;text-align:center;">'+zxName+'</td><td style="width:200px;text-align:center;"><span>'+dd[k]['ze_name']+'</span><input type= "hidden" value="'+dd[k]['ze_tree']+'"></td><td style="width:200px;text-align:center;">'+leix+'</td><td style="width:300px;text-align:center;">'+bzName+'<input type= "hidden" value="'+dd[k]['bz_tree']+'"></td></tr>';
+						}
+						$("#bianzhengdejieguofuzhi").html(str);
+					}
+				});
+		}else {
+			layer.alert("请点击主症",{icon:7});
+		}
+	});
+	// 点击证型获取处方名和方解
+	//点击变为选中
+	$(document).on("click",".styzhengx",function(){
+		//判断是否选中
+		if($(this).find("td:eq(0)").find("input").val() == 1){
+		
+			//选中变为没选中
+			$(this).find("td:eq(0)").find("img").attr("src","__PUBLIC__/muban/assets/img/wei.png");
+			$(this).find("td:eq(0)").find("input").val(2);
+
+
+			$(this).css("background-color","#80B0E1");
+			//功能
+			//改变辩证的框内的值
+			var bianzhengzhi = $(this).find("td:eq(2)").find("span").text();
+			$("#bianzfuzhi").val(bianzhengzhi);
+			
+		    //获取bz_tree根据bz_tree获取处方
+		    var bz_treetiaoj =$(this).find("td:last").find("input").val();
+		    var zhiz_treetiaoj =$(this).find("td:eq(2)").find("input").val();
+		   	$.ajax({
+				type:"post",
+				url:"{:U('Bianzheng/huoqucftree')}",
+				data:{"bz_treetiaoj":bz_treetiaoj,"zhiz_treetiaoj":zhiz_treetiaoj},
+				dataType:'json',
+				success:function(dd){
+					var str='';
+	            	$.each(dd,function(idx,item){
+	                //输出
+	              		str += '<tr class="cfyaopin" name="cfyaopintableSty""><td style="border:1px #CCCCCC solid;width:50px;height:20px;text-align:center"><input type="checkbox"></td><td style="border:1px #F0F0F0 solid；text-align:center;"><span style="text-align:center;">&nbsp;&nbsp;'+item.name+'</span><input class="pdsfytrsc" type="hidden" value="'+item.tree+'"></td></tr>';
+	                });
+	            	$("#cftreename").prepend(str);
+	            	
+				}
+			});
+    	}else{
+    		//没选中变为选中
+    		$(this).find("td:eq(0)").find("input").val(1);
+			$(this).find("td:eq(0)").find("img").attr("src","__PUBLIC__/muban/assets/img/xuan.png");
+
+			$(this).css("background-color","#fff");
+			//功能
+			//改变辩证的框内的值
+			var bianzhengzhi = $(this).find("td:eq(2)").find("span").text();
+			$("#bianzfuzhi").val(bianzhengzhi);
+			
+		    //获取bz_tree根据bz_tree获取处方
+		    var bz_treetiaoj =$(this).find("td:last").find("input").val();
+		    var zhiz_treetiaoj =$(this).find("td:eq(2)").find("input").val();
+		   	$.ajax({
+				type:"post",
+				url:"{:U('Bianzheng/huoqucftree')}",
+				data:{"bz_treetiaoj":bz_treetiaoj,"zhiz_treetiaoj":zhiz_treetiaoj},
+				dataType:'json',
+				success:function(dd){
+					var str='';
+	            	$.each(dd,function(idx,item){
+	                // 判断item里的tree(如果有就删掉这一行)
+	                	$(".cfyaopin").each(function(){
+	                		// 如果有这个tree 就删除
+	                		if ($(this).find(".pdsfytrsc").val() == item.tree) {
+	                			// 删除一行tr
+	                			$(this).attr("class","shanchudmubiao");
+	                		}
+	                	});
+	                	$(".cfyuanshishuju").each(function(){
+	                		// 如果有这个tree 就删除
+	                		if ($(this).find(".pdsfytrsc").val() == item.tree) {
+	                			// 删除一行tr
+	                			$(this).attr("class","shanchudmubiao");
+	                		}
+	                	});
+	                	//移除这一行
+	                		$("tr").remove(".shanchudmubiao");
+	                		// 默认选中第一个处方
+	                		// $("#cftreename").find("tr").eq(0).click();
+	      //           	//方解药解等为空
+							$("#fangjiedefuzhi").html('');
+							$(".fuzhichufangmingcheng").html('');
+							$(".xiacechufangyaopin").html('');
+	                });
+				}
+			});
+    	}
+	});
+	// 改变下侧处方药品
+		$(document).on("click",".cfyaopin",function(){
+			// 点击变色
+		    var tsty1=document.getElementsByName("cfyaopintableSty");
+		    for(var i=0;i<tsty1.length;i++){
+		        tsty1[i].className="cfyaopin";
+		    }
+		    $(this).attr("class","cfyuanshishuju");
+		    //ajax改变下侧值
+		    //获取cf_tree根据cf_tree获取处方
+		    var tjyouzhengxing =$(this).find("td:last").find("input").val();
+		    //获取处方名称
+		    var chufangmingcheng =$(this).find("td:last").find("span").html();
+		    // 赋值
+		    $(".fuzhichufangmingcheng").html(chufangmingcheng);
+		    //药解赋值
+		    $.ajax({
+		    	type:'post',
+		    	url:"{:U('Bianzheng/cfyaopinming')}",
+		    	data:{"tjyouzhengxing":tjyouzhengxing},
+		    	dataType:'json',
+		    	success:function(dd){
+		    		// 处方名称
+		    		var str = '';
+		    		// byongfa = '';
+		    		$.each(dd,function(idx,item){
+		    			if (item.yf == null) {
+		    				item.yf = '&nbsp;';
+		    			}
+		    			if (item.sl == null) {
+		    				item.sl = '&nbsp;';
+		    			}
+		    			str += '<div style="width:100%;" class="yongLaiKaZhude"><div style="width:135px;height:100px;;border:2px solid #B7C0C8;margin:5px;float:left;color:#000;cursor:pointer;border-radius:2px;background-color:#f5f5f5;margin-right:5px;"  ondblclick="yaojie(this)"><div style="display:inline-block;width: 15px;height: 25px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;background-color: #30BEB2;text-align:center;color:#FFF;margin-left:5px;font-weight:normal;">'+item.serial_no+'</div><div style="border:1px #000 solid;width:60px;border-width:0 0 1px 0;position:relative;left:63px;text-align:center;top:-15px;height:20px;">'+item.yf+'</div><div style="border:1px #f1f1f1 solid;width:130px;border-width:0 0 1px 0;position:relative;left:10px;top:-10px;font-family:楷体;font-size:22px" class="d4">'+item.drug_name+'</div><div style="width:70px;position:relative;left:40px;top:-10px;text-align:right">'+item.sl+item.dw+'</div></div></div>';
+		    		});
+		    		$(".xiacechufangyaopin").html(str);
+		    	}
+		    });
+		    //方解赋值
+		    $.ajax({
+		    	type:'post',
+		    	url:"{:U('Bianzheng/cfyaopinmingfangjie')}",
+		    	data:{"tjyouzhengxing":tjyouzhengxing},
+		    	dataType:'json',
+		    	success:function(ddf){
+		    		//为方解赋值
+	            	var dostr= ' ';
+	            	$.each(ddf,function(idx,item){
+	            		if (item.explain == null) {
+	            			item.explain = '&nbsp;';
+	            		}
+	            		if (item.source == null) {
+	            			item.source = '&nbsp;';
+	            		}
+	            		if (item.efficacy == null) {
+	            			item.efficacy = '&nbsp;';
+	            		}
+	            		if (item.maincure == null) {
+	            			item.maincure = '&nbsp;';
+	            		}
+	            		if (item.tsyf == null) {
+	            			item.tsyf = '&nbsp;';
+	            		}
+	            		dostr += '<div style="padding-left:20px;"><span style="color:red;">方解：</span>'+item.explain+'</div><div style="padding-left:20px;"><span style="color:red;">来源：</span>'+item.source+'</div><div style="padding-left:20px;"><span style="color:red;">功效：</span>'+item.efficacy+'</div><div style="padding-left:20px;"><span style="color:red;">主治：</span>'+item.maincure+'</div><div style="padding-left:20px;"><span style="color:red;">用法：</span>'+item.tsyf+'</div>';
+	            	})
+	            	$("#fangjiedefuzhi").html(dostr);
+		    	}
+		    });
+		});
+</script>
+<!-- 处方合并 -->
+<script type="text/javascript">
+	//处方合并按钮
+		$(document).on("click",".chufanghbtjchenggong",function(){
+			$(this).attr("class","chufanghbtjfou");
+			$(this).attr("value","chufhebcuo");
+		});
+		//处方合并转换
+		$(document).on("click",".chufanghbtjfou",function(){
+			$(this).attr("class","chufanghbtjchenggong");
+			$(this).attr("value","chufhebfou");
+		});
+		//选定次方按钮赋值
+		$(document).on("click","#xdcffuzhi",function(){
+			var pdcftj = $(".chufanghbtjfou").val()
+			// 判断是否点击处方合并
+			if (pdcftj == 'chufhebcuo') {
+				// 获取证型 
+				var zhengxing = $(".yuanshizhengx").find("th:eq(1)").html();
+				// 获取治法
+				var zhize = $(".yuanshizhengx").find("th:eq(2)").find("span").html();
+				var zhenchufanghao = ' ';
+				var id = '5';
+	 			$("#cftreename input:checked").each(function(){
+	 				var chufhcd =$(this).parent().parent().find("td:last").find("input").val();
+	 				zhenchufanghao += chufhcd + ' ';
+	 			});
+ 	 			if (zhenchufanghao == ' ') {
+					layer.alert("请选择药品",{icon:7});
+	 			}else{
+	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id+'&zhengxing='+zhengxing+'&zhize='+zhize);
+	 			}
+	 			 
+			}else{
+				// 获取证型 
+				var zhengxing = $(".yuanshizhengx").find("th:eq(1)").html();
+				// 获取治法
+				var zhize = $(".yuanshizhengx").find("th:eq(2)").find("span").html();
+				var zhenchufanghao = ' ';
+				var id = '6';
+	 			$("#cftreename input:checked").each(function(){
+	 				var chufhcd =$(this).parent().parent().find("td:last").find("input").val();
+	 				zhenchufanghao += chufhcd + ' ';
+	 			});
+ 	 			if (zhenchufanghao == ' ') {
+					layer.alert("请选择药品",{icon:7});
+	 			}else{
+	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id+'&zhengxing='+zhengxing+'&zhize='+zhize);
+	 			}
+	 			 
+			}
+				
+		});
+</script>
+<!--主症(分类) 全选 未选 已选 -->
+<script type="text/javascript">
+
+		 // $("#bianzhengdejieguofuzhi tr:gt(0)").click(function(){
+   //                  $(this).find(":radio").attr("checked",true);
+                 
+   //          });
+		// 已选
+		$(document).on("click","#yixuanSelectAllzhuzkyi",function(){
+		    // 把选择的显示为选择的隐藏
+		    $("#xuanZlist :radio").each(function () { 
+	        	$(this).parents("tr").show(); 
+	        	if(!$(this).prop("checked")){
+	        		$(this).parents("tr").hide();
+	        	}
+	        });
+		});
+		// 把所有的显示
+		$("#quanbuSelectAll").click(function(){
+			$("#xuanZlist :radio").each(function () {  
+	           $(this).parents("tr").show();  
+	        });
+		});
+		// 未选
+		$("#weixuanSelectAll").click(function(){
+			$("#xuanZlist :radio").each(function () { 
+				$(this).parents("tr").show(); 
+	        	if($(this).prop("checked")){
+	        		$(this).parents("tr").hide();
+	        	}
+	        });
+		});
+
+	    //双击出药解
+		function yaojie(me){
+			var str = $(me).children(".d4").text();
+			// var str = $(me).parent(".yongLaiKaZhude").children("div").children(".d4").text();
+			if(str == '' || str == undefined){
+				layer.alert('亲，要先选中药品哦！',{icon:1});
+				return false;
+			}else{
+				$(".yjdiv").css("display","block");
+				$(".yjdiv").css("z-index","4");
+				$(".zhezhao").css("display","block");
+				$(".zhezhao").css("filter","alpha(opacity:80)");
+				$(".zhezhao").css("opacity","0.8");
+				$.ajax({
+					type:"post",
+					url:"{:U('Yaojie/index')}",
+					dataType:"json",
+					data:{
+						"str":str,
+					},
+					success:function(result){
+						$('.yjdiv').contents().find("#drug_name").val(result[0]['drug_name']);
+						$('.yjdiv').contents().find("#input_code").val(result[0]['input_code']);
+						$('.yjdiv').contents().find("#units").val(result[0]['drug_units']);
+						$('.yjdiv').contents().find("#price").val(result[0]['price']);
+						$('.yjdiv').contents().find("#other_name").val(result[0]['other_name']);
+						$('.yjdiv').contents().find("#source").html(result[0]['source']);
+						$('.yjdiv').contents().find("#xz").html(result[0]['xz']);
+						$('.yjdiv').contents().find("#pz").html(result[0]['pz']);
+						$('.yjdiv').contents().find("#xw").html(result[0]['xw']);
+						$('.yjdiv').contents().find("#gj").html(result[0]['gj']);
+						$('.yjdiv').contents().find("#gn").html(result[0]['gn']);
+						$('.yjdiv').contents().find("#zz").html(result[0]['zz']);
+						$('.yjdiv').contents().find("#yfyl").html(result[0]['yfyl']);
+						$('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+						$('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+						$('.yjdiv').contents().find("#zc").html(result[0]['zc']);
+						$('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+						$('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+						$('.yjdiv').contents().find("#yfyl").html(result[0]['yfyl']);
+						$('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+						$('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+						$('.yjdiv').contents().find("#syz").html(result[0]['syz']);
+						$('.yjdiv').contents().find("#lcyy").html(result[0]['lcyy']);
+						$('.yjdiv').contents().find("#jbyy").html(result[0]['jbyy']);
+						$('.yjdiv').contents().find("#xdyj").html(result[0]['xdyj']);
+						$('.yjdiv').contents().find("#cydbf").html(result[0]['cydbf']);
+						$('.yjdiv').contents().find("#photo img").attr('src',result[0]['src']);
+					}
+				});
+			}
+		}
+
+		$("#photo img").click(function(){
+	        var width = $(this).width();
+	        if(width==100){
+	            $(this).css({
+	            	'position':'absolute',
+	            	'margin-left':'-5%',
+	            	'width':'150px',
+	            	'height':'150px',
+	            });
+	        }else{
+	            $(this).css({
+	            	'position':'absolute',
+	            	'margin-left':'1%',
+	            	'width':'100px',
+	            	'height':'90px',
+	            });
+	        }
+	    });
+
+		function clo(){
+			$(".yjdiv").css("display","none");
+			$(".zhezhao").css("display","none");
+		}
+</script>
+<script src="__PUBLIC__/js/bianzhengquanxuan.js"></script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</body>
+</html>

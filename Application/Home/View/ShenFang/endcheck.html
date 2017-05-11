@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>审核结果</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/check.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/endcheck.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+    <link href="__PUBLIC__/css/subsf.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<script>
+    document.oncontextmenu=new Function("event.returnValue=false;");
+</script>
+<body>
+<div class="yuyue">
+    <div class="yyfont">
+        <span class="glyphicon glyphicon-list-alt" style="line-height:50px;margin-left:8px;"></span><span style="line-height:50px;margin-left:8px;font-size:15px;color:#000;font-weight:bold;">审核结果</span>
+    </div>  
+</div>
+<br>
+<if condition="$token eq ''">
+<div class="content">
+	<div id="str">
+		<p class="strp">当前处方存在不合理用药情况，请仔细核对</p>
+		<if condition="$str2 neq ''">
+			<p class="strp" style="font-size:17px;color:red;">注：处方中有孕妇禁用药品不能通过审核</p>
+			<span class="blue">孕妇禁用药品：</span><br>
+			<span style="color:red;" id='redstr'>{$str2}</span>
+		</if>
+		<if condition="$str1 neq ''">
+			<span class="blue">孕妇慎用药品：</span><br>
+			<span>{$str1}</span>
+		</if>
+		<if condition="$str3 neq ''">
+			<span class="blue">药品配伍禁忌（反）：</span><br>
+			<span>{$str3}</span>
+		</if>
+		<if condition="$str4 neq ''">
+			<span class="blue">药品配伍禁忌（畏）：</span><br>
+			<span>{$str4}</span>
+		</if>
+		<if condition="$str5 neq ''">
+			<span class="blue">用量超标药品：</span><br>
+			<span>{$str5}</span>
+		</if>
+	</div>
+	<div id="rightab">
+		<p class="strp">当前处方存在以下有毒药品，请谨慎使用</p>
+		<table class="dxcon">
+			<tr align="center">
+				<th style="width:15%;">药品</th>
+				<th style="width:15%;">毒性</th>
+				<th style="width:75%;">注意事项</th>
+			</tr>
+			<volist name="stab" id="vo">
+				<tr>
+					<td>{$vo.drug_name}</td>
+					<td>{$vo.dx}</td>
+					<td>{$vo.zysx}</td>
+				</tr>
+			</volist>
+		</table>
+	</div>
+	<div class="bottom">
+		<input type="button" value="通过审核" style="background-color:#30bdb5;" onClick="pass()">
+		<span data-toggle="modal" data-target="#myModal0" onClick="bh({$vo.presc_no})">
+            <input type="button" value="驳 回" style="background:#E64C3D;margin-left:1em;" onClick="bh()">
+        </span>
+        <a href="__CONTROLLER__/checksf">
+			<input type="button" value="返 回" style="background-color:#30bdb5;margin-left:1em;">
+        </a>
+	</div>
+</div>
+<else />
+ 	<div id="side">
+ 		<br>
+		<table class="passinfo">
+			<tr>
+				<th>药品</th>
+				<th>用量</th>
+			</tr>
+			<volist name="cfinfo" id="vo">
+			<tr>
+				<td>{$vo.drug_name}</td>
+				<td>{$vo.amount}{$vo.drug_units}</td>
+			</tr>
+			</volist>
+		</table>
+		<br>
+ 	</div>
+ 	<div class="bottom" style="width:80%;margin-left:10%;">
+		<input type="button" value="通过审核" style="background-color:#30bdb5;" onClick="pass()">
+		<a href="__CONTROLLER__/checksf">
+			<input type="button" value="返 回" style="background-color:#E64C3D;margin-left:1em;">
+        </a>
+ 	</div>
+</if>
+<!--驳回信息-->
+<div class="modal fade" id="myModal0" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <center>
+        <form action="__CONTROLLER__/bh" method="post" class="modal-content">
+            <div class="modal-header"> 
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">驳回原由</h4>
+            </div>
+            <textarea name="cause" cols="30" rows="10" style="width:100%;border-bottom:1px solid #000;outline:none;"></textarea>
+            <br><br>
+            <input type="hidden" name="presc_no" id="bhpresc">
+            <input type="submit" value="确定">
+            <br><br><br>
+        </form>
+        </center>
+    </div>
+</div>
+</body>
+<script>
+function bh(){
+    $('#bhpresc').val({$id});
+}
+function pass(){
+	var text=$('#redstr').text();
+	if(text==''){
+		window.location.href="__CONTROLLER__/pass?presc_no="+{$token};
+	}else{
+		layer.alert("处方中含有孕妇禁用药品，不能通过审核！");
+	}
+}
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

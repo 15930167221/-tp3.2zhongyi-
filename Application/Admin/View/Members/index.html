@@ -1,0 +1,81 @@
+<extend name="Layout/main"/>
+
+<block name="main">
+    <div class="page-container">
+        <div class="text-c">
+            <input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
+            <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+            <a href="javascript:;" onclick="admin_add('添加管理员','{:U('Admin/Members/add')}','800','500')"
+               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span>
+            <span class="r">共有数据：<strong>{$info.count}</strong> 条</span> </div>
+        <div class="mt-20">
+        <table class="table table-border table-bordered table-bg">
+            <thead>
+            <tr class="text-c">
+                <th><input type="checkbox" name="" value=""></th>
+                <th>ID</th>
+                <th>登录名</th>
+                <th>手机</th>
+                <th>角色</th>
+                <th>加入时间</th>
+                <th>是否已启用</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="info.list" id="item">
+                    <tr class="text-c">
+                        <td><input type="checkbox" value="1" name=""></td>
+                        <td>{$item.id}</td>
+                        <td>{$item.name}</td>
+                        <td>{$item.phone}</td>
+                        <td>{$item.id|getRuleName=###}</td>
+                        <td>{$item.create_time|date='Y-m-d',###}</td>
+                        <td class="td-status">
+                            <if condition="$item.status eq 1">
+                                <span class="label label-success radius">已启用</span>
+                                <else />
+                                <span class="label">停用</span>
+                            </if>
+                        </td>
+                        <td class="td-manage">
+                            <a href="javascript:;"
+                               onclick="admin_add('编辑详情','{:U('Admin/Members/edit', array('id' => $item['id']))}'
+                               ,'800','500')">
+                                <i class="Hui-iconfont">&#xe6df;</i>
+                            </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="h-text-sc" id="{$item.id}"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                        </td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    {$list.page}
+    <script type="text/javascript">
+        /*删除*/
+        $(document).on("click", '.h-text-sc', function () {
+            var op_obj = $(this).parents("tr");
+            var id = $(this).attr('id');
+            layer.confirm('确认要删除吗？',function(){
+                $.ajax({
+                    type:'POST',
+                    dataType: 'json',
+                    url:'{:U("Admin/Members/delete")}',
+                    data:{id:id},
+                    success: function (result) {
+                        if (result.status) {
+                            op_obj.remove();
+                            layer.msg(result.msg,{icon:1,time:1000});
+                        } else {
+                            layer.msg(result.msg,{icon:0,time:2000});
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+</block>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <!-- 自己写的css -->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/yeMiancss/kaiFang4.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+    <!-- bootstrap的引用 -->
+    <link href="__PUBLIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<script>
+    $(document).on("input","#impid",function(){
+        $.ajax({
+            type:"post",
+            url:"__CONTROLLER__/impidajax",
+            dataType:"json",
+            data:{"pym":$('#impid').val()},
+            success:function(e){
+                var trd='';
+                for(var i=0;i<e.length;i++){
+                    trd+='<tr class="trsty" id='+e[i]['tree']+' onclick="fangjie(id)"><td>&nbsp;&nbsp;'+e[i]['name']+'</td></tr>';
+                }
+                $("#fjmtab").html(trd);
+            }
+        });
+    });
+    $(document).ready(function(){
+        $('.py').click(function(){
+            var ss=this.innerHTML;
+            var kk=$('#impid').val();
+            $('#impid').val(kk+ss);
+            $.ajax({
+                type:"post",
+                url:"__CONTROLLER__/impidajax",
+                dataType:"json",
+                data:{"pym":$('#impid').val()},
+                success:function(e){
+                    var trd='';
+                    for(var i=0;i<e.length;i++){
+                        trd+='<tr class="trsty" id='+e[i]['tree']+' onclick="fangjie(id)"><td>&nbsp;&nbsp;'+e[i]['name']+'</td></tr>';
+                    }
+                    $("#fjmtab").html(trd);
+                }
+            });
+        });
+        $('#fjmtab tr').click(function(){
+            $(this).css("background-color","#56718e");
+            $(this).css("color","#fff");
+            $('#fjmtab tr').not(this).css("background-color","#fff");
+            $('#fjmtab tr').not(this).css("color","#000");
+        });
+    });
+    function fangjie(id){
+        var thid=document.getElementById(id);
+        $(thid).css("background-color","#56718e");
+        $(thid).css("color","#fff");
+        $('#fjmtab tr').not(thid).css("background-color","#fff");
+        $('#fjmtab tr').not(thid).css("color","#000");
+        $('#fjtab').data("pid",id);
+        $.ajax({
+            type:"post",
+            url:"__CONTROLLER__/fangjie",
+            dataType:"json",
+            data:{"tree":id},
+            success:function(e){
+                var str='';
+                for(var i=0;i<e.length;i++){
+                    if(e[i]['yf']==null){
+                        e[i]['yf']='';
+                    }
+                    if(e[i]['sl']==null){
+                        e[i]['sl']='';
+                    }
+                    if(e[i]['dw']==null){
+                        e[i]['dw']='';
+                    }
+                    str+='<div class="yongLaiKaZhude" style="width:720px;"><div class="d1" ondblclick="yaojie(this)"><div class="d2">'+e[i]["serial_no"]+'</div><div class="d3">'+e[i]["yf"]+'</div><div class="d4">'+e[i]["drug_name"]+'</div><div class="d5">'+e[i]["sl"]+e[i]["dw"]+'</div></div></div>';
+                }
+                $('#fjtab').html(str);
+            }
+        });
+        $.ajax({
+            type:"post",
+            url:"__CONTROLLER__/fjcon",
+            dataType:"json",
+            data:{"tree":id},
+            success:function(f){
+                var str1='方剂名称:'+f[0]['name'];
+                if(f[0]['explain']==null){
+                    var str2='<strong>方解：</strong>';
+                }else{
+                    var str2='<strong>方解：</strong>'+f[0]['explain'];
+                }
+                if(f[0]['source']==null){
+                    var str3='<strong>来源：</strong>';
+                }else{
+                    var str3='<strong>来源：</strong>'+f[0]['source'];
+                }
+                if(f[0]['efficacy']==null){
+                    var str4='<strong>功效：</strong>';
+                }else{
+                    var str4='<strong>功效：</strong>'+f[0]['efficacy'];
+                }
+                if(f[0]['maincure']==null){
+                    var str5='<strong>主治：</strong>';
+                }else{
+                    var str5='<strong>主治：</strong>'+f[0]['maincure'];
+                }
+
+                if(f[0]['tsyf']==null){
+                    var str6='<strong>用法：</strong>';
+                }else{
+                    var str6='<strong>用法：</strong>'+f[0]['tsyf'];
+                }
+                $('.XYFnagJiMing').html(str1);
+                $('.fjt').html(str1);
+                $('#fjcon1').html(str2);
+                $('#fjcon2').html(str3);
+                $('#fjcon3').html(str4);
+                $('#fjcon4').html(str5);
+                $('#fjcon5').html(str6);
+            }
+        });
+    }
+</script>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+
+<!-- 下 -->
+<div style="width:96%;height:98%;margin-left:2%;margin-top:2%;">
+    <!-- 下左 -->
+    <div class="xiazuofudong">
+        <div class="XZShuLu">
+            <input type="text" placeholder="请输入经典方名称" id="impid"/>
+        </div>
+        <div data-spy="scroll" data-target="#navbar-example" data-offset="0" class="XZfangJiLieBiao">
+            <div id="jdscroll" style="height:100%;overflow:auto;">
+                <table class="table table-condensed" id="fjmtab">
+                    <foreach name="cons" item="cs">
+                        <tr id="{$cs.tree}" onclick="fangjie(id)">
+                            <td>
+                                &nbsp;&nbsp;{$cs.name}
+                            </td>
+                        </tr>
+                    </foreach>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 下右 -->
+    <div class="xiayoufudong">
+        <!-- 选项卡 -->
+        <ul id="myTab" class="nav nav-tabs" style="background:#e2ecf8;height:10.5%;">
+            <li class="active">
+                <a href="#home" data-toggle="tab">
+                    <button class="btn btn-success" style="width:60px;background:#30bdb5;border:none;">
+                        处方
+                    </button>
+                </a>
+            </li>
+            <li style="height:100%;">
+                <a href="#ios" data-toggle="tab" style="display:block;height:100%;">
+                    <button class="btn btn-success" style="width:60px;background:#30bdb5;border:none;">
+                        方解
+                    </button>
+                </a>
+            </li>
+        </ul>
+        <div id="myTabContent" class="tab-content" style="height:87%;border:1px solid #DFD7D7;">
+            <div class="tab-pane fade in active" id="home" style="width:100%;height:99%;margin-top:1%;">
+                <!-- 内容 -->
+                <div style="height:40px;">
+                    <div class="sline"></div>
+                    <div class="XYFnagJiMing" style="width:450px;float: left;">方剂名称：</div>
+                    <div style="float:right;line-height:40px;">注：双击药品名称，显示药解信息！</div>
+                </div>
+                <!-- 药品-->
+                <div id="fjtab" style="height:88%;overflow:auto;">
+                </div>
+                <!-- 药解 -->
+                <div class="yjdiv">
+                    <div class="yjdiv-top">
+                        <!--<img src="__PUBLIC__/muban/assets/ico/minus.png" width="20" height="20">-->
+                        <span><b>药解</b></span>
+                        <button type="button" class="close btn" onclick="clo()">&times;</button>
+                    </div>
+                    <div id="gdt">
+                        <div class="yaojiemodal-tcon">
+                            <table class="yaojiemodal-tcon-tab">
+                                <tr>
+                                    <th align="right">
+                                        <span>药品名称</span><span>：</span>
+                                    </th>
+                                    <td>
+                                        <input class="changg" type="input" id="drug_name" value="" readonly>
+                                    </td>
+                                    <th align="right">
+                                        <span>输入码</span><span>：</span>
+                                    </th>
+                                    <td>
+                                        <input class="changg" type="input" id="input_code" value="" readonly>
+                                    </td>
+                                    <td rowspan="3">
+                                        <div id="photo" style="width:100px;height:90px;">
+                                            <img src="" style="width:100px; height:90px; border:none;">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th rowspan="2" align="right">
+                                        <span>别名</span><span>：</span>
+                                    </th>
+                                    <td rowspan="2">
+                                        <input class="nchangg" type="input" id="other_name" style="width:100%;" value="" readonly>
+                                    </td>
+                                    <th align="right">
+                                        <span>单位</span><span>：</span>
+                                    </th>
+                                    <td>
+                                        <input class="changg" type="input" id="units" value="" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th align="right">
+                                        <span>单价</span><span>：</span>
+                                    </th>
+                                    <td>
+                                        <input class="changg" type="input" id="price" value="" readonly>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="yaojiemodal-con">
+                            <p><span class="b">来源：</span><span id="source"></span></p>
+                            <p><span class="b">性状：</span><span id="xz"></span></p>
+                            <p><span class="b">炮制：</span><span id="pz"></span></p>
+                            <p>
+                                <span class="b">性味：</span><span id="xw"></span>
+                                <span class="b" style="margin-left:30%;">归经：</span><span id="gj"></span>
+                            </p>
+                            <p><span class="b">功能：</span><span id="gn"></span></p>
+                            <p><span class="b">主治：</span><span id="zz"></span></p>
+                            <p><span class="b">用量用法 ：</span><span id="yfyl"></span></p>
+                            <p><span class="b">特殊用法 ：</span><span id="tsyf"></span></p>
+                            <p><span class="b">注意事项：</span><span id="zysx"></span></p>
+                            <p><span class="b">贮藏：</span><span id="zc"></span></p>
+                            <p><span class="b">适应证：</span><span id="syz"></span></p>
+                            <p><span class="b">临床应用：</span><span id="lcyy"></span></p>
+                            <p><span class="b">鉴别用药 ：</span><span id="jbyy"></span></p>
+                            <p><span class="b">现代研究：</span><span id="xdyj"></span></p>
+                            <p><span class="b">常用代表方：</span><span id="cydbf"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="ios" style="width:100%;height:99%;margin-top:1%;">
+                <!-- 内容 -->
+                <div class="sline"></div>
+                <div class="fjt">
+                    方剂名称:
+                </div>
+                <div id="fjtext" style="height:88%;overflow:auto;">
+                    <div class="fjcon" id="fjcon1">
+                        <strong>方解：</strong>
+                    </div>
+                    <div class="fjcon" id="fjcon2">
+                        <strong>来源：</strong>
+                    </div>
+                    <div class="fjcon" id="fjcon3">
+                        <strong>功效：</strong>
+                    </div>
+                    <div class="fjcon" id="fjcon4">
+                        <strong>主治：</strong>
+                    </div>
+                    <div class="fjcon" id="fjcon5">
+                        <strong>用法：</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 遮罩层 -->
+    <div class="zhezhao" style="display:none;width:100%;height:100%;background-color:#444444;z-index:2;position:absolute;left:0px;top:0px;"></div>
+</body>
+<script>
+    //双击出药解
+    function yaojie(me){
+        var str = $(me).parent(".yongLaiKaZhude").children("div").children(".d4").text();
+        if(str == '' || str == undefined){
+            alert('亲，要先选中药品哦！');
+            return false;
+        }else{
+            $(".yjdiv").css("display","block");
+            $(".yjdiv").css("z-index","3");
+            $(".zhezhao").css("display","block");
+            $(".zhezhao").css("filter","alpha(opacity:80)");
+            $(".zhezhao").css("opacity","0.8");
+            $.ajax({
+                type:"post",
+                url:"{:U('Yaojie/index')}",
+                dataType:"json",
+                data:{
+                    "str":str,
+                },
+                success:function(result){
+                    $('.yjdiv').contents().find("#drug_name").val(result[0]['drug_name']);
+                    $('.yjdiv').contents().find("#input_code").val(result[0]['input_code']);
+                    $('.yjdiv').contents().find("#units").val(result[0]['drug_units']);
+                    $('.yjdiv').contents().find("#price").val(result[0]['price']);
+                    $('.yjdiv').contents().find("#other_name").val(result[0]['other_name']);
+                    $('.yjdiv').contents().find("#source").html(result[0]['source']);
+                    $('.yjdiv').contents().find("#xz").html(result[0]['xz']);
+                    $('.yjdiv').contents().find("#pz").html(result[0]['pz']);
+                    $('.yjdiv').contents().find("#xw").html(result[0]['xw']);
+                    $('.yjdiv').contents().find("#gj").html(result[0]['gj']);
+                    $('.yjdiv').contents().find("#gn").html(result[0]['gn']);
+                    $('.yjdiv').contents().find("#zz").html(result[0]['zz']);
+                    $('.yjdiv').contents().find("#yfyl").html(result[0]['yfyl']);
+                    $('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+                    $('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+                    $('.yjdiv').contents().find("#zc").html(result[0]['zc']);
+                    $('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+                    $('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+                    $('.yjdiv').contents().find("#yfyl").html(result[0]['yfyl']);
+                    $('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+                    $('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+                    $('.yjdiv').contents().find("#syz").html(result[0]['syz']);
+                    $('.yjdiv').contents().find("#lcyy").html(result[0]['lcyy']);
+                    $('.yjdiv').contents().find("#jbyy").html(result[0]['jbyy']);
+                    $('.yjdiv').contents().find("#xdyj").html(result[0]['xdyj']);
+                    $('.yjdiv').contents().find("#cydbf").html(result[0]['cydbf']);
+                    $('.yjdiv').contents().find("#photo img").attr('src',result[0]['src']);
+                }
+            });
+        }
+    }
+
+    $("#photo img").click(function(){
+        var width = $(this).width();
+        if(width==100){
+            $(this).css({
+                'position':'absolute',
+                'margin-left':'-5%',
+                'width':'150px',
+                'height':'150px',
+            });
+        }else{
+            $(this).css({
+                'position':'absolute',
+                'margin-left':'1%',
+                'width':'100px',
+                'height':'90px',
+            });
+        }
+    });
+    function clo(){
+        $(".yjdiv").css("display","none");
+        $(".zhezhao").css("display","none");
+    }
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

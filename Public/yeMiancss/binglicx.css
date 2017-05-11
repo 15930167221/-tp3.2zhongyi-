@@ -1,0 +1,180 @@
+html{width:100%;height:100%;}
+body{width:100%; height: 98%;}
+/*查询条件*/
+body{
+	font-family:  Arial, "宋体";
+}
+.top1{
+	margin-left:40px;
+	height: 42px;
+	background-color: #e1e1e1;
+}
+.title1{
+	float:left;margin-left:8px;height:42px;
+}
+.title1 span:first-child{
+	margin-top:10px;color:#333333;
+}
+.title1 span:last-child{
+	font-weight:bold;color:#333333;margin-left:0px;line-height:40px;font-size:16px;
+}
+.left{
+	width:50%;
+	height:100%;
+	float: left;
+}
+.zuokuaicxtj{
+	width: 100%;
+	height: 38%;
+	margin-top: 6px;
+}
+.chaxtjhanzi{
+	text-align:center;
+	font-size: 25px;
+}
+/*图片*/
+.zuokuaicxtjtufd{
+	margin-left: 70px;
+	float: left;
+}
+.zuokuaicxtjzifd{
+	float: left;
+}
+.qingchuzuokuaicxtjfd{
+	clear: both;
+}
+/*内容*/
+.chaxtjxinxi{
+	width: 90%;
+	height:100%;
+	float: right;
+	margin-right:10px;
+}
+
+.chaxtjxinxianniu{
+	width: 50%;text-align: center;margin:10px auto;
+}
+/*左侧条件*/
+.panel-group{
+	height:100%;margin-bottom:0px!important;
+}
+/*信息*/
+.youkuaixinx{
+	float: left;
+	margin-top: 6px;
+	width: 45%;
+	height: 105%;
+}
+	/*内容*/
+	.bingrxinxi{
+		height: 50%;
+		text-align: center;
+	}
+	.bingrxinxihz{
+		font-size: 20px;
+		font-weight:bold;
+		text-align: left;
+		line-height:35px;
+	}
+.bingrxinxihz img{
+	margin-left:40px;
+}
+.bingrxinxihz span{
+	line-height:35px;
+}
+	/*表格*/
+	.bingrxinxibaog{
+		border-radius: 5px;
+		border: 1px #DFD7D7 solid;
+		width:90%;
+		height:90%;
+		overflow: auto;
+		float: right;
+		margin-right:10px;
+		background-color:#ffffff;
+	}
+	.chaochubufyc{
+		width: 200%;
+	}
+.chaochubufyc table tr th{
+	white-space: nowrap;background-color:#FBFBFB;
+}
+	.jiuzhengjiru{
+		border-radius: 5px;
+		border: 1px #DFD7D7 solid;
+		/*margin-top:40px; */
+		height: 43%;
+		background-color: #ffffff;
+	}
+/*内容*/
+.jiuzhengjiruhz{
+	text-align: left;
+	font-size: 20px;
+	background-color: #fbfbfb;
+	font-weight: bold;
+}
+.jiuzhengjiruhz span{
+	margin-left:0px;
+}
+/*清除浮动*/
+.qingchudakfd{
+	clear: both;
+}
+.panel-default{
+	height:550px;
+	background-color:none;
+}
+
+.jkda-table{
+	border-collapse:collapse;
+	border-spacing:0;
+}
+.jkda-table td{
+	border:1px solid #333;
+}
+.jkda-table th{
+	border:1px solid #333;
+}
+textarea{background:none;}
+/*滚动条*/
+*::-webkit-scrollbar{
+	width:10px;height:10px;
+}
+*::-webkit-scrollbar-track{
+	background-color: #c3c3c3;;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+*::-webkit-scrollbar-thumb{
+	background-color: #f9f2f9;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+/*查询条件*/
+.input-group{
+	width:100%;height:30px;line-height:30px;
+}
+.input-group input[type='text']{
+	width:160px;height:30px;
+}
+.input-group div:first-child{
+	width:50%;float: left;text-align: center;
+}
+.input-group div:last-child{
+	width:50%;float: right;text-align: center;
+}
+.input-group div span{
+	font-size:15px;font-weight: bold;
+}
+/*查询条件两端对齐*/
+.input-group div span:first-child{
+	text-align:justify;text-align-last:justify;
+	display: inline-block;width:26%;text-align:right;
+}
+/*按钮*/
+#cha,#all{
+	background-color: #30bdb5!important;border: 0px;
+	padding: 5px 20px!important;
+}

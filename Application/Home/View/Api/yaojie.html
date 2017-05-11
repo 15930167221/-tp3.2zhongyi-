@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>药解_中医健康管理系统</title>
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/yeMiancss/yaojie.css">
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+<div class="yaojiemodal-tcon">
+    <table class="yaojiemodal-tcon-tab">
+        <tr>
+            <th align="right">
+                <span>药品名称</span><span>：</span>
+            </th>
+            <td>
+                <input class="changg" type="input" id="drug_name" value="{$info.drug_name}" readonly>
+            </td>
+            <th align="right">
+                <span>输入码</span><span>：</span>
+            </th>
+            <td>
+                <input class="changg" type="input" id="input_code" value="{$info.input_code}" readonly>
+            </td>
+            <td rowspan="3">
+                <div id="photo" style="width:100px;height:90px;">
+                    <img src="{$info.img}" style="width:100px; height:90px; border:none;">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th rowspan="2" align="right">
+                <span>别名</span><span>：</span>
+            </th>
+            <td rowspan="2">
+                <input class="nchangg" type="input" id="other_name" style="width:100%;" value="{$info.name_alias}" readonly>
+            </td>
+            <th align="right">
+                <span>单位</span><span>：</span>
+            </th>
+            <td>
+                <input class="changg" type="input" id="units" value="{$info.drug_units}" readonly>
+            </td>
+        </tr>
+        <tr>
+            <th align="right">
+                <span>单价</span><span>：</span>
+            </th>
+            <td>
+                <input class="changg" type="input" id="price" value="{$info.price}" readonly>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="yaojiemodal-con">
+    <p><span class="b">来源：</span><span id="source">{$info.ly}</span></p>
+    <p><span class="b">性状：</span><span id="xz">{$info.xz}</span></p>
+    <p><span class="b">炮制：</span><span id="pz">{$info.pz}</span></p>
+    <p>
+        <span class="b">性味：</span><span id="xw">{$info.xw}</span>
+        <span class="b" style="margin-left:30%;">归经：</span><span id="gj">{$info.gj}</span>
+    </p>
+    <p><span class="b">功能：</span><span id="gn">{$info.gn}</span></p>
+    <p><span class="b">主治：</span><span id="zz">{$info.zz}</span></p>
+    <p><span class="b">用量用法 ：</span><span id="yfyl">{$info.yfyl}</span></p>
+    <p><span class="b">特殊用法 ：</span><span id="tsyf">{$info.tsyf}</span></p>
+    <p><span class="b">注意事项：</span><span id="zysx">{$info.zysx}</span></p>
+    <p><span class="b">贮藏：</span><span id="zc">{$info.zc}</span></p>
+    <p><span class="b">适应证：</span><span id="syz">{$info.syz}</span></p>
+    <p><span class="b">临床应用：</span><span id="lcyy">{$info.lcyy}</span></p>
+    <p><span class="b">鉴别用药 ：</span><span id="jbyy">{$info.jbyy}</span></p>
+    <p><span class="b">现代研究：</span><span id="xdyj">{$info.xdyj}</span></p>
+    <p><span class="b">常用代表方：</span><span id="cydbf">{$info.cydbf}</span></p>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function(){
+        $("#photo img").click(function(){
+            var width = $(this).width();
+            if(width==100){
+                $(this).css({
+                    'position':'absolute',
+                    'margin-left':'-5%',
+                    'width':'150px',
+                    'height':'150px',
+                });
+            }else{
+                $(this).css({
+                    'position':'absolute',
+                    'margin-left':'1%',
+                    'width':'100px',
+                    'height':'90px',
+                });
+            }
+        });
+    });
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

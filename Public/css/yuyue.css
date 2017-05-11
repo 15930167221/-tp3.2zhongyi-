@@ -1,0 +1,63 @@
+/*统配样式*/
+*{font-size:14px;}
+html,body{width:100%;height:100%;}
+a{text-decoration:none;}
+img{border:0px;}
+/*ul{list-style:none;list-style-position:inside;}*/
+.W{width:1366px;}
+.center{margin:0px auto;}
+
+.bg{height:100%;width:100%;}
+/*标题*/
+.title{
+    height:55px;text-align:center;font-size:35px;line-height:55px;
+    letter-spacing:20px;font-weight:bolder;color:#050093;padding-top:10px;
+}
+.content{border-radius:10px;}
+/*表格上的标题*/
+.title2{width:99%;height:45px;line-height:25px;padding:10px 0px;}
+.title2 img{height:35px;width:35px;}
+.title2 div{float:left;}
+.title2 .modfont{font-size:16px;color:#404040;font-weight:bold;}
+.title2 .moddate{float:right;}
+.title2 .moddate span{color:#7a1000;font-weight:bold;}
+.title2 .titLeft{float:left;width:45%;}
+.title2 .titRight{float:right;width:55%;}
+.sty:hover {font-weight: bold;}
+/*左侧*/
+.inf .bodyLeft{border-right: 2px #ADADAD solid;float: left;height: 370px;width:46%;padding-left: 20px;  margin-left:20px;margin-top:10px;background-color: #fff;}
+/*表格区*/
+.inf table{width:100%;}
+.inf .mbt{height:100%;}
+.inf table tr{height:30px;}
+.inf table tr td input[type='text']{width:85%;}
+/*.inf table tr td .lontext{width:208%!important;}*/
+.inf .rtable{width:100%;overflow-y:scroll;}
+.inf .rtable tr td{border:1px solid #cccccc;cursor:pointer;}
+.inf .rtable tr:first-child td{background-color:#E2ECF8;color:#000000;text-align:center;}
+.inf .rtable tr:first-child{border-radius:5px 5px 0px 0px;}
+/*右侧*/
+.inf .bodyRight{float: left;padding-left:10px;height: 370px;width:50%;margin-top:10px;background-color: #fff;}
+.inf .bodyRight .brtop{height:93%;overflow:auto;}
+/*按钮区*/
+.but{height:40px;margin-bottom:10px;}
+.but .butt{float:right;margin-right:20px;}
+.but .first{margin-right:20px;}
+.but .butt button{padding:8px 30px!important;}
+/*滚动条美化*/
+#tb2::-webkit-scrollbar,.xiacechufangyaopin::-webkit-scrollbar{
+	width:10px;height:10px;
+}
+/*#374554*/
+#tb2::-webkit-scrollbar-track,.xiacechufangyaopin::-webkit-scrollbar-track{
+	background-color: #c1c1c1;;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+#tb2::-webkit-scrollbar-thumb,.xiacechufangyaopin::-webkit-scrollbar-thumb{
+	background-color: #f1f2ec;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}

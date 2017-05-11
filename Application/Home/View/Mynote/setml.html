@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+	<style>
+		*{
+			margin:0px auto;padding:0px;
+		}
+		form{
+			text-align:center;line-height:35px;
+		}
+		.ml{
+			width:15em;height:30px;border:1px solid black;
+			text-align:center;line-height:30px;
+			outline:none;font-size:16px;
+			background:none;
+		}
+		.subm{
+			width:4em;height:35px;font-size:14px;
+			line-height:35px;text-align:center;
+		}
+	</style>
+</head>
+<script>
+function ees(){
+	var fr=document.getElementById("fr");
+	var ml=document.getElementsByClassName('ml')[0];
+	if(ml.value==''){
+		layer.alert("请输入目录名称！");
+	}else{
+		fr.submit();
+	}
+}
+</script>
+<body>
+<script>
+	document.oncontextmenu=new Function("event.returnValue=false;");
+</script>
+	<br><br><br><br>
+	<form action="__CONTROLLER__/mlsubmit" method="post" id="fr">
+		目录名称:<input type="text" name="element" class="ml"><br><br>
+		<input type="button" value="保存" class="subm" onclick="ees()">&emsp;
+		<a href="__CONTROLLER__/rpro">
+			<input type="button" value="返回" class="subm">
+		</a>
+	</form>
+	
+</body>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

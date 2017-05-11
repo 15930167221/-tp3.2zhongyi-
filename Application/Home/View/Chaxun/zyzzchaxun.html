@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中药诊治统计查询_中医健康管理系统</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/easyui.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/font.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/chaxun.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/mypage.css">
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.easyui.min.js"></script>
+	<script src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+</head>
+<script>
+function att(){
+	var nld=$("input[name='zyzz_nld']").is(':checked');
+	var sex=$("input[name='zyzz_sex']").is(':checked');
+	if(nld && sex){
+		var str1='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str2='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str3='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab1").html(str1);
+		$("#tab2").html(str2);
+		$("#tab3").html(str3);
+	}else if(sex){
+		var str1='<tr><th width="15%">性别</th><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str2='<tr><th width="15%">性别</th><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str3='<tr><th width="15%">性别</th><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab1").html(str1);
+		$("#tab2").html(str2);
+		$("#tab3").html(str3);
+	}else if(nld){
+		var str1='<tr><th width="20%">年龄段</th><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str2='<tr><th width="20%">年龄段</th><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str3='<tr><th width="20%">年龄段</th><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab1").html(str1);
+		$("#tab2").html(str2);
+		$("#tab3").html(str3);
+	}else{
+		var str1='<tr><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str2='<tr><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		var str3='<tr><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab1").html(str1);
+		$("#tab2").html(str2);
+		$("#tab3").html(str3);
+	}
+}
+function tjsubmit(){
+	$.ajax({
+		url:"__CONTROLLER__/zyselect",
+		type:"post",
+		cache:false,
+		data:new FormData($('form')[0]),
+		processData: false,
+		contentType: false,
+		success:function(e){
+			var bmstr1='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var bmstr2='<tr><th width="15%">性别</th><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var bmstr3='<tr><th width="20%">年龄段</th><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var bmstr4='<tr><th width="45%">中医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zxstr1='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zxstr2='<tr><th width="15%">性别</th><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zxstr3='<tr><th width="20%">年龄段</th><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zxstr4='<tr><th width="45%">症型</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zfstr1='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zfstr2='<tr><th width="15%">性别</th><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zfstr3='<tr><th width="20%">年龄段</th><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var zfstr4='<tr><th width="45%">治法</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var nld=e['nld'];
+			var xb=e['sex'];
+			var bm=e['bm'];
+			var zx=e['zx'];
+			var zf=e['zf'];
+			console.log(xb);//exit();
+			for(var i=0;i<bm.length;i++){
+				if(bm[i]['nl']<=7){
+					bm[i]['nl']='0-7';
+				}else if(bm[i]['nl']<=14){
+					bm[i]['nl']='8-14';
+				}else if(bm[i]['nl']<=20){
+					bm[i]['nl']='15--20';
+				}else if(bm[i]['nl']<=30){
+					bm[i]['nl']='21--30';
+				}else if(bm[i]['nl']<=40){
+					bm[i]['nl']='31--40';
+				}else if(bm[i]['nl']<=50){
+					bm[i]['nl']='41--50';
+				}else if(bm[i]['nl']<=60){
+					bm[i]['nl']='51--60';
+				}else{
+					bm[i]['nl']='60以上';
+				}
+				bmstr1+='<tr><td>'+bm[i]['nl']+'</td><td>'+bm[i]['xb']+'</td><td>'+bm[i][""]+'</td><td>'+bm[i]['rs']+'</td><td>'+bm[i]['ls']+'</td></tr>';
+				bmstr2+='<tr><td>'+bm[i]['xb']+'</td><td>'+bm[i][""]+'</td><td>'+bm[i]['rs']+'</td><td>'+bm[i]['ls']+'</td></tr>';
+				bmstr3+='<tr><td>'+bm[i]['nl']+'</td><td>'+bm[i][""]+'</td><td>'+bm[i]['rs']+'</td><td>'+bm[i]['ls']+'</td></tr>';
+				bmstr4+='<tr><td>'+bm[i][""]+'</td><td>'+bm[i]['rs']+'</td><td>'+bm[i]['ls']+'</td></tr>';
+			}
+			for(var i=0;i<zx.length;i++){
+				if(zx[i]['nl']<=7){
+					zx[i]['nl']='0-7';
+				}else if(zx[i]['nl']<=14){
+					zx[i]['nl']='8-14';
+				}else if(zx[i]['nl']<=20){
+					zx[i]['nl']='15--20';
+				}else if(zx[i]['nl']<=30){
+					zx[i]['nl']='21--30';
+				}else if(zx[i]['nl']<=40){
+					zx[i]['nl']='31--40';
+				}else if(zx[i]['nl']<=50){
+					zx[i]['nl']='41--50';
+				}else if(zx[i]['nl']<=60){
+					zx[i]['nl']='51--60';
+				}else{
+					zx[i]['nl']='60以上';
+				}
+				zxstr1+='<tr><td>'+zx[i]['nl']+'</td><td>'+zx[i]['xb']+'</td><td>'+zx[i][""]+'</td><td>'+zx[i]['rs']+'</td><td>'+zx[i]['ls']+'</td></tr>';
+				zxstr2+='<tr><td>'+zx[i]['xb']+'</td><td>'+zx[i][""]+'</td><td>'+zx[i]['rs']+'</td><td>'+zx[i]['ls']+'</td></tr>';
+				zxstr3+='<tr><td>'+zx[i]['nl']+'</td><td>'+zx[i][""]+'</td><td>'+zx[i]['rs']+'</td><td>'+zx[i]['ls']+'</td></tr>';
+				zxstr4+='<tr><td>'+zx[i][""]+'</td><td>'+zx[i]['rs']+'</td><td>'+zx[i]['ls']+'</td></tr>';
+			}
+			for(var i=0;i<zf.length;i++){
+				if(zf[i]['nl']<=7){
+					zf[i]['nl']='0-7';
+				}else if(zf[i]['nl']<=14){
+					zf[i]['nl']='8-14';
+				}else if(zf[i]['nl']<=20){
+					zf[i]['nl']='15--20';
+				}else if(zf[i]['nl']<=30){
+					zf[i]['nl']='21--30';
+				}else if(zf[i]['nl']<=40){
+					zf[i]['nl']='31--40';
+				}else if(zf[i]['nl']<=50){
+					zf[i]['nl']='41--50';
+				}else if(zf[i]['nl']<=60){
+					zf[i]['nl']='51--60';
+				}else{
+					zf[i]['nl']='60以上';
+				}
+				zfstr1+='<tr><td>'+zf[i]['nl']+'</td><td>'+zf[i]['xb']+'</td><td>'+zf[i][""]+'</td><td>'+zf[i]['rs']+'</td><td>'+zf[i]['ls']+'</td></tr>';
+				zfstr2+='<tr><td>'+zf[i]['xb']+'</td><td>'+zf[i][""]+'</td><td>'+zf[i]['rs']+'</td><td>'+zf[i]['ls']+'</td></tr>';
+				zfstr3+='<tr><td>'+zf[i]['nl']+'</td><td>'+zf[i][""]+'</td><td>'+zf[i]['rs']+'</td><td>'+zf[i]['ls']+'</td></tr>';
+				zfstr4+='<tr><td>'+zf[i][""]+'</td><td>'+zf[i]['rs']+'</td><td>'+zf[i]['ls']+'</td></tr>';
+			}
+			if(nld=='zyzz_nld' && xb=='zyzz_sex'){
+				$("#tab1").html(bmstr1);
+				$("#tab2").html(zxstr1);
+				$("#tab3").html(zfstr1);
+			}else if(xb=='zyzz_sex'){
+				$("#tab1").html(bmstr2);
+				$("#tab2").html(zxstr2);
+				$("#tab3").html(zfstr2);
+			}else if(nld=='zyzz_nld'){
+				$("#tab1").html(bmstr3);
+				$("#tab2").html(zxstr3);
+				$("#tab3").html(zfstr3);
+			}else{
+				$("#tab1").html(bmstr4);
+				$("#tab2").html(zxstr4);
+				$("#tab3").html(zfstr4);
+			}
+		}
+	});
+}
+function onprint(){
+	bdhtml=window.document.body.innerHTML;
+	sprnstr="<!--startprint-->";
+	eprnstr="<!--endprint-->";
+	prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17);
+	prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));
+	window.document.body.innerHTML=prnhtml;
+	window.print();
+	window.document.body.innerHTML=bdhtml;
+}
+</script>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<div class="top">
+		<div class="title">
+			<span class="glyphicon glyphicon-search" style="font-size:16px;"></span>
+			<span>中医诊治查询统计</span>
+		</div>
+		<div class="tool">
+			<span class="sm">说明：本统计只针对已完成就诊的病人</span>
+			<span>
+				<button name="query" class="btn btn-success" type="button" onClick="tjsubmit()">✔ 统计</button>
+				<button name="print" class="btn btn-success" type="button" onClick="onprint()" style="background-color: #ff6501!important;">℗ 打印</button>
+			</span>
+			<p id="demo"></p>
+		</div>
+	</div>
+	<div class="zyzz_cxtj">
+		<form>
+			<span>日期范围:</span>
+			<input id="start" name="zyzz_start" type="text" readonly ><b>至</b>
+			<input id="end" name="zyzz_end" type="text" readonly onClick="jeDate({dateCell:'#end',format:'YYYY-MM-DD',isinitVal:true,initAddVal:[0]})">
+			<!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#start',{isinitVal:true,initAddVal:[-30],format: 'YYYY-MM-DD'});
+                </script>
+			&nbsp;&nbsp;
+			<label><input type="checkbox" name="zyzz_nld" value="zyzz_nld" onClick="att()">&nbsp;按年龄段</label>
+			&nbsp;&nbsp;
+			<label><input type="checkbox" name="zyzz_sex" value="zyzz_sex" onClick="att()">&nbsp;按性别</label>
+			<br>
+		</form>
+			<!-- <span class="sm">提示信息：双击列标题可进行排序</span> -->
+	</div>
+	<div class="zyzz_center">
+		<!--startprint-->
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active"><a href="#bingming" data-toggle="tab">按病名统计</a></li>
+			<li><a href="#zhengxing" data-toggle="tab">按证型统计</a></li>
+			<li><a href="#zhifa" data-toggle="tab">按治法统计</a></li>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="bingming">
+				<table class="table table-striped" id="tab1">
+					<thead>
+						<tr>
+							<th width="45%">中医病名</th>
+							<th width="10%">人数</th>
+							<th width="10%">例数</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="tab-pane fade" id="zhengxing">
+				<table class="table table-striped" id="tab2">
+					<thead>
+						<tr>
+							<th>中医病名</th>
+							<th>人数</th>
+							<th>例数</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="tab-pane fade" id="zhifa">
+				<table class="table table-striped" id="tab3">
+					<thead>
+						<tr>
+							<th>中医病名</th>
+							<th>人数</th>
+							<th>例数</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<!--endprint-->
+	</div>
+	<script type="text/javascript">
+		$.jeDate("#start",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+		$.jeDate("#end",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+	</script>
+	<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</body>
+</html>

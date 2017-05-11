@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- 自己写的css -->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/yeMiancss/kaiFang2.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+	<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+    <!-- bootstrap的引用 -->
+    <link href="__PUBLIC__/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <script src="__PUBLIC__/bootstrap/js/bootstrap.js"></script>
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+    <script>
+    	$("body").css("width", $(window).width()); 
+    	$("#chjieguofuzhi2").css("width", $(".tableMainHead").css("width")); 
+    </script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<!-- 遮罩层 -->
+	<div class="zhezhao" style="display:none;width:100%;height:100%;background-color:#444444;z-index:4;position:absolute;"></div>
+	<!-- 内容 -->
+	<div style="width: 100%; height: 100%;">
+    	<!-- 搜索 -->
+    	<div class="shangcesousuo">
+    		<!-- 整形搜索 -->
+    		<div class="zhengxingsousuo">
+    			<div class="input-group ">  
+			       <input id="zxzfchazhao" autocomplete="off"  type="text" class="form-control" placeholder="请输入证型名">
+					<span class="glyphicon glyphicon-search" style=" color:#6C9FE0;position: absolute;left: 175px;top: 11px;z-index:3;"></span>
+				</div>
+    		</div>
+    		<!-- 按钮 -->
+    		<div class="zhengxinganniu">
+				<div style="float:left;margin-right:20px;line-height:40px;">&nbsp;&nbsp;
+					<input type="checkbox" class="chufanghbtjchenggong" id="chuFangHeBing">
+					<label for="chuFangHeBing">处方合并</label>&nbsp;&nbsp;
+				</div>
+				<div style="float:left;width:100px;line-height:40px;">
+					<a id="xdcffuzhi" href="#"><button class="btn btn-success" style="width:100px;background-color:#30bdb5;border:0px;"><b style="color: #ffffff;">选定此方</b></button></a>
+				</div>
+    		</div>
+    		<div class="qingchuanniusousuo"></div>
+    	</div>
+    	<!-- 主题内容 -->
+    	<div style="width: 100%;height: 91%;">
+    		<!-- 左侧 -->
+    		<div style="float:left;width: 40%;height: 100%;padding-top: 5px;padding-left: 10px;">
+    			<table id="chjieguofuzhi"  >
+    				<thead>
+    					<tr height="40">
+							<th style="width:3%; text-align:center; ">选择</th>
+							<th style="width:8%; text-align:center; ">证型</th>
+							<th style="width:10%; text-align:center;">治法</th>
+							<th style="width:10%; text-align:center;">病名</th>
+							<th style="width:300px;display: none;">处方名称</th>
+						</tr>
+    				</thead>
+				</table>
+				<div id="tb2">
+					<table id="chjieguofuzhi2" style="table-layout: fixed;" >
+							<volist name="data" id="vo">
+								<tr class="sty1" name="tableSty">
+								  <td style="width:3.4%;text-align:center;"><input type="checkbox"></td>
+								  <td title="{$vo.zx}" style="width:8.6%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.zx}</td>
+								  <td title="{$vo.zf}" style="width:11%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.zf}</td>
+								  <td title="{$vo.name}" style="width:10%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.name}</td>
+								  <td style="width:200px;display: none;"><span>{$vo.cf_name}</span><input type="hidden" value="{$vo.cf_tree}"></td>
+								</tr>
+							</volist>
+					</table>
+				</div>
+					
+    		</div>
+    		<!-- 右侧 -->
+    		<div style="float:left;width: 60%;height:100%;padding-top: 5px;padding-left: 10px;padding-right: 10px;">
+    			<div class="zhongjianhanzi">
+					<span class="zhongjianhanzichu">
+						<b>处方信息</b>
+					</span>
+					<!-- 查出部分显示 。。。 -->
+						<div class="ka1xXiacehanzi" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap; word-break:keep-all; cursor:pointer;">
+							<span style="line-height:42px;padding-left: 20px;width: 333px;"><strong>方剂名称:<span title="" class="fuzhichufangmingcheng"></span></strong></span>
+							
+						</div>
+					<span class="zhongjianhanzizhu " >
+						<b>注：双击药品显示药解！</b>
+					</span>
+				</div>
+				<!-- 下侧处方 -->
+				<div data-spy="scroll" data-target="#navbar-example" data-offset="0"  class="ka1xXiaceChufang">
+					<table>
+						
+						<div class="xiacechufangyaopin"></div>
+					</table>
+				</div>
+    		</div>
+    	</div>
+		<!-- 药解 -->
+		<div class="yjdiv" >
+			<div class="yjdiv-top" >
+				<!--<img src="__PUBLIC__/muban/assets/ico/minus.png" width="20" height="20">-->
+				<span><b>药解</b></span>
+				<button type="button" class="close btn" onclick="clo()">&times;</button>
+			</div>
+			<div id="gdt">
+			<div class="yaojiemodal-tcon">
+				<table class="yaojiemodal-tcon-tab">
+					<tr>
+						<th align="right">
+							<span>药品名称</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="drug_name" value="" readonly>
+						</td>
+						<th align="right">
+							<span>输入码</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="input_code" value="" readonly>
+						</td>
+						<td rowspan="3">
+							<div id="photo" style="width:100px;height:90px;">
+								<img src="" style="width:100px; height:90px; border:none;">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th rowspan="2" align="right">
+							<span>别名</span><span>：</span>
+						</th>
+						<td rowspan="2">
+							<textarea id="other_name" style="width:90%; resize:none; border:none; outline:none; vertical-align:middle; margin-top:20px;" readonly></textarea>
+						</td>
+						<th align="right">
+							<span>单位</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="units" value="" readonly>
+						</td>
+					</tr>
+					<tr>
+						<th align="right">
+							<span>单价</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="price" value="" readonly>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="yaojiemodal-con">
+				<p><span class="b">来源：</span><span id="source"></span></p>
+				<p><span class="b">性状：</span><span id="xz"></span></p>
+				<p><span class="b">炮制：</span><span id="pz"></span></p>
+				<p>
+					<span class="b">性味：</span><span id="xw"></span>
+					<span class="b" style="margin-left:30%;">归经：</span><span id="gj"></span>
+				</p>
+				<p><span class="b">功能：</span><span id="gn"></span></p>
+				<p><span class="b">主治：</span><span id="zz"></span></p>
+				<p><span class="b">用量用法 ：</span><span id="yfyl"></span></p>
+				<p><span class="b">特殊用法 ：</span><span id="tsyf"></span></p>
+				<p><span class="b">注意事项：</span><span id="zysx"></span></p>
+				<p><span class="b">贮藏：</span><span id="zc"></span></p>
+				<p><span class="b">适应证：</span><span id="syz"></span></p>
+				<p><span class="b">临床应用：</span><span id="lcyy"></span></p>
+				<p><span class="b">鉴别用药 ：</span><span id="jbyy"></span></p>
+				<p><span class="b">现代研究：</span><span id="xdyj"></span></p>
+				<p><span class="b">常用代表方：</span><span id="cydbf"></span></p>
+			</div>
+			</div>
+		</div>
+    </div>
+	<script type="text/javascript">
+		// 左侧处方名点击变色
+		$(document).on("click",".sty1",function(){
+			// 点击变色
+		    var tsty1=document.getElementsByName("tableSty");
+		    for(var i=0;i<tsty1.length;i++){
+		        tsty1[i].className="sty1";
+		    }
+		    $(this).attr("class","sty2");
+		    //获取cf_tree根据cf_tree获取处方
+		    var tjyouzhengxing =$(this).find("td:last").find("input").val();
+		    //获取处方名称
+		    var chufangmingcheng =$(this).find("td:last").find("span").html();
+		    $(".fuzhichufangmingcheng").html(chufangmingcheng);
+		    $(".fuzhichufangmingcheng").attr("title",chufangmingcheng);
+		    $.ajax({
+		    	type:'post',
+		    	url:"{:U('Kaifang/yeerchufangfuzhi')}",
+		    	data:{"tjyouzhengxing":tjyouzhengxing},
+		    	dataType:'json',
+		    	success:function(dd){
+		    		// 处方名称
+		    		var str = '';
+		    		$.each(dd,function(idx,item){
+		    			if (item.yf == "") {
+		    				item.yf = "&nbsp;";
+		    			}
+		    			str += '<div style="width:100%;" class="yongLaiKaZhude"><div style="width:135px;height:100px;;border:2px solid #B7C0C8;margin:5px;float:left;color:#000;cursor:pointer;border-radius:2px;background-color:#f5f5f5;margin-right:5px;"  ondblclick="yaojie(this)"><div style="display:inline-block;width: 15px;height: 25px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;background-color: #30BEB2;text-align:center;color:#FFF;margin-left:5px;font-weight:normal;">'+item.serial_no+'</div><div style="border:1px #000 solid;width:60px;border-width:0 0 1px 0;position:relative;left:63px;text-align:center;top:-15px;height:20px;">'+item.yf+'</div><div style="border:1px #f1f1f1 solid;width:130px;border-width:0 0 1px 0;position:relative;left:10px;top:-10px;font-family:楷体;font-size:22px" class="d4">'+item.drug_name+'</div><div style="width:70px;position:relative;left:40px;top:-10px;text-align:right">'+item.sl+item.dw+'</div></div></div>';
+		    		});
+		    		$(".xiacechufangyaopin").html(str);
+		    	}
+		    });
+		});
+		//按搜索条件获取证型治法
+		$(document).on("input","#zxzfchazhao",function(){
+			var yerzxzfjg = $(this).val();
+			$.ajax({
+				type:'post',
+				url:"{:U('Kaifang/yeerajaxzxzf')}",
+				data:{"yerzxzfjg":yerzxzfjg},
+				dataType:'json',
+				success:function(dd){
+					var str="";
+	            	$.each(dd,function(idx,item){
+						str += '<tr class="sty1" name="tableSty" style=""><td style="width:3.4%;text-align:center;"><input type="checkbox"></td><td  title="'+item.zx+'" style="width:8.6%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">'+item.zx+'</td><td title="'+item.zf+'"style="width:11%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">'+item.zf+'</td><td title="'+item.zx+'"style="width:10%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">'+item.name+'</td><td style="width:300px;display:none;"><span>'+item.cf_name+'</span><input type="hidden" value="'+item.cf_tree+'"></td></tr>';
+	                });
+	                $("#chjieguofuzhi2").html(str);
+
+	                // $("#youcezhengxing").html(str);
+				}
+			});
+			// alert(zxzfjg);
+		});
+
+
+	//双击出药解
+	function yaojie(me){
+		var str = $(me).parent(".yongLaiKaZhude").children("div").children(".d4").text();
+		if(str == '' || str == undefined){
+			layer.alert('亲，要先选中药品哦！',{icon:7});
+			return false;
+		}else{
+			$(".yjdiv").css("display","block");
+			$(".yjdiv").css("z-index","4");
+			$(".zhezhao").css("display","block");
+			$(".zhezhao").css("filter","alpha(opacity:80)");
+			$(".zhezhao").css("opacity","0.8");
+			$.ajax({
+				type:"post",
+				url:"{:U('Yaojie/index')}",
+				dataType:"json",
+				data:{
+					"str":str,
+				},
+				success:function(result){
+					$('.yjdiv').contents().find("#drug_name").val(result[0]['drug_name']);
+					$('.yjdiv').contents().find("#input_code").val(result[0]['input_code']);
+					$('.yjdiv').contents().find("#units").val(result[0]['drug_units']);
+					$('.yjdiv').contents().find("#price").val(result[0]['price']);
+					$('.yjdiv').contents().find("#other_name").val(result[0]['other_name']);
+					$('.yjdiv').contents().find("#source").html(result[0]['source']);
+					$('.yjdiv').contents().find("#xz").html(result[0]['xz']);
+					$('.yjdiv').contents().find("#pz").html(result[0]['pz']);
+					$('.yjdiv').contents().find("#xw").html(result[0]['xw']);
+					$('.yjdiv').contents().find("#gj").html(result[0]['gj']);
+					$('.yjdiv').contents().find("#gn").html(result[0]['gn']);
+					$('.yjdiv').contents().find("#zz").html(result[0]['zz']);
+					$('.yjdiv').contents().find("#yfyl").html(result[0]['yfyl']);
+					$('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+					$('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+					$('.yjdiv').contents().find("#zc").html(result[0]['zc']);
+					$('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+					$('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+					$('.yjdiv').contents().find("#yfyl").html(result[0]['yfyl']);
+					$('.yjdiv').contents().find("#tsyf").html(result[0]['tsyf']);
+					$('.yjdiv').contents().find("#zysx").html(result[0]['zysx']);
+					$('.yjdiv').contents().find("#syz").html(result[0]['syz']);
+					$('.yjdiv').contents().find("#lcyy").html(result[0]['lcyy']);
+					$('.yjdiv').contents().find("#jbyy").html(result[0]['jbyy']);
+					$('.yjdiv').contents().find("#xdyj").html(result[0]['xdyj']);
+					$('.yjdiv').contents().find("#cydbf").html(result[0]['cydbf']);
+					$('.yjdiv').contents().find("#photo img").attr('src',result[0]['src']);
+				}
+			});
+		}
+	}
+
+	$("#photo img").click(function(){
+        var width = $(this).width();
+        if(width==100){
+            $(this).css({
+            	'position':'absolute',
+            	'margin-left':'-5%',
+            	'width':'150px',
+            	'height':'150px',
+            });
+        }else{
+            $(this).css({
+            	'position':'absolute',
+            	'margin-left':'-3px',
+            	'width':'100px',
+            	'height':'90px',
+            });
+        }
+    });
+
+	function clo(){
+		$(".yjdiv").css("display","none");
+		$(".zhezhao").css("display","none");
+	}
+
+		//处方合并按钮
+		$(document).on("click",".chufanghbtjchenggong",function(){
+			$(this).attr("class","chufanghbtjfou");
+			$(this).attr("value","chufhebcuo");
+		});
+		//处方合并转换
+		$(document).on("click",".chufanghbtjfou",function(){
+			$(this).attr("class","chufanghbtjchenggong");
+			$(this).attr("value","chufhebfou");
+		});
+		//选定次方按钮赋值
+		$(document).on("click","#xdcffuzhi",function(){
+			var pdcftj = $(".chufanghbtjfou").val()
+			// 判断是否点击处方合并
+			if (pdcftj == 'chufhebcuo') {
+				var zhenchufanghao = ' ';
+				var id = '1';
+	 			$("#chjieguofuzhi2 input:checked").each(function(){
+	 				var chufhcd =$(this).parent().parent().find("td:last").find("input").val();
+	 				zhenchufanghao += chufhcd + ' ';
+	 			});
+	 			if (zhenchufanghao == ' ') {
+					layer.alert("请选择药品",{icon:7});
+	 			}else{
+	 				// alert(123);
+	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id);
+	 			}
+	 			 
+			}else{
+				var zhenchufanghao = ' ';
+				var id = '2';
+	 			$("#chjieguofuzhi2 input:checked").each(function(){
+	 				var chufhcd =$(this).parent().parent().find("td:last").find("input").val();
+	 				zhenchufanghao += chufhcd + ' ';
+	 			});
+	 			if (zhenchufanghao == ' ') {
+					layer.alert("请选择药品",{icon:7});
+	 			}else{
+	 				// alert(123);
+	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id);
+	 			}
+	 			 
+			}
+				
+		});
+//		$(document).ready(function(){
+//			$(".yongLaiKaZhude").children("div").css("margin-right","20px;");
+//			$(".yongLaiKaZhude").eq(3).children("div").css("margin-right","0px;");
+//		})
+	</script>
+	<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</body>
+</html>

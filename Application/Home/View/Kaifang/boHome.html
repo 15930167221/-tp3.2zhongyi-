@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="__PUBLIC__/css/zykf.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/bootstrap.css">
+	<script type="text/javascript" src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+	<title></title>
+</head>
+<body>
+<php>$numdr = 1;</php>
+	<div style="width:900px;height:35px;border:2px solid #CCC;margin-left:20px;">
+		<b id="hidCode"><php>echo $bohui[0]['code']</php></b>
+	　　　　　<b><php>echo $bohui[0]['presc_name'];</php></b>
+		<button style="background-color:#6CA0E7;color:#FFF;"class='btn' id="jiayao">加药</button>
+		<button style="background-color:#6CA0E7;color:#FFF;"class='btn' id="subSh">提交审核</button>
+	</div>
+	<div style="width:900px; height:500px; border:2px solid #CCC;margin-left:20px; margin-top:10px;float:left;" id="mx">
+		 <foreach name='bohui' item='vo'>
+			<div class="zykf_yp" style="width:18%;">
+				<div class="yp1">
+					<b class="b1"><php>echo $numdr;</php></b>
+					<span class="jianyao">✘</span>
+				</div>
+				<div class="yp2">
+					<select class="jfselect">
+						<php>
+							for($y=0;$y<count($jianlist);$y++){
+								echo '<option>'.$jianlist[$y][name].'</option>';
+							}
+						</php>
+					</select>
+				</div>
+				<div class="yp3">
+					<input type="text" name="ylypm" class="ylypnm" value="{$vo.drug_name}" id="<php>echo 'a'.$numdr</php>">
+					<input type="hidden" value="{$vo.xw1}" class="wrphhid">
+					<input type="hidden" class="yincangcode" value="{$vo.drug_code}">
+					<!-- {$vo.drug_name} -->
+				</div>
+				<div class="yp4">
+					<input type="checkbox" name="xuanzeyp" class="xzypche">
+					<span class="ypylspan"><input type="text" name="ypyongliang" value="{$vo.amount}" class="ypylke"><span class="dw11">{$vo.drug_units}</span></span>
+				</div>
+			</div>
+			<php>$numdr++;</php>
+		 </foreach>	
+	</div>
+	<!-- 右边查询药品框 -->
+	<div style="width:300px;height:500px;float:left;background-color:#5B6E8B;color:#FFF;overflow:auto;display:none;"id="cxyk">
+		
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+
+	//减药
+	$(document).on("mouseover",".jianyao",function(){
+		$(this).css('backgroundColor','rgba(255,0,0,0.8)').css('color','white');
+		$(this).click(function(){
+				var nux = 0;
+			 $('.wtf').each(function(){
+			 
+			if($(this).is(":visible")){
+				nux = $(this).index();
+			}
+		});
+		var ssh = $('.dtcfli2').eq(nux).find('td').eq(1).html();
+		if(ssh == '已收费'){
+			alert('已收费处方不可更改');
+			return false;
+		}else{
+			
+			//后面的编号排序
+			$(this).parent().parent().nextAll().find('.b1').each(function(){
+				$(this).html($(this).html()-1);
+			});
+			$(this).parent().parent().detach();
+			
+			var iid = $('.wtf').eq(nux).find('#hiddenCode').html();
+			 $.ajax({
+                url:"{:U('Ajax/resSh')}",
+                type:"post",
+                data:{code:iid},
+                dataType:"json",
+                success:function(dd){
+                  var len = $('.dtcfli2').length;
+                  if(nux*1+1>len){
+                  	var nui = nux-len-1;
+                  	$('.dtcfli').eq(nui).find('td').eq(1).html('未审核');
+                  	$('.dtcfli').eq(nui).find('td').eq(2).html('已修改');
+                  }else{
+                  	$('.dtcfli2').eq(nux).find('td').eq(1).html('未审核');
+                  	$('.dtcfli2').eq(nux).find('td').eq(2).html('已修改');
+                  }
+                }
+            })
+           
+		}
+			
+		});
+	}).on("mouseout",".jianyao",function(){
+		$(this).css('backgroundColor','').css('color','#AAA');
+	});
+
+	//加药
+		$('#jiayao').click(function(){
+			var nu = $('.b1:last').html();
+			var num = nu*1+1;
+			var str = '<div class="zykf_yp"style="width:18%;"><div class="yp1"><b class="b1">'+num+'</b><span class="jianyao">✘</span></div><div class="yp2"><select class="jfselect"></select></div><div class="yp3"><input type="text"name="ylypm"class="ylypnm"value=""id="'+'a'+num+'"><input type="hidden"value=""class="wrphhid"><input type="hidden"class="yincangcode"value=""></div><div class="yp4"><input type="checkbox"name="xuanzeyp"class="xzypche"><span class="ypylspan"><input type="text"name="ypyongliang"value="0.00"class="ypylke"><span class="dw11">克</span></span></div></div>'
+			$('#mx').append(str);
+		});
+
+		//查询药品
+		$(document).on("input",".ylypnm",function(){
+			fangid = $(this).attr('id');
+			var val = $(this).val();
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/zysele')}",
+            data:{val:val},
+            dataType:'json',
+            success:function(dd)
+            {
+                var str = '<ul>';
+                $.each(dd,function(idx,item){
+                //输出
+                // alert(item.id+"号："+item.name);
+              		str += '<li class="zydrugLi">'+item.drug_name+'</li>';
+                });
+                str += '</ul>';
+               $('#cxyk').html(str);
+               $('#cxyk').fadeIn();
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        });
+        }).on("blur",'.ylypnm',function(){
+        	$('#cxyk').fadeOut();
+        });
+
+
+        //li的鼠标移入移出
+		$(document).on('mouseover','.zydrugLi',function(){
+			$(this).css('backgroundColor','#384454');
+			// $(this).css('color','#FFF');
+			
+		}).on('mouseout','.zydrugLi',function(){
+			$(this).css('backgroundColor','');
+			// $(this).css('color','');
+		});
+
+		//点击
+		$(document).on('click','.zydrugLi',function(){
+			var sss = '#'+fangid;
+			var nam = $(this).html();
+			
+				$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/jia')}",
+            data:{val:nam},
+            dataType:'json',
+            success:function(dd)
+            {
+               var code = dd.drug_code;
+               var wrp = dd.xw1;
+                $('#mx').find(sss).next('input').val(wrp);
+              $('#mx').find(sss).next('input').next('input').val(code);
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        });
+				$(sss).val(nam);
+				
+			});
+
+		//提交审核
+		$('#subSh').click(function(){
+			
+		});
+			
+	})
+</script>
+</html>

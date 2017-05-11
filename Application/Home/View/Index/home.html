@@ -1,0 +1,878 @@
+<php>if(isset($_SESSION['wh_userName'])){</php>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <block name="title"><title>中医健康管理系统</title></block>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="__PUBLIC__/css/font.css">
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/style.css">
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/loader-style.css">
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <style type="text/css">
+    </style>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="__PUBLIC__/muban/assets/ico/minus.png">
+    <style>
+        #nt-title-container div,#nt-title-container span{font-size:16px;}
+    </style>
+    <script type="text/javascript" src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+<nav role="navigation" class="navbar navbar-static-top">
+    <div class="container-fluid">
+        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+            
+            <div id="nt-title-container"  class="navbar-left running-text visible-lg">
+                <!--<ul class="date-top">-->
+                    <!--<div id="time">-->
+                    <!--</div>-->
+                    <!--<script>setInterval("document.getElementById('time').innerHTML=new Date().toLocaleString();",1e3);</script>-->
+                <!--</ul>-->
+                <ul class="date-top">
+                    <if condition="$user.br_id neq ''">
+                        <div id="blh">病历号: <span id="sblh">{$user.br_id}</span></div>
+                    <else/>
+                        <div id="blh">病历号: <span id="sblh"></span></div>
+                    </if>
+                    <!-- 隐藏序号 -->
+                    <input type="hidden" id="sblhxh" value="{$user.xh}">
+                    <!-- 判断是哪天 -->
+                    <div style="display: none;" id="hznatian">{$natian}</div>
+                </ul>
+                <ul class="date-top">
+                    <if condition="$user.br_name neq ''">
+                        <div id="xm">姓名: <span id="sxm">{$user.br_name}</span></div>
+                    <else/>
+                        <div id="xm">姓名: <span id="sxm"></span></div>
+                    </if>
+                </ul>
+                <ul class="date-top">
+                    <if condition="$user.xb neq ''">
+                        <div id="bxb">性别: <span id="sbxb">{$user.xb}</span></div>
+                    <else/>
+                        <div id="bxb">性别: <span id="sbxb"></span></div>
+                    </if>
+                </ul>
+                <ul class="date-top">
+                    <if condition="$user.nl neq ''">
+                        <div id="bnl">年龄: <span id="sbnl">{$user.nls}</span></div>
+                        <div id="bnl2" style="display:none;">年龄: <span id="sbnl2">{$user.nl}</span></div>
+                    <else/>
+                        <div id="bnl">年龄: <span id="sbnl"></span></div>
+                        <div id="bnl2" style="display:none;">年龄: <span id="sbnl2"></span></div>
+                    </if>
+                </ul>
+                <ul class="date-top" style="border-right:0px;">
+                    <if condition="$user.p_date neq ''">
+                        <div id="bdate">就诊时间: <span id="sbdate">{$user.p_date}</span></div>
+                        <else/>
+                        <div id="bdate">就诊时间: <span id="sbdate"></span></div>
+                    </if>
+                </ul>
+                <div id="id" style="display:none;">{$user.br_id}</div>
+                <div id="xh" style="display:none;">{$user.xh}</div>
+                <div id="jkSave" style="display:none;">0</div>
+            </div>
+            <ul style="margin-right:0" class="nav navbar-nav navbar-right">
+                <li><a data-toggle="dropdown" class="dropdown-toggle" href="#"><img alt="" class="admin-pic img-circle" src="<?php echo '__ROOT__/Uploads/20000000/182312.jpg'; ?>"> <php>echo $_SESSION['wh_userName'];</php> <b class="caret"></b></a>
+                    <ul style="margin-top:14px" role="menu" class="dropdown-setting dropdown-menu">
+                        <li><a href="{:U('Login/logOut')}"><span class="glyphicon glyphicon-record"></span>&#160;&#160;退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="skin-select">
+    <div style="margin-top:-10px">
+        <a href="http://www.pengyukeji.com"><img src="__PUBLIC__/muban/assets/img/pengyu1.png" alt="logo" style="width:120px;height:120px;margin-left:60px;margin-top:10px;"></a>
+    </div>
+    <a id="toggle"><span class="entypo-menu"></span></a>
+    <div class="skin-part">
+        <div id="tree-wrap">
+            <div class="side-bar" style="overflow:auto;">
+                <ul class="topnav menu-left-nest">
+                    <li><a href="#" style="border-left:0 solid!important" class="title-menu-left"><span>医生门诊</span><i data-toggle="tooltip" class="entypo-cog pull-right config-wrap"></i></a></li>
+                    <li><a class="tooltip-tip ajax-load" href="#" title="挂号区"><i class="icon-document-edit"></i><span>挂号区</span></a>
+                        <ul>
+                            <li class="li"><a id="jzq" class="tooltip-tip2 ajax-load" target="menu" href="" title="接诊区">&nbsp;&nbsp;<i class="icon-document-edit"></i><span>接诊区</span></a></li>
+                            <li class="li"><a id="hzdj" class="tooltip-tip2 ajax-load" target="menu" href="" title="自己登记">&nbsp;&nbsp;<i class="glyphicon glyphicon-user"></i><span>患者登记</span></a></li>
+                            <li class="li"><a id="hzyy" class="tooltip-tip2 ajax-load" target="menu" href="" title="患者预约">&nbsp;&nbsp;<i class="glyphicon glyphicon-user"></i><span>患者预约</span></a></li>
+                            <li class="li"><a id="cx" class="tooltip-tip2 ajax-load" target="menu" href="" title="查询">&nbsp;&nbsp;<i class="icon-search"></i><span>查询</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a class="tooltip-tip ajax-load" href="#" title="健康档案" id="jkda"><i class="glyphicon glyphicon-list-alt"></i><span>健康档案</span></a>
+                        <ul>
+                            <li class="li"><a id="mjkda" class="tooltip-tip2 ajax-load" target="menu" href="" title="健康档案">&nbsp;&nbsp;<i class="entypo-doc-text"></i><span>健康档案</span></a></li>
+                            <li class="li"><a id="mtzbs" class="tooltip-tip2 ajax-load" target="menu" href="" title="体质辨识">&nbsp;&nbsp;<i class="entypo-doc-text"></i><span>体质辨识</span></a></li>
+                            <li class="li"><a id="mzyty" class="tooltip-tip2 ajax-load" target="menu" href="" title="中医调养">&nbsp;&nbsp;<i class="entypo-doc-text"></i><span>中医调养</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a class="tooltip-tip ajax-load"  href="#" title="中药开方"><i class="icon-window"></i><span>中药开方</span></a>
+                        <ul>
+                            <li class="li"><a id="bmkf" class="tooltip-tip2 ajax-load" target="menu" href="" title="病名开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>病名开方</span></a></li>
+                            <li class="li"><a id="zxkf" class="tooltip-tip2 ajax-load" target="menu" href="" title="证型开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>证型开方</span></a></li>
+                            <li class="li"><a id="zlznkf" class="tooltip-tip2 ajax-load" target="menu" href="" title="诊疗指南开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>诊疗指南开方</span></a></li>
+                            <li class="li"><a id="qjdf" class="tooltip-tip2 ajax-load" target="menu" href="" title="取经典方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>取经典方</span></a></li>
+                            <li class="li"><a id="qjyf" class="tooltip-tip2 ajax-load" target="menu" href="" title="取经验方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>取经验方</span></a></li>
+                            <li class="li"><a id="bzkf" class="tooltip-tip2 ajax-load" target="menu" href="" title="辩证开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>辩证开方</span></a></li>
+                            <li class="li"><a id="zdykf" class="tooltip-tip2 ajax-load" target="menu" href="" title="自定义开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>自定义开方</span></a></li>
+                            <if condition="($res.levelid eq 2) and ($res.pid neq 0)">
+                                <li class="li"><a class="tooltip-tip2 ajax-load" target="menu" href=" {:U('ShenFang/subsf')}" title="提交处方">&nbsp; &nbsp;<i class="glyphicon glyphicon-bell"></i><span>提交处方</span></a></li>
+                            <elseif condition="$res.levelid eq 0"/>
+                            <else />
+                                <li class="li"><a class="tooltip-tip2 ajax-load" target="menu" href=" {:U('ShenFang/checksf')}" title="审核处方">&nbsp; &nbsp;<i class="glyphicon glyphicon-bell"></i><span>审核处方</span></a></li>
+                            </if>
+                        </ul>
+                    </li>
+                    <li class="li"><a id="xykf" class="tooltip-tip ajax-load" target="menu" href="" title="西药开方"><i class="icon-window"></i><span>西（中成）药开方</span></a></li>
+                    <li class="li"><a id="hjsf" class="tooltip-tip ajax-load" href="" title="划价收费" target="menu"><i class="glyphicon glyphicon-credit-card"></i><span>划价收费</span></a></li>
+                    <li class="li"><a id="mztf" class="tooltip-tip ajax-load" href="" title="门诊退费" target="menu"><i class="glyphicon glyphicon-floppy-remove"></i><span>门诊退费</span></a></li>
+                    <li><a href="#" style="border-left:0 solid!important" class="title-menu-left"><span>综合查询</span><i data-toggle="tooltip" class="entypo-cog pull-right config-wrap"></i></a></li>
+                    <li><a class="tooltip-tip ajax-load" href="#" title="统计查询"><i class="glyphicon glyphicon-search"></i><span>统计查询</span></a>
+                        <ul>
+                            <li class="li"><a class="tooltip-tip2 ajax-load" href="{:U('Chaxun/sfzonghe')}" title="收费综合查询" target="menu">&nbsp; &nbsp; <i class="icon-search"></i><span>收费综合查询</span></a></li>
+                            <li class="li"><a class="tooltip-tip2 ajax-load" href="{:U('Chaxun/fyhuizong')}" title="费用汇总统计" target="menu">&nbsp; &nbsp; <i class="icon-search"></i><span>费用汇总统计</span></a></li>
+                            <li class="li"><a class="tooltip-tip2 ajax-load" href="{:U('Chaxun/yptongji')}" title="药品使用统计" target="menu">&nbsp; &nbsp; <i class="icon-search"></i><span>药品使用统计</span></a></li>
+                            <li class="li"><a class="tooltip-tip2 ajax-load" href="{:U('Chaxun/blchaxun')}" title="病例查询" target="menu">&nbsp; &nbsp; <i class="icon-search"></i><span>病例查询</span></a></li>
+                            <li class="li"><a class="tooltip-tip2 ajax-load" href="{:U('Chaxun/zyzzchaxun')}" title="中医诊治查询统计" target="menu">&nbsp; &nbsp; <i class="icon-search"></i><span>中医诊治查询统计</span></a></li>
+                            <li class="li"><a class="tooltip-tip2 ajax-load" href="{:U('Chaxun/xyzzchaxun')}" title="西医诊治查询统计" target="menu">&nbsp; &nbsp; <i class="icon-search"></i><span>西医诊治查询统计</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" style="border-left:0 solid!important" class="title-menu-left"><span>知识库</span><i data-toggle="tooltip" class="entypo-cog pull-right config-wrap"></i></a></li>
+                    <li><a class="tooltip-tip ajax-load" href="#" title="经典名著"><i class="glyphicon glyphicon-book"></i><span>经典名著</span></a>
+                        <ul>
+                            <li><a class="tooltip-tip2 ajax-load" href="{:U('Book/shlx')}" title="伤寒论" target="_blank">&nbsp; &nbsp; <i class="glyphicon glyphicon-book"></i><span>伤寒论</span></a></li>
+                            <li><a class="tooltip-tip2 ajax-load" href="{:U('Book/hdnj')}" title="黄帝内经" target="_blank">&nbsp; &nbsp; <i class="glyphicon glyphicon-book"></i><span>黄帝内经</span></a></li>
+                            <li><a class="tooltip-tip2 ajax-load" href="{:U('Book/jgyl')}" title="金匮要略" target="_blank">&nbsp; &nbsp; <i class="glyphicon glyphicon-book"></i><span>金匮要略</span></a></li>
+                            <li><a class="tooltip-tip2 ajax-load" href="{:U('Book/wbtb')}" title="温病条辨" target="_blank">&nbsp; &nbsp; <i class="glyphicon glyphicon-book"></i><span>温病条辨</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a class="tooltip-tip ajax-load" href="__MODULE__/Mynote" title="我的文档" target="menu"><i class="glyphicon glyphicon-folder-open"></i><span>我的文档</span></a></li>
+                    <li><a class="tooltip-tip ajax-load" href="{:U('Book/clinical')}" title="临床诊断" target="menu"><i class="glyphicon glyphicon-file"></i><span>临床诊断</span></a></li>
+                    <li><a href="#" style="border-left:0 solid!important" class="title-menu-left"><span>辅助考试系统</span><i data-toggle="tooltip" class="entypo-cog pull-right config-wrap"></i></a></li>
+                    <li><a class="tooltip-tip ajax-load" href="http://192.168.1.117/pkaoshi/index.php?user-app-login&username=<?php echo $_SESSION['wh_userName'];?>&userpassword=<?php echo $_SESSION['userpwd'];?>&usergroupid=8&usercoin=0&usersequence=0" target="_blank" title="中医执业医师考试辅助系统" target="menu"><i class="glyphicon glyphicon-pencil"></i><span>中医执业医师考试系统</span></a></li>
+
+                    <!--<li><a class="tooltip-tip ajax-load" href="#" title="中医药学会诊断指南" target="menu"><i class="glyphicon glyphicon-file"></i><span>中医药学会诊断指南</span></a></li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrap-fluid" id="right-frame" style="height:88%">
+    <div class="container-fluid paper-wrap bevel tlbr" style="height:100%">
+        <div style="width:100%;height:98%;margin-top:-20px;">
+            <iframe src="{:U('Index/jiezhen')}" id="menu" name="menu" class="miracle" frameborder="0" width="100%" height="100%" scrolling="no"></iframe>
+        </div>
+        <center>
+            <p></p>
+            <p>
+                <a href="http://www.pengyukeji.com" target="_blank">河北鹏宇电子科技有限公司</a>
+            </p>
+        </center>
+    </div>
+</div>
+<div class="sb-slidebar sb-right">
+    <div class="right-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="label label-warning label-chat">基本信息</span>
+                <ul class="chat" style="">
+                    <li style="color:#fff;margin-bottom:2%;">病&nbsp;历&nbsp;&nbsp;号：<input type="text" name="blNumber" value="1701160001" style="width:90px;color:#000;"></li>
+                    <li style="color:#fff;margin-bottom:2%;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：<input type="text" name="Name" value="小七" style="width:90px;color:#000;"></li>
+                    <li style="color:#fff;margin-bottom:2%;">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：<input type="text" name="Sex" value="男" style="width:90px;color:#000;"></li>
+                    <li style="color:#fff;margin-bottom:2%;">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：<input type="text" name="Nianling" value="23" style="width:90px;color:#000;"></li>
+                    <li style="color:#fff;margin-bottom:2%;">出生日期：<input type="text" name="Date" value="1989-01-25" style="width:90px;color:#000;"></li>
+                    <input type="hidden" id="day" value="{$days}">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/muban/assets/js/app.js"></script>-->
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/load.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/muban/assets/js/main.js"></script>-->
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.easyui.min.js"></script>
+<!-- <script type="text/javascript" src="__PUBLIC__/js/jquery-3.1.1.min.js"></script> -->
+<block name="js"></block>
+</body>
+</html>
+<!-- 防止拖拽 -->
+<script type="text/javascript">
+    $("a").on("copy cut paste dragstart dragenter",function(e){
+                    return false;
+                });
+</script>
+<script>
+    jQuery(document).ready(function() {
+        var offtop = $("#skin-select").offset().top;
+        var offtop_right = $("#right-frame").offset().top;
+        $("#skin-select").css({
+            height: document.documentElement.clientHeight - offtop * 1.2,
+            "overflow-x": "hidden",
+            "overflow-y": "auto"
+        });
+        var day = $("#day").val();
+        layer.alert('系统'+day+'天后到期,请购买正式版!');
+    });
+    $(".li").click(function(){
+        $(this).css("background-color","rgba(48,189,181,1)");
+        $(".li").not(this).css("background-color","");
+    });
+//    window.onbeforeunload = function(event) {
+//        return confirm("请点击退出离开此页面");
+//    };
+
+//    app.js更换背景颜色
+
+    //BACKGROUND CHANGER
+
+    $(function() {
+        $("#button-bg").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg5.jpg')no-repeat center center fixed"
+            });
+        });
+        $("#button-bg2").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg2.jpg')no-repeat center center fixed"
+            });
+        });
+
+
+        $("#button-bg3").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg.jpg')no-repeat center center fixed"
+            });
+
+
+        });
+
+        $("#button-bg5").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/giftly.png')repeat"
+            });
+
+        });
+
+        $("#button-bg6").click(function() {
+            $("body").css({
+                "background": "#2c3e50"
+            });
+
+        });
+
+        $("#button-bg7").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg3.png')repeat"
+            });
+
+        });
+        $("#button-bg8").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg8.jpg')no-repeat center center fixed"
+            });
+        });
+        $("#button-bg9").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg9.jpg')no-repeat center center fixed"
+            });
+        });
+
+        $("#button-bg10").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg10.jpg')no-repeat center center fixed"
+            });
+        });
+        $("#button-bg11").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg11.jpg')no-repeat center center fixed"
+            });
+        });
+        $("#button-bg12").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg12.jpg')no-repeat center center fixed"
+            });
+        });
+
+        $("#button-bg13").click(function() {
+            $("body").css({
+                "background": "url('__PUBLIC__/muban/assets/img/bg13.jpg')repeat"
+            });
+
+        });
+        /**
+         * Background Changer end
+         */
+    });
+
+    //TOGGLE CLOSE
+    $('.nav-toggle').click(function() {
+        //get collapse content selector
+        var collapse_content_selector = $(this).attr('href');
+
+        //make the collapse content to be shown or hide
+        var toggle_switch = $(this);
+        $(collapse_content_selector).slideToggle(function() {
+            if ($(this).css('display') == 'block') {
+                //change the button label to be 'Show'
+                toggle_switch.html('<span class="entypo-minus-squared"></span>');
+            } else {
+                //change the button label to be 'Hide'
+                toggle_switch.html('<span class="entypo-plus-squared"></span>');
+            }
+        });
+    });
+
+
+    $('.nav-toggle-alt').click(function() {
+        //get collapse content selector
+        var collapse_content_selector = $(this).attr('href');
+
+        //make the collapse content to be shown or hide
+        var toggle_switch = $(this);
+        $(collapse_content_selector).slideToggle(function() {
+            if ($(this).css('display') == 'block') {
+                //change the button label to be 'Show'
+                toggle_switch.html('<span class="entypo-up-open"></span>');
+            } else {
+                //change the button label to be 'Hide'
+                toggle_switch.html('<span class="entypo-down-open"></span>');
+            }
+        });
+        return false;
+    });
+    //CLOSE ELEMENT
+    $(".gone").click(function() {
+        var collapse_content_close = $(this).attr('href');
+        $(collapse_content_close).hide();
+
+
+
+    });
+
+    //tooltip
+    $('.tooltitle').tooltip();
+    //app.js结束
+
+
+
+    //main.js开始
+    //Sliding Effect Control
+    head.js("__PUBLIC__/muban/assets/js/skin-select/jquery.cookie.js");
+    head.js("__PUBLIC__/muban/assets/js/skin-select/skin-select.js");
+
+    //Showing Date
+    head.js("__PUBLIC__/muban/assets/js/clock/date.js");
+
+    //Bootstrap
+    //head.js("assets/js/bootstrap.js");
+
+    //NEWS STICKER
+    head.js("__PUBLIC__/muban/assets/js/newsticker/jquery.newsTicker.js", function() {
+
+        var nt_title = $('#nt-title').newsTicker({
+            row_height: 18,
+            max_rows: 1,
+            duration: 5000,
+            pauseOnHover: 0
+        });
+
+
+    });
+
+    //-------------------------------------------------------------
+
+
+    ////Acordion and Sliding menu
+
+    head.js("__PUBLIC__/muban/assets/js/custom/scriptbreaker-multiple-accordion-1.js", function() {
+
+        $(".topnav").accordionze({
+            accordionze: true,
+            speed: 500,
+            closedSign: '<img src="__PUBLIC__/muban/assets/img/plus.png">',
+            openedSign: '<img src="__PUBLIC__/muban/assets/img/minus.png">'
+        });
+
+    });
+
+    ////Right Sliding menu
+
+    head.js("__PUBLIC__/muban/assets/js/slidebars/slidebars.min.js", "", function() {
+
+        $(document).ready(function() {
+            var mySlidebars = new $.slidebars();
+
+            $('.toggle-left').on('click', function() {
+                mySlidebars.toggle('right');
+            });
+        });
+    });
+
+    //-------------------------------------------------------------
+
+    //SEARCH MENU
+    head.js("__PUBLIC__/muban/assets/js/search/jquery.quicksearch.js", function() {
+
+        $('input.id_search').quicksearch('#menu-showhide li, .menu-left-nest li');
+
+
+
+    });
+    //-------------------------------------------------------------
+
+
+
+    //EASY PIE CHART
+    head.js("__PUBLIC__/muban/assets/js/gage/jquery.easypiechart.min.js", function() {
+
+        $(function() {
+
+
+            $('.chart').easyPieChart({
+                easing: 'easeOutBounce',
+                trackColor: '#ffffff',
+                scaleColor: '#ffffff',
+                barColor: '#FF0064',
+                onStep: function(from, to, percent) {
+                    $(this.el).find('.percent').text(Math.round(percent));
+                }
+            });
+            var chart = window.chart = $('.chart').data('easyPieChart');
+            $('.js_update').on('click', function() {
+                chart.update(Math.random() * 100);
+            });
+
+            $('.speed-car').easyPieChart({
+                easing: 'easeOutBounce',
+                trackColor: 'rgba(0,0,0,0.3)',
+                scaleColor: 'transparent',
+                barColor: '#0085DF',
+
+                lineWidth: 8,
+                onStep: function(from, to, percent) {
+                    $(this.el).find('.percent2').text(Math.round(percent));
+                }
+            });
+            var chart = window.chart = $('.chart2').data('easyPieChart');
+            $('.js_update').on('click', function() {
+                chart.update(Math.random() * 100);
+            });
+            $('.overall').easyPieChart({
+                easing: 'easeOutBounce',
+                trackColor: 'rgba(0,0,0,0.3)',
+                scaleColor: '#323A45',
+                lineWidth: 35,
+                lineCap: 'butt',
+                barColor: '#FFB900',
+                onStep: function(from, to, percent) {
+                    $(this.el).find('.percent3').text(Math.round(percent));
+                }
+            });
+        });
+
+    });
+    //-------------------------------------------------------------
+
+    //TOOL TIP
+
+    head.js("__PUBLIC__/muban/assets/js/tip/jquery.tooltipster.js", function() {
+
+        $('.tooltip-tip-x').tooltipster({
+            position: 'right'
+
+        });
+
+        $('.tooltip-tip').tooltipster({
+            position: 'right',
+            animation: 'slide',
+            theme: '.tooltipster-shadow',
+            delay: 1,
+            offsetX: '-12px',
+            onlyOne: true
+
+        });
+        $('.tooltip-tip2').tooltipster({
+            position: 'right',
+            animation: 'slide',
+            offsetX: '-12px',
+            theme: '.tooltipster-shadow',
+            onlyOne: true
+
+        });
+        $('.tooltip-top').tooltipster({
+            position: 'top'
+        });
+        $('.tooltip-right').tooltipster({
+            position: 'right'
+        });
+        $('.tooltip-left').tooltipster({
+            position: 'left'
+        });
+        $('.tooltip-bottom').tooltipster({
+            position: 'bottom'
+        });
+        $('.tooltip-reload').tooltipster({
+            position: 'right',
+            theme: '.tooltipster-white',
+            animation: 'fade'
+        });
+        $('.tooltip-fullscreen').tooltipster({
+            position: 'left',
+            theme: '.tooltipster-white',
+            animation: 'fade'
+        });
+        //For icon tooltip
+
+
+
+    });
+    //-------------------------------------------------------------
+
+    //NICE SCROLL
+
+
+    head.js("__PUBLIC__/muban/assets/js/nano/jquery.nanoscroller.js", function() {
+
+        $(".nano").nanoScroller({
+            //stop: true
+            scroll: 'top',
+            scrollTop: 0,
+            sliderMinHeight: 40,
+            preventPageScrolling: true
+            //alwaysVisible: false
+
+        });
+
+    });
+    //-------------------------------------------------------------
+    //-------------------------------------------------------------
+    //PAGE LOADER
+
+    head.js("__PUBLIC__/muban/assets/js/pace/pace.js", function() {
+
+        paceOptions = {
+            ajax: false, // disabled
+            document: false, // disabled
+            eventLag: false, // disabled
+            elements: {
+                selectors: ['.my-page']
+            }
+        };
+
+    });
+
+    //-------------------------------------------------------------
+
+    //SPARKLINE CHART
+    head.js("__PUBLIC__/muban/assets/js/chart/jquery.sparkline.js", function() {
+
+        $(function() {
+            $('.inlinebar').sparkline('html', {
+                type: 'bar',
+                barWidth: '8px',
+                height: '30px',
+                barSpacing: '2px',
+                barColor: '#A8BDCF'
+            });
+            $('.linebar').sparkline('html', {
+                type: 'bar',
+                barWidth: '5px',
+                height: '30px',
+                barSpacing: '2px',
+                barColor: '#44BBC1'
+            });
+            $('.linebar2').sparkline('html', {
+                type: 'bar',
+                barWidth: '5px',
+                height: '30px',
+                barSpacing: '2px',
+                barColor: '#AB6DB0'
+            });
+            $('.linebar3').sparkline('html', {
+                type: 'bar',
+                barWidth: '5px',
+                height: '30px',
+                barSpacing: '2px',
+                barColor: '#19A1F9'
+            });
+        });
+
+        $(function() {
+            var sparklineLogin = function() {
+                $('#sparkline').sparkline(
+                        [5, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6, 7], {
+                            type: 'line',
+                            width: '100%',
+                            height: '25',
+                            lineColor: '#ffffff',
+                            fillColor: '#0DB8DF',
+                            lineWidth: 1,
+                            spotColor: '#ffffff',
+                            minSpotColor: '#ffffff',
+                            maxSpotColor: '#ffffff',
+                            highlightSpotColor: '#ffffff',
+                            highlightLineColor: '#ffffff'
+                        }
+                );
+            }
+            var sparkResize;
+            $(window).resize(function(e) {
+                clearTimeout(sparkResize);
+                sparkResize = setTimeout(sparklineLogin, 500);
+            });
+            sparklineLogin();
+        });
+
+
+    });
+
+    //-------------------------------------------------------------
+
+    //DIGITAL CLOCK
+    head.js("__PUBLIC__/muban/assets/js/clock/jquery.clock.js", function() {
+
+        //clock
+        $('#digital-clock').clock({
+            offset: '+5',
+            type: 'digital'
+        });
+
+
+    });
+
+
+    //-------------------------------------------------------------
+
+    head.js("__PUBLIC__/muban/assets/js/gage/raphael.2.1.0.min.js", "__PUBLIC__/muban/assets/js/gage/justgage.js", function() {
+
+
+
+        var g1;
+        window.onload = function() {
+            var g1 = new JustGage({
+                id: "g1",
+                value: getRandomInt(0, 1000),
+                min: 0,
+                max: 1000,
+                relativeGaugeSize: true,
+                gaugeColor: "rgba(0,0,0,0.4)",
+                levelColors: "#0DB8DF",
+                labelFontColor : "#ffffff",
+                titleFontColor: "#ffffff",
+                valueFontColor :"#ffffff",
+                label: "VISITORS",
+                gaugeWidthScale: 0.2,
+                donut: true
+            });
+        };
+    });
+    var url="{:U('Index/jiezhen')}";
+    var brid=$("#id").html();
+    var brxh=$("#xh").html();
+    //接诊区流程控制
+    $("#jzq").click(function(){
+        url="{:U('Index/jiezhen')}";
+        $("#jzq").attr('href',"{:U('Index/jiezhen')}");
+    })
+    //患者登记流程控制
+    $("#hzdj").click(function(){
+        url="{:U('Index/dengji')}";
+        $("#hzdj").attr('href',"{:U('Index/dengji')}");
+    })
+    //患者预约流程控制
+    $("#hzyy").click(function(){
+        url="{:U('Index/yuyue')}";
+        $("#hzyy").attr('href',"{:U('Index/yuyue')}");
+    })
+    //查询流程控制
+    $("#cx").click(function(){
+        url="{:U('Index/chaxun')}";
+        $("#cx").attr('href',"{:U('Index/chaxun')}");
+    })
+    //健康档案流程控制
+    $("#mjkda").click(function(){
+        var blh = $("#sblh").html();
+        if ((blh||(brid && brxh)) && blh != '') {
+            url="{:U('Index/jiankang')}";
+            $("#mjkda").attr('href',"{:U('Index/jiankang')}");
+        }else{
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#mjkda").attr('href',"{:U('Index/jiezhen')}");
+        }
+    });
+    //体质辨识流程判断
+    $("#mtzbs").click(function(){
+
+        var bmkf = $("#sblh").html();//名称
+        var age=$("#sbnl2").html();//年龄
+        if ((bmkf||(brid && brxh)) && bmkf!='') {
+            if(age>3){
+                url="{:U('Index/tizhi')}";
+                $("#mtzbs").attr('href',"{:U('Index/tizhi')}");
+            }else{
+                layer.alert("您的年龄段无法进行体质辨识！",{icon:7});
+                $("#mtzbs").attr('href',url);
+            }
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#mtzbs").attr('href',"{:U('Index/jiezhen')}");
+        }
+
+    })
+    //中医调养流程判断
+    $("#mzyty").click(function(){
+        var bmkf = $("#sblh").html();//名称
+        var age=$("#sbnl2").html();//年龄
+        if ((bmkf||(brid && brxh)) && bmkf!='') {
+            if(age<=3){
+                url="{:U('Index/tiaoyang')}";
+                $("#mzyty").attr('href',"{:U('Index/tiaoyang')}");
+            }else{
+                layer.alert("您的年龄段无法进行中医调养！",{icon:7});
+                $("#mzyty").attr('href',url);
+            }
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#mzyty").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+
+    //病名开方流程控制
+    $("#bmkf").click(function(){
+        var bmkf = $("#sblh").html();
+        if ((bmkf||(brid && brxh)) && bmkf!='') {
+            url="{:U('Kaifang/bingMing')}";
+            $("#bmkf").attr('href',"{:U('Kaifang/bingMing')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#bmkf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //证型开方流程控制
+    $("#zxkf").click(function(){
+
+        var zxkf = $("#sblh").html();
+        if ((zxkf||(brid && brxh)) && zxkf!='') {
+            url="{:U('Kaifang/zhengxing')}";
+            $("#zxkf").attr('href',"{:U('Kaifang/zhengxing')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#zxkf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //诊疗指南开方
+    $("#zlznkf").click(function(){
+        var zlznkf = $("#sblh").html();
+        if ((zlznkf||(brid && brxh)) && zlznkf!='') {
+            url="{:U('Kaifang/zhiLiaoZhinan')}";
+            $("#zlznkf").attr('href',"{:U('Kaifang/zhiLiaoZhinan')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#zlznkf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //取经典方
+    $("#qjdf").click(function(){
+        var qjdf = $("#sblh").html();
+        if ((qjdf||(brid && brxh)) && qjdf!='') {
+            url="{:U('Kaifang/jingDian')}";
+            $("#qjdf").attr('href',"{:U('Kaifang/jingDian')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#qjdf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //取经验方
+    $("#qjyf").click(function(){
+        var qjyf = $("#sblh").html();
+        if ((qjyf||(brid && brxh)) && qjyf!='') {
+            url="{:U('Kaifang/jingYan')}";
+            $("#qjyf").attr('href',"{:U('Kaifang/jingYan')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#qjyf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //辩证开方
+    $("#bzkf").click(function(){
+        var bzkf = $("#sblh").html();
+        if ((bzkf||(brid && brxh)) && bzkf!='') {
+            url="{:U('Kaifang/bianZheng')}";
+            $("#bzkf").attr('href',"{:U('Kaifang/bianZheng')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#bzkf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //自定义开放
+    $("#zdykf").click(function(){
+        var zdykf = $("#sblh").html();
+        if ((zdykf||(brid && brxh)) && zdykf!='') {
+            url="{:U('Kaifang/zyhome','system')}";
+            $("#zdykf").attr('href',"{:U('Kaifang/zyhome','system')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#zdykf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //西药开方
+    $("#xykf").click(function(){
+        var xykf = $("#sblh").html();
+        if ((xykf||(brid && brxh)) && xykf!='') {
+            url="{:U('Kaifang/west')}";
+            $("#xykf").attr('href',"{:U('Kaifang/west')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#xykf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //划价收费
+    $("#hjsf").click(function(){
+        var hjsf = $("#sblh").html();
+        if ((hjsf||(brid && brxh)) && hjsf!='') {
+            url="{:U('Huajia/huajia')}";
+            $("#hjsf").attr('href',"{:U('Huajia/huajia')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#hjsf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+    //门诊退费
+    $("#mztf").click(function(){
+        var mztf = $("#sblh").html();
+        if ((mztf||(brid && brxh)) && mztf!='') {
+            url="{:U('Tuifei/index')}";
+            $("#mztf").attr('href',"{:U('Tuifei/index')}");
+        } else {
+            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            url="{:U('Index/jiezhen')}";
+            $("#mztf").attr('href',"{:U('Index/jiezhen')}");
+        }
+    })
+</script>
+
+<php>}else{</php>
+    <center>    <h1><a href="{:U('index/index')}">请登录</a></h1></center>
+<php>}</php>

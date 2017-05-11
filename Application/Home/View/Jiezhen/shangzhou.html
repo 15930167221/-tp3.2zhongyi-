@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接诊区_中医健康管理系统</title>
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/jiezhen.css">
+    <!-- 分页 -->
+    <link rel="stylesheet" href="__PUBLIC__/css/fystyle.css">
+    <style>
+       .yemianfenyequxiao div a,span{
+            text-decoration:none;float:left;
+            line-height:25px;margin-right:8px;
+        }
+    </style>
+    <!-- 日历新css -->
+    <link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <!-- 日历js -->
+    <script type="text/javascript" src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+<!-- 判断是接诊区页面还是别的页面 -->
+<input type="hidden" id="qufjiezheng" value="{$qufenjiez}">
+<div class="yuyue">
+    <div class="yyfont">
+        <span class="glyphicon glyphicon-th-list" style="line-height:45px;font-size:16px;color:#404040;"></span><span style="font-size: 16px;line-height: 33px; margin-top: 6px;font-weight:bold;color: #333;">预约病人列表</span>
+    </div>  
+    <div style=" margin-left: 60%;">
+        <div class="yychecked">
+            <select id="xdri">
+                <option value="1">&emsp;当日</option>
+                <option  value="2">&emsp;明日</option>
+                <option value="3">&emsp;后日</option>
+                <option value="5" selected="selected">&emsp;上周内未完成就诊</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="bg">
+    <!-- 用于判断是否是登记页面传过来的 -->
+    <input type="hidden" id="dengjichuid" value="{$dataid}">
+    <input type="hidden" id="dengjichuxh" value="{$dataxh}">
+    <div class="yyinf center">
+        <div class="yytab">
+            <table id="riqichaajax" width="100%" border="1" bordercolor="#ccc">
+            <thead>
+                 <tr>
+                    <th width="10%" height="40px">预约/就诊日期</th>
+                    <th width="5%">姓名</th>
+                    <th width="3%">性别</th>
+                    <th width="4%">年龄</th>
+                    <th width="8%">电话</th>
+                    <th width="12%">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="data" id="vo">
+                <tr class="sty1" name="tableSty">
+                <td class="brxh" style="display:none;">{$vo.xh}</td>
+                    <td class="datefenmiao">
+                        {$vo.p_date}
+                        <span><input type="hidden" class="brid" value="{$vo.br_id}"><input type="hidden" value="{$vo.xh}"><input class="nlt" type="hidden" value="{$vo.nlt}"></span>
+                        
+                    </td>
+                    <td>
+                        {$vo.br_name}
+                        <input type="hidden" class="brname" value="{$vo.br_name}">
+                    </td>
+                    <td>
+                        {$vo.xb}
+                        <input type="hidden" class="bxbvo" value="{$vo.xb}">
+                    </td>
+                    <td>
+                        {$vo.nl}
+                        <input type="hidden" class="brnlvo" value="{$vo.nl}">
+                    </td>
+                    <td>
+                        {$vo.tel}
+                        <input type="hidden" class="ajaxcanshu" value="{$vo.br_id}">
+                        <input type="hidden" class="ajaxcanshuxh" value="{$vo.xh}">
+                    </td>
+                    <td>
+                        <span style="font-size: 16px;margin-left: 20%;" data-toggle="modal" data-target="#myModal1" class="ajaxxinxishuju" >详细信息</span>
+                        <a href='{:U("Index/jiankang",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;">就诊</span></a>
+                        <span style="font-size: 16px;" data-toggle="modal" data-target="#myModal2" class="ajaxxiugaishuju">修改</span>
+                        <a href='{:U("Huajia/huajia",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;">收费</span>
+                    </td>
+                </tr>
+                </volist>
+            </tbody>
+                
+            </table>
+        </div>
+        <div class="yytj">
+            <div class="result page">
+                <div class="pages">
+                    <div class="yemianfenyequxiao">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>          
+    </div>
+</div>
+<!--患者详细信息模态框-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div style="width:50%;/*height:95%;*/ overflow: auto;border-radius: 5px; background:#fff;margin-top:2%;margin-left:25%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align:center;line-height: 10px;">患者详细信息</h4>
+            </div>
+            <div class="modal-body">
+                <table cellpadding="0" cellspacing="0" class="mbt">
+                    <tr>
+                        <td width="15%" align="left" style="letter-spacing:7px;">病历号</td>
+                        <td colspan="3" style="background:#000;"><input type="text" id="ajaxmtbrid" readonly="readonly" style="width:100%;"></td>
+                    </tr>
+                    <br/>
+                    <tr>
+                        <td>姓　　名</td>
+                        <td colspan="1"><input id="ajaxmtbrname" style="width: 100%;" type="text" readonly="readonly"></td>
+                        <td>性　　别</td>
+                        <td style="padding-left: 30px;padding-top: 5px;">
+                            <label>男<input type="radio" name="xb" id="ajaxmtxbnan" disabled="disabled" style="margin-right:15px;"></label>
+                            <label>女<input type="radio" name="xb" id="ajaxmtxbnv" disabled="disabled"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>年　　龄</td>
+                        <td ><input id="ajaxmtnl" type="text" readonly="readonly"></td>
+                        <td>出生年月</td>
+                        <td><input id="ajaxmtcsdate" type="text" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>电　　话</td>
+                        <td><input id="ajaxmttel" type="text" readonly="readonly"></td>
+                        <td>身份证号</td>
+                        <td><input id="ajaxmtpass" type="text" class="lontext" readonly="readonly" style="width:100%;"></td>
+                    </tr>
+                    <tr>
+                        <td>单　　位</td>
+                        <td colspan="3"><input id="ajaxmtdw" type="text" class="lontext" readonly="readonly" style="width:100%;"></td>
+                    </tr>
+                    <tr>
+                        <td>E　-Mail</td>
+                        <td><input id="ajaxmtemail" type="text" readonly="readonly"></td>
+                         <td>传　　真</td>
+                        <td><input id="ajaxmtfax" type="text" readonly="readonly"></td>
+                    </tr>
+                    <!-- <tr>
+                        <td>挂 号 费</td>
+                        <td><input id="ajaxmtghf" type="text" readonly="readonly"></td>
+                        <td>预约日期</td>
+                        <td><input id="ajaxmtpdate" type="text" readonly="readonly"></td>
+                    </tr> -->
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="background-color:#30bdb5;width: 100px;height: 30px;padding-top: 3px;" data-dismiss="modal">关 &nbsp;&nbsp; 闭</button>
+                <!--<button type="button" class="btn btn-primary">提交更改</button>-->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--患者信息修改模态框-->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div style="width:50%;/*height:95%;*/ overflow: auto;border-radius: 5px;background:#fff;margin-top:2%;margin-left:25%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2" style="text-align:center;line-height: 10px;">患者信息修改</h4>
+            </div>
+            <form action="{:U('Index/dojiezhenajaxxiugai')}" method="post">
+            <div class="modal-body">
+                <table cellpadding="0" cellspacing="0" class="mbt">
+                    <tr>
+                        <td width="15%" style="letter-spacing:7px;">病历号</td>
+                        <td colspan="3" style="background:#000;"><input type="text" name="br_id" id="ajaxmtXiugaibrid" readonly="readonly" style="width:100%;">
+                            <input type="hidden" name="xh" id="xh"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>姓　　名</td>
+                        <td><input id="ajaxmtXiugaibrname" name="br_name" onfocus="this.select()" type="text"></td>
+                        <td>性　　别</td>
+                        <td style="padding-left: 30px;padding-top: 5px;">
+                            <label>男<input type="radio" name="xb" id="ajaxmtxiugaixbnan" disabled="disabled" style="margin-right:15px;"></label>
+                            <label>女<input type="radio" name="xb" id="ajaxmtxiugaixbnv" disabled="disabled"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>年　　龄</td>
+                        <td><input id="ajaxmtXiugainl" onfocus="this.select()" name="nl" type="text" ></td>
+                        <td>出生年月</td>
+                        <td>
+                            <input type="text" name="cs_date" value="{$vo.cs_date}" placeholder="请选择时间！" id="ajaxmtXiugaicsdate" readonly="readonly">
+                        </td>
+                    </tr>
+                    <!-- 日期的点击事件 -->
+                <script>
+                   $.jeDate('#ajaxmtXiugaicsdate',{isTime:true,maxDate:$.nowDate(0),startMax:$.nowDate(0),format: 'YYYY-MM-DD'});
+                </script>
+                    <tr>
+                        <td>电　　话</td>
+                        <td><input id="ajaxmtXiugaitel" name="tel" type="text" ></td>
+                        <td>身份证号</td>
+                        <td><input id="ajaxmtXiugaipass" name="pass" type="text" class="lontext"  style="width:100%;"></td>
+                    </tr>
+                    <tr>
+                        <td>单　　位</td>
+                        <td colspan="3"><input id="ajaxmtXiugaidw" name="dw" type="text" class="lontext"  style="width:100%;"></td>
+                    </tr>
+                    <tr>
+                        <td>E-　Mail</td>
+                        <td><input id="ajaxmtXiugaiemail" name="e_mail" type="text"></td>
+                        <td>传　　真</td>
+                        <td><input id="ajaxmtXiugaifax" name="fax" type="text" ></td>
+                    </tr>
+                    <!-- <tr>
+                        <td>挂号费</td>
+                        <td><input id="ajaxmtXiugaighf" name="ghf" type="text" ></td>
+                        <td>预约日期</td>
+                        <td><input id="ajaxmtXiugaipdate"  name="p_date" type="text" readonly="readonly"></td>
+                    </tr> -->
+                    <input id="ajaxmtXiugaighf" name="ghf" type="hidden" >
+                    <input id="ajaxmtXiugaipdate"  name="p_date" type="hidden" readonly="readonly">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" style="background-color:#30bdb5;border:none;width: 100px;height: 30px;padding-top: 3px;">
+                    关 &nbsp;&nbsp; 闭
+                </button>
+                <button type="button" id="panduannianl" class="btn btn-default" style="
+                background:#E64C3D;color:#fff;width: 100px;height: 30px;padding-top: 3px;">提交更改</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    // 判断年龄不能超过150
+    $(document).on("click","#panduannianl",function(){
+        var shuruzhi = $("#ajaxmtXiugainl").val();//输入的值
+        //判断年龄不能超过150
+        if (shuruzhi > 150) {
+           layer.alert("年龄过大",{icon:6});
+        }else{
+            $("form").attr("action", "{:U('Index/dojiezhenajaxxiugai')}" ).submit();
+        }
+    });
+    //详细信息
+    $(document).on("click",".ajaxxinxishuju",function(){
+        $id = $(this).parent().parent().find(".ajaxcanshu").val();
+        var xh = $(this).parent().parent().find(".brxh").html();
+        $.ajax({
+            type:'get',
+            url:'{:U("Index/jiezhenxiangqajax")}',
+            data:{"id":$id,"xh":xh},
+            dataType:'json',
+            success:function(dd)
+            {
+                // 获取对应的病人基本信息
+                $br_id = dd[0]['br_id'];
+                $br_name = dd[0]['br_name'];
+                $nl = dd[0]['nl'];
+                $cs_date = dd[0]['cs_date'];
+                $pass = dd[0]['pass'];
+                $dw = dd[0]['dw'];
+                $tel = dd[0]['tel'];
+                $xb = dd[0]['xb'];
+                $email = dd[0]['e_mail'];
+                $ghf = dd[0]['ghf'];
+                $fax = dd[0]['fax'];
+                $p_date = dd[0]['p_date'];
+                // 通过js将信息添加到页面
+                $("#ajaxmtbrid").val($br_id);
+                $("#ajaxmtbrname").val($br_name);
+                $("#ajaxmtnl").val($nl);
+                $("#ajaxmtcsdate").val($cs_date);
+                $("#ajaxmtpass").val($pass);
+                $("#ajaxmtdw").val($dw);
+                $("#ajaxmttel").val($tel);
+                // 判断性别
+                if($xb=="男"){
+                    $("#ajaxmtxbnan").attr("checked","checked");
+                }else if($xb=="女"){
+                    $("#ajaxmtxbnv").attr("checked","checked");
+                }
+                $("#ajaxmtemail").val($email);
+                $("#ajaxmtghf").val($ghf);
+                $("#ajaxmtfax").val($fax);
+                $("#ajaxmtpdate").val($p_date);
+            }
+        });
+    });
+    //修改信息
+    $(document).on("click",".ajaxxiugaishuju",function(){
+        $id = $(this).parent().parent().find(".ajaxcanshu").val();
+        var xh = $(this).parent().parent().find(".brxh").html();
+        $.ajax({
+            type:'get',
+            url:'{:U("Index/jiezhenxiugaiajax")}',
+            data:{"id":$id,"xh":xh},
+            dataType:'json',
+            success:function(dd)
+            {
+                // 获取对应的病人基本信息
+                $xh = dd[0]['xh'];
+                $br_id = dd[0]['br_id'];
+                $br_name = dd[0]['br_name'];
+                $nl = dd[0]['nl'];
+                $cs_date = dd[0]['cs_date'];
+                $pass = dd[0]['pass'];
+                $dw = dd[0]['dw'];
+                $tel = dd[0]['tel'];
+                $xb = dd[0]['xb'];
+                $email = dd[0]['e_mail'];
+                $ghf = dd[0]['ghf'];
+                $fax = dd[0]['fax'];
+                $p_date = dd[0]['p_date'];
+                // 通过js将信息添加到页面
+                $("#xh").val($xh);
+                $("#ajaxmtXiugaibrid").val($br_id);
+                $("#ajaxmtXiugaibrname").val($br_name);
+                $("#ajaxmtXiugainl").val($nl);
+                $("#ajaxmtXiugaicsdate").val($cs_date);
+                $("#ajaxmtXiugaipass").val($pass);
+                $("#ajaxmtXiugaidw").val($dw);
+                $("#ajaxmtXiugaitel").val($tel);
+                // 判断性别
+                if($xb=="男"){
+                    $("#ajaxmtxiugaixbnan").attr("checked","checked");
+                }else if($xb=="女"){
+                    $("#ajaxmtxiugaixbnv").attr("checked","checked");
+                }
+                $("#ajaxmtXiugaiemail").val($email);
+                $("#ajaxmtXiugaighf").val($ghf);
+                $("#ajaxmtXiugaifax").val($fax);
+                $("#ajaxmtXiugaipdate").val($p_date);
+            }
+        });
+    });
+    $(document).on("change","#xdri",function(){
+        // 得到框内值//1-->当日  2-->明日 3-->后日 4-->全部 5-->上周（当天起前7天）
+        var knztj = $(this).children("option:selected").val();
+        // 赋值区分是否是接诊区内部
+        $("#jiezneibutiaoz", parent.document).val(1);
+        // js改变地址
+        if (knztj == 1) {
+            window.location='{:U("Index/jiezhen")}?cid=1';
+        }
+        if (knztj == 2) {
+            window.location='{:U("Jiezhen/mingri")}?cid=1';
+        }
+        if (knztj == 3) {
+            window.location='{:U("Jiezhen/houri")}?cid=1';
+        }
+        if (knztj == 5) {
+            window.location='{:U("Jiezhen/shangzhou")}?cid=1';
+        }
+    });
+</script>
+<script src="__PUBLIC__/js/tr.js"></script>
+<script>
+    //sty1点击存session
+    $(document).on("click",".sty1",function(){
+        var blh=$("#sblh", parent.document).html();//病历号
+        var brxh=$(this).children(".brxh").html();//序号
+        var natian=$('#xdri').val();//那天
+        $.ajax({
+            url:"{:U('Index/saveSession')}",
+            type:"post",
+            data:{'brid':blh,'brxh':brxh,'natian':natian},
+            dataType:"json",
+            success:function(data){
+            }
+        })
+    });
+    // 出生年月改变年龄
+    $("#ajaxmtXiugaitel").focus(function(){
+        // 获取出生年月日
+        var csny = $("#ajaxmtXiugaicsdate").val();
+        //判断是否为空
+        if (!csny == '') {
+            var mydate = new Date();
+            var year = mydate.getFullYear();//获取当前年
+            //获取当前出生年月的年
+            var dqnian = csny.substr(0,4);
+            var nianling = year-dqnian; 
+            $("#ajaxmtXiugainl").val(nianling);
+            // console.log(nianling);
+        }
+    });
+     // 年龄框改变出生年月改变
+    $(document).on("change","#ajaxmtXiugainl",function(){
+        var shuruzhi = $(this).val();//输入的值
+        var lianweis =  /^[1-9]*[1-9][0-9]*$/;  
+        if(lianweis.test(shuruzhi)){
+           //判断年龄不能超过150
+            if (shuruzhi < 150) {
+                if (shuruzhi > 0) {
+                        //改变年龄
+                    var mydate = new Date();
+                    var year = mydate.getFullYear();//获取当前年
+                    var month = mydate.getMonth()+1;//获取当前月
+                    var date = mydate.getDate();//获取当前日
+                    var hzyear = year-shuruzhi;//患者出生的年
+                    var hzdate = hzyear+'-'+month+'-'+date;
+                    $("#ajaxmtXiugaicsdate").val(hzdate);
+                }else{
+                    layer.alert("年龄过小",{icon:6});
+                }
+                
+            }else{
+                layer.alert("年龄过大",{icon:6});
+            }
+        }else{
+          layer.alert("输入正确格式的年龄",{icon:7});
+        }
+           
+
+    });
+    //默认点击第一个
+    $(document).ready(function(){
+        // alert($(".current").html());
+        
+        //判断是否是接诊区内部的点击
+        if ($("#qufjiezheng").val() == 1) {
+            //页面单击事件
+                // 判断是点击接诊还是登记页面跳转
+                if ($("#dengjichuid").val() == '') {
+                    // 接诊区
+                    var blh=$("#sblh", parent.document).html();//病历号
+                    var sblhxh=$("#sblhxh", parent.document).val();//序号
+                }else{
+                    var blh=$("#dengjichuid").val();//病历号
+                    var sblhxh=$("#dengjichuxh").val();//序号
+                }
+                
+                    
+                $(".brid").each(function(){
+                    var panduanxh = $(this).next().val();
+                    if ($(this).val() == blh && panduanxh == sblhxh) {
+                        $(this).parent().parent().trigger('click');
+                        
+                    }
+                  
+                });
+        }else{
+            //判断那天
+            var hznatian=$("#hznatian", parent.document).html();//患者是哪天
+
+            //判断是否是点击的那天
+            if (hznatian == $('#xdri').val()) {
+                    //判断页数
+                    var dangqianye = $(".current").html();//当前页面页数
+                    var blh=$("#sblh", parent.document).html();//病历号
+                    var sblhxh=$("#sblhxh", parent.document).val();//序号
+                    $.ajax({
+                        type:'POST',
+                        url:"{:U('Huoquyeshu/shangzhou')}",
+                        data:{"blh":blh,"sblhxh":sblhxh},
+                        dataType:'json',
+                        success:function(dd)
+                        {
+                            if (dangqianye == "")
+                            {
+                                      //页面单击事件
+                                    // 接诊区
+                                    var blh=$("#sblh", parent.document).html();//病历号
+                                    var sblhxh=$("#sblhxh", parent.document).val();//序号
+                                        
+                                    $(".brid").each(function(){
+                                        var panduanxh = $(this).next().val();
+                                        if ($(this).val() == blh && panduanxh == sblhxh) {
+                                            $(this).parent().parent().trigger('click');
+                                            
+                                        }
+                                      
+                                    });
+                            }else{
+                                //排出为空的情况
+                                if (dangqianye == undefined)
+                                {
+                                     //页面单击事件
+                                    // 接诊区
+                                    var blh=$("#sblh", parent.document).html();//病历号
+                                    var sblhxh=$("#sblhxh", parent.document).val();//序号
+                                        
+                                    $(".brid").each(function(){
+                                        var panduanxh = $(this).next().val();
+                                        if ($(this).val() == blh && panduanxh == sblhxh) {
+                                            $(this).parent().parent().trigger('click');
+                                            
+                                        }
+                                      
+                                    });
+                                }else{
+                                    if( dd == dangqianye){
+                                        //是当前页数
+                                            // 接诊区
+                                            var blh=$("#sblh", parent.document).html();//病历号
+                                            var sblhxh=$("#sblhxh", parent.document).val();//序号
+                                                
+                                            $(".brid").each(function(){
+                                                var panduanxh = $(this).next().val();
+                                                if ($(this).val() == blh && panduanxh == sblhxh) {
+                                                    $(this).parent().parent().trigger('click');
+                                                    
+                                                }
+                                              
+                                            });
+                                    }else{
+                                        //执行页面跳转到指定页数
+                                         window.location='{:U("Jiezhen/shangzhou")}?p='+dd+'.html';
+                                    } 
+                                }
+                                    
+                            }   
+                                                                                                                                                                                   
+                        }
+
+                     });
+                        
+                    
+            }else{
+                // 不是患者点击的那天自动调整到那天
+                // js改变地址
+                if (hznatian == 1) {
+                    window.location='{:U("Index/jiezhen")}';
+                }
+                if (hznatian == 2) {
+                    window.location='{:U("Jiezhen/mingri")}';
+                }
+                if (hznatian == 3) {
+                    window.location='{:U("Jiezhen/houri")}';
+                }
+                if (hznatian == 5) {
+                    window.location='{:U("Jiezhen/shangzhou")}';
+                }
+            }
+        }
+            
+       
+    });
+//点击页数添加参数
+    $(document).on('click', '.num', function(){
+        var page = $(this).html();
+        $(".num").attr('href','{:U("Jiezhen/shangzhou")}?cid=1&p='+page+'.html');
+    })
+
+    $(document).on('click', '.prev', function(){
+        var pageshang = $(this).attr('href');
+        var dopages = pageshang.substr(pageshang.length-6,1);
+        $(".prev").attr('href','{:U("Jiezhen/shangzhou")}?cid=1&p='+dopages+'.html');
+    })
+    $(document).on('click', '.next', function(){
+        var pagexia = $(this).attr('href');
+        var dopagex = pagexia.substr(pagexia.length-6,1);
+        $(".next").attr('href','{:U("Jiezhen/shangzhou")}?cid=1&p='+dopagex+'.html');
+    })
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

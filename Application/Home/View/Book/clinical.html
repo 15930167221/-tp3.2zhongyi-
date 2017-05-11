@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- 自己写的css -->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/zhishiku/clinical.css">
+	<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+	<script src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+	<!-- bootstrap的引用 -->
+	<link href="__PUBLIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false" style="background-color:rgba(255,255,255,0)">
+<!-- 左大块 -->
+<div class="waiweizuo">
+	<!-- 上 -->
+	<div class="zuoshang">
+		中医学科
+	</div>
+	<div class="zuozhong">
+		<!-- 折叠部分 -->
+		<div class="panel-group" id="accordion">
+			<volist name="data" id="vo">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" 
+						   href="#{$vo.unitid}">
+						   <span class="zileitj">
+							{$vo.unitname}
+						   <input type="hidden" value="{$vo.unitid}">
+							</span>
+						</a>
+					</h4>
+				</div>
+				<div id="{$vo.unitid}" class="panel-collapse collapse ">
+
+				</div>
+			</div>
+			</volist>
+		</div>
+	</div>
+		
+</div>
+<!-- 中大块 -->
+<div class="waiweizhong">
+	<!-- 上 -->
+	<div class="zhongshang">
+		<!-- 内容展示 -->
+	</div>
+	<div class="zhongxia">
+
+	</div>
+</div>
+<!-- 右大块 -->
+<div class="waiweiyou">
+	<!-- 上 -->
+	<div class="youshang">
+		西医学科
+	</div>
+	<div class="youzhong">
+		<!-- 折叠部分 -->
+		<div class="panel-group" id="xiyibufen">
+		<volist name="xiyidata" id="xiyivo">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a  data-toggle="collapse" data-parent="#xiyibufen" 
+						   href="#{$xiyivo.unitid}">
+							<span class="zileitj">
+							{$xiyivo.unitname}<input type="hidden" value="{$xiyivo.unitid}">
+							</span>
+						</a>
+					</h4>
+				</div>
+				<div id="{$xiyivo.unitid}" class="panel-collapse collapse">
+
+				</div>
+			</div>
+		</volist>
+		</div>
+	</div>
+		
+</div>
+<!-- 清除浮动 -->
+<div class="qczuiwaiwfd"></div>
+</body>
+<script type="text/javascript">
+	//ajax 点击出现对应的子分类
+	$(document).on("click",".zileitj",function(){
+		// alert(123);
+		cuobingmzi = $(this).find("input").val();
+		// alert(cuobingmzi);
+		var zhuaxuyhaoid = $(this).find("input").val();
+		// alert(zhuaxuyhaoid);
+		$.ajax({
+			type:'post',
+			url:"{:U('Book/ajaxzlznzilei')}",
+			data:{"zhuaxuyhaoid":zhuaxuyhaoid},
+			dataType:'json',
+			success:function(dd){
+				// alert(dd);
+				// console.log(dd);
+				var dostr = '#'+cuobingmzi;
+				var str = '';
+				$.each(dd,function(idx,item){
+					str +='<div class="zlduineirong" style="border-bottom:1px dashed #ccc;margin-left:25px;overflow:hidden; text-overflow:ellipsis; white-space:nowrap; word-break:keep-all; width:80%; line-height:30px;"><input type="hidden" name="unit" value="'+item.unitid+'"/>'+item.jibingmingcheng+'<input type="hidden" name="xuyaotj" value="'+item.id+'"></div>';
+				});
+				$(dostr).html(str);
+			},
+			error:function(){
+				alert("ajax链接失败");
+			}
+		});
+	});
+	//ajax 点击子类出现对应的内容
+	$(document).on("click",".zlduineirong",function(){
+		// 获取id当做条件
+		var tjneirong = $(this).find("input[name=xuyaotj]").val();
+		// 获取unitid
+		var unittjneirong = $(this).find("input[name=unit]").val();
+		// alert(unittjneirong);
+		// alert(tjneirong);
+		$.ajax({
+			type:'post',
+			url:'{:U("Book/ajaxzilneilong")}',
+			data:{"tjneirong":tjneirong,"unittjneirong":unittjneirong},
+			dataType:'json',
+			success:function(dd){
+				$(".zhongxia").html(dd);
+				// console.log(dd);
+			},
+			error:function(){
+				alert('ajax链接失败');
+			}
+		});
+	});
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

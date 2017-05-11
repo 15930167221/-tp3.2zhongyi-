@@ -1,0 +1,2534 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="__PUBLIC__/css/zyup.css">
+	<link href="__PUBLIC__/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="__PUBLIC__/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/xwgj.css">
+
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+	<link rel="stylesheet" href="__PUBLIC__/yeMiancss/yaojie.css">
+	<script type="text/javascript" src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/spin.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/echarts.simple.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/bootstrap/fonts"></script>
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/imgTable.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/zyuppic.js"></script>
+	<script type="text/javascript">
+$(function(){
+    var opts = {
+        lines: 10, // loading小块的数量
+     length: 9, // 小块的长度
+     width: 4, // 小块的宽度
+     radius: 13, // 整个圆形的半径
+     corners: 1, // 小块的圆角，越大则越圆
+     rotate: 0, // loading动画的旋转度数，貌似没什么实际作用
+     color: '#871C1C', // 颜色
+     speed: 1, // 变换速度
+     trail: 60, // 余晖的百分比
+     shadow: true, // 是否渲染出阴影
+     hwaccel: false, // 是否启用硬件加速
+     className: 'spinner1', // 给loading添加的css样式名
+     zIndex: 2e9, // The z-index (defaults to 2000000000)
+     top: 'auto', // Top position relative to parent in px
+     left: 'auto' // Left position relative to parent in px   
+    };
+    var target = document.getElementById('foo');
+    var spinner = new Spinner(opts).spin(target);
+ })
+</script>
+	<style>
+		.yp3{
+	width:74%;
+	height:40%;
+	border-bottom:2px solid #F1F1F1;
+	float:left;
+	font-size:25px;
+	line-height:26px;
+	font-family:楷体;
+}
+.spinner1{
+	margin-left:15em;
+	margin-top:10em;
+}
+.kg{
+  width:1.8em;
+}
+	</style>
+
+}
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<!-- 最上面灰色的条 -->	
+	<div id="ycydcfm" style="display:none;"></div>
+	<div id="ycydcfs" style="display:none;"></div>
+	<div id="zykf_cxypk"></div>
+	<div id="hidsel" style="display:none;">
+			<php>
+				for($y=0;$y<count($jianlist);$y++){
+					echo '<option>'.$jianlist[$y][name].'</option>';
+				}
+			</php>
+	</div>
+	<button  data-toggle="modal" data-target="#myModal5" id="hideYYY" style="display:none;"><span class="glyphicon glyphicon-dashboard"></span>用药比例</button>
+		<!-- 药解框 -->
+		<div id="yjk" style="background-image:url('__PUBLIC__/img/character.png');background-position:bottom right;background-repeat:no-repeat;">
+			<div>
+				<span id="yjtc">X &emsp;</span>
+			</div><br>
+			<div class="yaojiemodal-tcon">
+				<table class="yaojiemodal-tcon-tab">
+					<tr>
+						<th align="right">
+							<span>药品名称</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="drug_name" value="" readonly>
+						</td>
+						<th align="right">
+							<span>输入码</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="input_code" value="" readonly>
+						</td>
+						<td rowspan="3">
+							<div id="photo" style="width:100px;height:90px;">
+								<img src="" style="width:100px; height:90px; border:none;">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th rowspan="2" align="right">
+							<span>别名</span><span>：</span>
+						</th>
+						<td rowspan="2">
+							<input class="nchangg" type="input" id="other_name" style="width:100%;" value="" readonly>
+						</td>
+						<th align="right">
+							<span>单位</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="units" value="" readonly>
+						</td>
+					</tr>
+					<tr>
+						<th align="right">
+							<span>单价</span><span>：</span>
+						</th>
+						<td>
+							<input class="changg" type="input" id="price" value="" readonly>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="yaojiemodal-con" style="position:relative;">
+				<p><span class="b" style="color:#43A69C;">来源：</span><span id="source"></span></p>
+				<p><span class="b" style="color:#43A69C;">性状：</span><span id="xz"></span></p>
+				<p><span class="b" style="color:#43A69C;">炮制：</span><span id="pz"></span></p>
+				<p>
+					<span class="b" style="color:#43A69C;">性味：</span><span id="xw"></span>
+					<span class="b" style="margin-left:30%;">归经：</span><span id="gj"></span>
+				</p>
+				<p><span class="b" style="color:#43A69C;">功能：</span><span id="gn"></span></p>
+				<p><span class="b" style="color:#43A69C;">主治：</span><span id="zz"></span></p>
+				<p><span class="b" style="color:#43A69C;">用量用法 ：</span><span id="yfyl"></span></p>
+				<p><span class="b" style="color:#43A69C;">特殊用法 ：</span><span id="tsyf"></span></p>
+				<p><span class="b" style="color:#43A69C;">注意事项：</span><span id="zysx"></span></p>
+				<p><span class="b" style="color:#43A69C;">贮藏：</span><span id="zc"></span></p>
+				<p><span class="b" style="color:#43A69C;">适应证：</span><span id="syz"></span></p>
+				<p><span class="b" style="color:#43A69C;">临床应用：</span><span id="lcyy"></span></p>
+				<p><span class="b" style="color:#43A69C;">鉴别用药 ：</span><span id="jbyy"></span></p>
+				<p><span class="b" style="color:#43A69C;">现代研究：</span><span id="xdyj"></span></p>
+				<p><span class="b" style="color:#43A69C;">常用代表方：</span><span id="cydbf"></span></p>
+			</div>
+		</div>
+			</div>
+	<div id="top">
+	
+			
+			
+			
+			
+			
+			<button class="lli" id="shalj" data-toggle="modal" data-target="#myModal1" style="background-color:#ED3E3F;color:#FFF; margin-right:20px;"><span class="glyphicon glyphicon-eye-open"></span>审核</button>
+				<button class="lli" id="xzcfall"><span class="glyphicon glyphicon-plus"></span>新增处方</button>
+				<a id="yyblalj9"><button class="lli""><span class="glyphicon glyphicon-dashboard"></span>用药比例</button></a>
+				<button class="lli"  data-toggle='modal' data-target='#myModal2' id="wsygxyz"><span class="glyphicon glyphicon-book"></span>医嘱</button>
+				<button class="lli" id="abccfalj"><span class="glyphicon glyphicon-folder-close"></span>保存</button>
+
+			<button class="lli" id="bcjyf"  data-toggle="modal" data-target="#myModal4"><span class="glyphicon glyphicon-folder-close"></span>保存至经验方</button>
+	</div>
+	<!-- 用药比例模态框 -->
+	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px!important;">
+        	<!-- //取经典方div -->
+	<div id="qujdfdiv">
+		<div id="qaqaqjd"><input type="text" id="zbzdjsm" placeholder="请输入经典方名称"><span id="jdfgb1" style="float:right;
+	width:22px;
+	height:22px;
+	color:#CCC;
+	text-align:center;
+	line-height:17px;
+	font-size:20px;
+	font-weight:bold;
+	cursor:pointer;">X</span></div>
+
+		
+		<div id="qjdfcontent"></div>
+	</div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">用药比例</h4>
+            </div>
+           
+            <div class="modal-body" style="height:460px;">
+             	<div id="blmtleft">
+             		<div class="zs12">
+             			<div class="zsx12z">
+             				个<br/>人<br/>处<br/>方
+             			</div>
+             			<div class="zsx12y" id="grcfxdiv">
+             				
+             			</div>
+             		</div>
+             		<div class="zs12">
+             			<div class="zsx12z" id="czcfxdiv">
+             				参<br/>照<br/>处<br/>方
+             			</div>
+             			<div class="zsx12y" id="czcfhmd">
+             				
+             			</div>
+             		</div>
+             		<div class="zs12">
+             			<div class="zsx12z">
+             				相<br/>同<br/>药<br/>品
+             			</div>
+             			<div class="zsx12y" id="xtypxdi">
+             				
+             			</div>
+             		</div>
+             		<div class="zs12">
+             			<div class="zsx12z">
+             				不<br/>同<br/>药<br/>品
+             			</div>
+             			<div class="zsx12y" id="btypxdi">
+             				
+             			</div>
+             		</div>
+             	</div>
+             	<div id="blmtright">
+             		<div class="yblgddiv" id="bing1">
+             		<div class="bingtuname">个人处方</div>
+             			<div id="bing11"style="width:310px; height:200px;">
+             				
+             			</div>
+             		</div>
+             		<div class="yblgddiv" id="bing2">
+             		<div class="bingtuname">参照处方</div>
+             			<div id="bing22"style="width:310px; height:200px;">
+             				
+             			</div>
+             		</div>
+             	</div>
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+	<!-- 模态结束 -->
+	<!-- 用改处方名模态框 -->
+	<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px!important;">
+        	<!-- //取经典方div -->
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">处方名</h4>
+            </div>
+           
+            <div class="modal-body" style="height:100px;">
+             	<input type="text" placeholder="请输入处方名称" id="cf_name" style="width:80%;height:60%;margin-top:15px;">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="cf_nameqd">确定</button>
+                
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+	<!-- 模态结束 -->
+	<!-- 医嘱模态框-->
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">医嘱</h4>
+            </div>
+           
+            <div class="modal-body" id="yscon">
+            
+            	<div style="width:49%;height:99%;border-right:1px solid #000;float:left;overflow:auto;" id="yzzbhsct">
+            			<php>for($m=0;$m<count($yz);$m++){</php>
+				<label class="zykf_yzmr"><input type="checkbox" name="zykf_yzdx" class="zykf_dxanyz" value="<php>echo $yz[$m]['order_name']</php>"><php>echo $yz[$m]['order_name']</php></label>
+			<php>}</php>
+            	</div>
+            	<div style="width:49%;height:99%;float:left;">
+            		<textarea id="yztext"></textarea>
+            	</div>
+            <!--   <php>
+              	for($s=0;$s<count($szjj);$s++){
+              		echo '<p class="szjjp">';
+              		for($x=0;$x<count($szjj[$s]);$x++){
+						
+              			echo '<b>'.$szjj[$s][$x]['szz'].'</b><br/>';
+              			echo $szjj[$s][$x]['jjxx'].'<br/>';
+              			
+							
+              		}
+              		echo '</p>'; 
+              	}
+              	
+              </php> -->
+             
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="exit2">确定</button>
+            </div>
+          
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+	<!-- 结束模态框 -->
+<div id="myMenu" style="width:60px;
+	height:30px;
+	background-color:rgba(255,255,255,0.8);
+	color:#000;
+	border:1px solid #000;
+	border-radius:5px;
+	position:absolute;
+	z-index:2;
+	font-size:16px;
+	text-align:center;
+	left:0px;
+	top:0px;
+	line-height:30px;
+	cursor:pointer;
+	display:none;">删除</div>
+	<!-- 保存经验模态框 -->
+		<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px!important;">
+            	
+							<div class="modal-header">
+								<input type="button" value="&times;" class="close" data-dismiss="modal" aria-hidden="true">
+								<input type="text" name="name" placeholder="此处填写处方名称" id="jynamet" style="width:45%;">
+							</div>
+				            <textarea class="modal-body text" name="Attending" placeholder="此处填写处方主治功能" style="width:100%;height:250px;" id="jycont"></textarea>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="qqqq">取消</button>
+								<button type="submit" class="btn btn-primary" id="sub">确认添加</button>
+							</div>
+					
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+	<!-- 模态结束 -->
+
+<!-- 审核模态框 -->
+	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px!important;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">用药审查</h4>
+            </div>
+           
+            <div class="modal-body" id="ymb" style="height:380px;">
+             <div id="mmb" style="display:none; width:100%;height:100%;">没毛病</div>
+             <div id="ddymymb">
+               <div id="shcontent" style="overflow:auto; height:380px; width:60%; float:left;overflow:auto;">
+               	<span style="color:#6F1111;">当前处方存在以下不合理用药情况，请仔细核对</span><br/>
+               	<!-- <img id="imgshz" src="__PUBLIC__/img/shz.gif" alt="" style="width:50%;height:52%;margin-left:7em;margin-top:5em;"> -->
+               	<div id="foo"> 
+				</div>
+				<div id="shzh3" style="margin-left:12em;margin-top:12em;color:#871C1C;font-weight:bold;"><h3>审核中...</h3></div>
+               	<!-- <h1 id="imgshz" style="text-align:center; color:red;">审核中...</h1> -->
+
+               	<!-- 配伍禁忌反 -->
+               	<div style="display:none;width:100%;" id="pwjjf">
+               		<span style="color:blue;">药品配伍禁忌（反）</span><br/>
+               		　　<span id="pwjjf1"></span>
+               	</div>
+               	<!-- 配伍禁忌畏 -->
+               	<div style="display:none;width:100%;" id="pwjjw">
+               		<span style="color:blue;">药品配伍禁忌（畏）</span><br/>
+               		　　<span id="pwjjw1"></span>
+               	</div>
+               		<!-- 孕妇慎用药品 -->
+               	<div style="display:none;width:100%;" id="yfsyyp">
+               		<span style="color:blue;">孕妇慎用药品</span><br/>
+               		　　<span id="yfsyyp1"></span>
+               	</div>
+               		<!-- 孕妇禁用药品-->
+               	<div style="display:none;width:100%;"id="yfjyyp">
+               		<span style="color:blue;">孕妇禁用药品</span><br/>
+               		　　<span id="yfjyyp1"></span>
+               	</div>
+               		<!-- 用量超标药品-->
+               	<div style="display:none;width:100%;"id="ylcbyp">
+               		<span style="color:blue;" >用量超标药品</span><br/>
+               		　　<span id="ylcbyp1"></span>
+               	</div>
+               </div>
+               <div style="float:left; width:39%; height:380px; border-left:1px solid #ccc;overflow:auto;" id="rightsh">
+              		<span style="color:#0D1B4E;">当前处方存在以下有毒药品，请谨慎使用</span><br/>
+              		<table width="100%" border="1" id="ydypjc" style="display:none;">
+              			<tr id="ydypjc1">
+              				<td width="20%">药品</td>
+              				<td width="15%">毒性</td>
+              				<td width="65%">注意事项</td>
+              			</tr>
+
+              		</table>
+               </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+            	<span id="yfjyypbrtgshoo" style="font-size:1.5em;color:red;float:left;">当前处方中存在孕妇禁用药品，不能审核通过！</span>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="gbgbgbb">关闭</button>
+                <button type="submit" class="btn btn-info" id="ystjan">预审通过</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+	<!-- 模态框结束 -->
+
+
+
+
+
+	<!-- 左侧大div -->
+	<div class="left">
+		<!-- 历史处方div -->
+		<div class="history">
+			<div class="lefttit">
+				历史处方（双击复制处方）
+			</div>
+			<div class="hiscon">
+				<table width="100%" border="1" style="table-layout: fixed;">
+					<tr style="background-color:#E6E6E6;">
+						<td style="display:none;">处方号</td>
+						<td width="60%">
+							处方名
+						</td>
+						<td width="40%">
+							日期
+						</td>
+					</tr>
+					<volist name="historyCF" id="his">
+				<tr class="sty1" name="tableSty">
+					<td style="display: none;" class="hisCla">{$his.presc_no}</td>
+					<td title="{$his.presc_name}" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap; width:60%;">{$his.presc_name}</td>
+					<!-- <td>{$his.indicate}</td> -->
+					<td>{$his.presc_date}</td>
+					<!-- <td>{$his.zy_name}</td> -->
+					<!-- <td>{$his.bz}</td> -->
+					<!-- <td>{$his.zz}</td> -->
+				</tr>
+					</volist>
+				</table>
+			</div>
+		</div>
+		<!-- 当天处方div -->
+		<div class="today">
+			<div class="lefttit">
+				当天处方（右击更改处方名称）
+			</div>
+			<div class="todcon">
+				<table width="100%" border="1" style="table-layout: fixed;" id="tableid">
+					<tr style="background-color:#E6E6E6;">
+						<td width="68%">
+							处方名
+						</td>
+						<td width="20%">
+							状态
+						</td>
+						<td width="12%">
+							操作
+						</td>
+						<td style="display:none;">
+							tree
+						</td>
+						<td style="display:none;">
+							处方号
+						</td>
+					</tr>
+					<php>
+
+			for($j = 0;$j<count($cfName);$j++){
+			if($cfName[$j][indicate]=='1'){
+				$a = '已审核';
+			}else if($cfName[$j][indicate]=='2'){
+				$a = '已收费';
+			}else if($cfName[$j][indicate]=='4'){
+				$a = '<span style="color:red;">已驳回</span>';
+			}else{
+				$a = '未审核';
+			}
+				echo '<tr class="dtcfli"><td title="'.$cfName[$j][presc_name].'"><span>'.$cfName[$j][presc_name].'</span></td><td>'.$a.'</td><td><span class="cfcdys">X</span></td><td style="display:none;">'.$cfName[$j][cf_tree].'</td><td style="display:none;">'.$cfName[$j][presc_no].'</td></tr>'; 
+			}
+			</php>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- 中间大div -->
+	<div class="middle">
+		<div class="title">
+			<div class="controller">
+			<div class="conleft">
+				<label id="yf" style="color:red;cursor:pointer;">
+				<input type="checkbox" name="yfche" id="yfchecked" class="styChe">孕妇
+				</label>
+				
+				<label>
+				<input type="checkbox" name="tjsh" id="xtshornot" class="styChe">提交审核
+				</label>
+				剂量:<input type="text" class="controtext" value="7" id="jlinp">
+				<label  id="zykf_bl1"><input type="radio" name="bltz" value="1" checked="checked">比例</label>
+				<label  id="zykf_tz1"><input type="radio" name="bltz" value="2">体重</label>
+				<span id="blspan"><input type="text" class="controtext" value="1" id="t1">/<input type="text" class="controtext" value="2" id="t2"></span>
+				<span id="tzspan" style="display:none;"><input type="text" class="controtext kg" value="50" id="ttzz">kg</span>
+			</div>
+			<div class="conright">
+				<button class="tzjy" id="make">调整</button>
+				<button class="tzjy" id="jyan">加药</button>
+				<img src="__PUBLIC__/img/up.png" id="shangyi" title="上移" style="width:20px;height:30px;margin-top:;cursor:pointer;">
+				<img src="__PUBLIC__/img/down.png" id="xiayi" title="下移" style="width:20px;height:30px;margin-top:;cursor:pointer;">
+				<label id="allche"><input type="checkbox" id="qxche">全选</label>
+				
+			</div>
+		</div>
+		</div>
+		
+		<div class="cfmx">
+			<!-- <div class="zykf_yp"><div class="yp1"><b class="b1">1</b><span class="jianyao">X</span></div><div class="yp2"><select class="jfselect">'+sel+'</select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+(num*1+1)+'"><input type="hidden" value="" class="wrphhid"><input type="hidden" class="yincangcode" value=""></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="0.00" class="ypylke"><span class="dw11">克</span></span></div></div> -->
+		</div>
+		<div class="szjjtit">&nbsp;
+			随证加减
+		</div>
+		<div class="szjj">
+			<div class="szjjleft">
+				本处方暂无随证加减信息
+			</div>
+			<div class="szjjsel">
+				<select name="" class="select" id="bcjf12">
+
+					<option value="1">水煎</option>
+					<option value="2">水煎（煎药机）</option>
+					<option value="3">研粉</option>
+					<option value="4">制丸</option>
+					<option value="5">蜜炼</option>
+					<option value="6">制膏</option>
+
+				</select><br>
+				<select name="" class="select" id="bcjf13">
+					<option value="1">口服</option>
+					<option value="2">开水冲服</option>
+					<option value="3">嚼食</option>
+					<option value="4">伴食服</option>
+					<option value="5">酒服</option>
+					<option value="6">外用</option>
+					<option value="7">外搽</option>
+					<option value="8">外敷</option>
+					<option value="9">熏洗</option>
+					<option value="10">熏蒸</option>
+					<option value="11">药浴</option>
+					<option value="12">直肠灌入</option>
+				</select><br>
+				<select name="" class="select" id="bcjf14">
+					<option value="1">1/日</option>
+					<option value="2">2/日</option>
+					<option value="3">3/日</option>
+					<option value="4">4/日</option>
+					<option value="5">6/日</option>
+					<option value="6">1/晚</option>
+					<option value="7">1/隔日</option>
+					<option value="8">1/12小时</option>
+					<option value="9">1/8小时</option>
+					<option value="10">1/6小时</option>
+					<option value="11">1/4小时</option>
+					<option value="12">1/2小时</option>
+					<option value="13">即刻</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 右边大div -->
+	<div class="right">
+		<div class="xwgj">
+			<div class="lefttit">
+				性味归经
+			</div>
+			<div>
+			<p class="titp">&emsp;十二经脉</p>
+			<dl class="xwgjdl">
+				<foreach name="jm" item="it">
+					<dt>&emsp;&emsp;{$it.name}</dt>
+					<ul class="xwgjul">
+						<foreach name="jmyp" item="yp">
+							<if condition="$it['tree'] eq $yp['qev']">
+								<li>&emsp;<label><input type="checkbox" id="{$yp.code}" name="{$yp.name}" onclick="apds(this)">{$yp.name}</label></li>
+							</if>
+						</foreach>
+					</ul>
+				</foreach>
+			</dl>
+			<p class="titp">&emsp;药物性味</p>
+			<dl class="xwgjdl">
+				<foreach name="xw" item="it">
+					<dt>&emsp;&emsp;{$it.name}</dt>
+					<ul class="xwgjul">
+						<foreach name="xwyp" item="yp">
+							<if condition="$it['tree'] eq $yp['qev']">
+								<li>&emsp;<label><input type="checkbox" id="{$yp.code}" name="{$yp.name}" onclick="apds(this)">{$yp.name}</label></li>
+							</if>
+						</foreach>
+					</ul>
+				</foreach>
+			</dl>
+			<p class="titp">&emsp;药物归经</p>
+			<dl class="xwgjdl">
+				<foreach name="gj" item="it">
+					<dt>&emsp;&emsp;{$it.name}</dt>
+					<ul class="gjul">
+						<foreach name="gjml" item="ml">
+							<if condition="$ml['qev'] eq $it['tree']">
+								<li>&emsp;&emsp;&emsp;{$ml.name}</li>
+								<ul class="lastul">
+									<foreach name="gjyp" item="lastyp">
+										<if condition="$lastyp['qev'] eq $ml['tree']">
+											<li>&emsp;&emsp;&emsp;<label><input type="checkbox" id="{$lastyp.code}"  name="{$lastyp.name}" onclick="apds(this)">{$lastyp.name}</label></li>
+										</if>
+									</foreach>
+								</ul>
+							</if>
+						</foreach>
+					</ul>
+				</foreach>
+			</dl>
+			</div>
+		</div>
+		<div class="wrphpic">
+			<div class="lefttit">
+				温热平寒
+			</div>
+			<div id="wrphpic">
+				
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+
+	$(function () {
+    //禁止拖拽
+     $(document).on("copy cut paste dragstart dragenter","input[type='text']",function(e){
+                    return false;
+                });
+
+
+    //比例，体重，用的数组
+    var hiskg23 = [];
+    var nn23 = 0;
+   
+    $('#wrphpic').click(function(){
+      $('.zykf_yp').attr('class','zykf_yp');
+    });
+    $(document).on('click','.ylypnm',function(){
+      $(this).parent().parent().attr('class','zykf_yp zykf_yp2');
+      $('.ylypnm').not($(this)).parent().parent().attr('class','zykf_yp');
+      // $(this).find('.yp3').find('.ylypnm').focus();
+    });
+
+		$('.cfmx').click(function(){
+			$('.zykf_yp').css('backgroundColor','#FBFBFB');
+		});
+		//input自动全选
+		$(document).on('focus','body input',function(){
+			$(this).select();
+		});
+
+		//刚进来判断是否有处方，然后加
+		var lenli = $('.dtcfli2').length;
+		if(lenli<1){
+			$('#xzcfall').click();
+      $('#ycydcfm').html('自定义处方1');
+		}
+
+
+		//一进来就增加一个处方
+		// $('#xzcfall').click();
+		// $('#jyan').click();
+		// alert($('.dtcfli2:first').html());
+		$(document).on('keydown','.ypylke:last',function(env){
+			if(env.keyCode == 13){
+				$('#jyan').click();
+			}
+		});
+		$(document).on('keydown','.ypylke',function(env){
+			if(env.keyCode == 13){
+				$(this).parent().parent().parent().next().find('.yp3').find('.ylypnm').select();
+			}
+		});
+		$(document).on('keydown','.ylypnm',function(env){
+			if(env.keyCode == 13){
+				$(this).parent().next().find('span').find('.ypylke').select();
+			}
+		});
+		$(document).on('keydown','.ylypnm',function(env){
+			if(numb<1){
+					numb=1;
+				}
+
+			if(env.keyCode == 40&&numb<$('.zydrugLi').length){
+				$('.zydrugLi').eq(numb).mouseover();
+				$('.zydrugLi').not($('.zydrugLi').eq(numb)).mouseout();
+				var hei = $('#zykf_cxypk').height();
+				var nu = $('.zydrugLi').length;
+				var bl = numb/nu;
+
+				var neh = $('.zydrugLi').height()*numb;
+				$('#zykf_cxypk').scrollTop(neh);
+
+				numb =numb*1+1;
+
+			}else if(env.keyCode == 38&&numb>1){
+							numb =numb-1;
+							var hei = $('#zykf_cxypk').height();
+				var nu = $('.zydrugLi').length;
+				var neh = $('.zydrugLi').height()*numb;
+				$('#zykf_cxypk').scrollTop(neh);
+							$('.zydrugLi').eq(numb-1).mouseover();
+							$('.zydrugLi').not($('.zydrugLi').eq(numb-1)).mouseout();
+						
+						}else if(env.keyCode == 13){
+							$('.zydrugLi').eq(numb-1).click();
+										// $('#ayx').click();
+										$('#zykf_cxypk').fadeOut();
+							// $(this).parent().next().next().next().next().find('input').focus();
+						}
+		});
+
+	//按体重按钮隐藏比例
+	$('#zykf_bl1').click(function(){
+		$('#blspan').show();
+		$('#tzspan').hide();
+	});
+	$('#zykf_tz1').click(function(){
+		$('#tzspan').show();
+		$('#blspan').hide();
+	});
+
+		//医嘱默认点选
+	$(document).on('click','.zykf_dxanyz',function(){
+		var abc = '';
+		var gmcheck=document.getElementsByClassName('zykf_dxanyz');
+		for(var i=0; i< gmcheck.length; i++){
+			if(gmcheck[i].checked){
+				abc+=gmcheck[i].value+",";
+			}
+		}
+		$('#yztext').val(abc.substr(0,abc.length-1));
+	});
+	//药品，鼠标移入移出
+	$(document).on("mouseover",".zykf_yp",function(){
+		$(this).css('border','2px solid #2FBEB1');
+    $(this).find('.jianyao').show();
+    $('.zykf_yp').not($(this)).find('.jianyao').hide();
+	}).on("mouseout",".zykf_yp",function(){
+		$(this).css('border','2px solid #B7C0C8');
+    $(this).find('.jianyao').hide();
+	});
+
+
+	//新增处方
+	var zdy = 1;
+	$('#xzcfall').click(function(){
+			var sel = $('#hidsel').html();
+			var code = '';
+			//弄一个新的ID
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/getId')}",
+            data:{cfcode:11},
+            dataType:'json',
+            success:function(dd)
+            {
+            	// console.log(dd);
+            	code = dd;
+            	var sel = $('#hidsel').html();
+            	//
+            	//
+            	if($('.dtcfli').length > 0){
+				var str = '<tr class="dtcfli"><td><span>自定义处方'+zdy+'</span></td><td>未审核</td><td><span class="cfcdys">X</span></td><td style="display:none;"></td><td style="display:none;">'+code+'</td></tr>';
+				$('#ycydcfm').html('自定义处方'+zdy);
+				//隐藏处方名div放进去名字
+				$('.cfmx').html('<div class="zykf_yp"><div class="yp1"><b class="b1">'+'1'+'</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect">'+sel+'</select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+'1'+'"><input type="hidden" value="" class="wrphhid"><input type="hidden" class="yincangcode" value=""></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="0.00" class="ypylke"><span class="dw11">克</span></span></div><div id="hiddenCode" style="display:none;">'+code+'</div>');
+			
+			$('.dtcfli:first').before(str);
+			$('.dtcfli:first').attr('class','dtcfli dtnew');
+			$('.dtcfli').not($('.dtcfli:first')).attr('class','dtcfli');
+			
+			
+			// $('.xzcfinput:last').focus().keydown(function(env){
+			// 		if(env.keyCode==13){
+			// 			$(this).blur();
+			// 			var val = $(this).val();
+			// 			$(this).parent().html(val);
+			// 		}
+			// 	});
+			zdy = zdy*1+1;
+			
+			
+		
+		}else{
+				var sel = $('#hidsel').html();
+			var str = '<tr class="dtcfli"><td><span>自定义处方'+zdy+'</span></td><td>未审核</td><td><span class="cfcdys">X</span></td><td style="display:none;"></td><td style="display:none;">'+code+'</td></tr>';//999
+
+				
+				$('#tableid').append(str);//999
+			$('.dtcfli:first').attr('class','dtcfli dtnew');
+			$('.dtcfli').not($('.dtcfli:first')).attr('class','dtcfli');
+				$('.cfmx').html('<div class="zykf_yp"><div class="yp1"><b class="b1">'+'1'+'</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect">'+sel+'</select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+'1'+'"><input type="hidden" value="" class="wrphhid"><input type="hidden" class="yincangcode" value=""></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="0.00" class="ypylke"><span class="dw11">克</span></span></div><div id="hiddenCode" style="display:none;">'+code+'</div>');
+				
+				// $('.xzcfinput:last').focus().keydown(function(env){
+				// 	if(env.keyCode==13){
+				// 		$(this).blur();
+				// 		var val = $(this).val();
+				// 		$(this).parent().html(val);
+				// 	}
+				// });
+				zdy = zdy*1+1;
+		
+		}
+		//$('#yzxqs').html('');//999
+
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+			
+			
+			
+		});
+
+
+
+	   //比例，体重，调整药量
+     $(document).on('input','.ypylke',function(){
+        hiskg23 = [];
+        nn23 = 0;
+         $('.ypylke').each(function(){
+        hiskg23[nn23] = $(this).val();
+        nn23++;
+    });
+         
+     });
+	   $(document).on('focus','#ttzz',function(){
+	   		beforeTz = $(this).val();
+	   });
+	$('#make').click(function(){
+    
+
+		var val = $('input[name="bltz"]:checked').val();
+		if(val == 1){
+			//获取输入比例
+			var t1 = $('#t1').val();
+			var t2 = $('#t2').val();
+			var tt = t1/t2;
+			
+			$('input:checkbox[name="xuanzeyp"]').each(function(){
+        if($(this).is(':checked')){
+          var b1 = $(this).parent().parent().find('.b1').html();
+          // alert(hiskg[b1-1]);
+          var yuan = Math.ceil(hiskg23[b1-1]*tt).toFixed(2);
+          $(this).parent().find('.ypylke').val(yuan);
+        }
+				// var ttt = Math.ceil($(this).parent().find('.ypylke').val()*1*tt);
+				// $(this).parent().find('.ypylke').val(ttt);
+			});
+		}else{
+			//获取输入体重与标准体重比例
+			var tz = $('#ttzz').val();
+			var bl = tz/50;
+			// alert(beforeTz);
+			// $('.zykf_ypke').each(function(){
+			// 	var aab = $(this).val()*1*bl;
+			// 	$(this).val(aab);
+			// });
+			$('input:checkbox[name="xuanzeyp"]').each(function(){
+        if($(this).is(':checked')){
+          var b1 = $(this).parent().parent().find('.b1').html();
+          var yuan = Math.ceil(hiskg23[b1-1]*bl).toFixed(2);
+          $(this).parent().find('.ypylke').val(yuan);
+        }
+				// var ttt = Math.ceil($(this).parent().find('.ypylke').val()*1*bl);
+				// $(this).parent().find('.ypylke').val(ttt);
+			});
+		}
+	});
+
+
+	//加药
+	$('#jyan').click(function(){
+    var sh = $('.dtnew:first').find('td').eq(1).html();
+         if(sh == '已收费'){
+          layer.alert('收费后的处方不可更改！',{icon:7});
+          return false;
+         }
+		var sel = $('#hidsel').html();
+		if($('.ylypnm:last').val() == ''|| $('.ylypnm:last').val() == ' ' || $('.ylypnm:last').val() == '   '){
+			return false;
+		}else{
+		if($('.cfmx').find('.zykf_yp').length > 0){
+			var num = $('.cfmx').find('.zykf_yp:last .b1').html();
+			$('.cfmx').find('.zykf_yp:last').after('<div class="zykf_yp"><div class="yp1"><b class="b1">'+(num*1+1)+'</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect">'+sel+'</select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+(num*1+1)+'"><input type="hidden" value="" class="wrphhid"><input type="hidden" class="yincangcode" value=""></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="0.00" class="ypylke"><span class="dw11">克</span></span></div>');
+		}else{
+			var str = '<div class="zykf_yp"><div class="yp1"><b class="b1">1</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect">'+sel+'</select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+'1'+'"><input type="hidden" value="" class="wrphhid"><input type="hidden" class="yincangcode" value=""></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="0.00" class="ypylke"><span class="dw11">克</span></span></div>'
+			$('.cfmx').prepend(str);
+				var data = suan();
+               	give(data);
+			// $('#gjwys').html($('.zykf_yp').length);
+				$('.cfmx').find('.ylypnm:last').focus();
+			}
+		}
+		$('.cfmx').find('.ylypnm:last').focus();
+			var data = suan();
+               	give(data);
+			
+	});
+
+
+  $(document).on('input','.ypylke',function(){
+     var sh = $('.dtnew:first').find('td').eq(1).html();
+         if(sh == '已收费'){
+          layer.alert('收费后的处方不可更改！',{icon:7});
+          $('.dtnew:first').click();
+          return false;
+         }
+  });
+	//减药
+	$(document).on("mouseover",".jianyao",function(){
+		$(this).css('backgroundColor','rgba(183,192,200,0.5)').css('color','white');
+		$(this).click(function(){
+      var sh = $('.dtnew:first').find('td').eq(1).html();
+         if(sh == '已收费'){
+          layer.alert('收费后的处方不可更改！',{icon:7});
+          return false;
+         }
+				var nux = 0;
+			 $('.wtf').each(function(){
+			 
+			if($(this).is(":visible")){
+				nux = $(this).index();
+			}
+		});
+		var ssh = $('.dtcfli2').eq(nux).find('td').eq(1).html();
+		if(ssh == '已收费'){
+			layer.alert('已收费处方不可更改',{icon:7});
+			return false;
+		}else{
+			
+			//后面的编号排序
+			$(this).parent().parent().nextAll().find('.b1').each(function(){
+				$(this).html($(this).html()-1);
+			});
+      
+			 $(this).parent().parent().detach();
+
+			      var bid = [];
+            var num = 0;
+            $('.b1').each(function(){
+              bid[num] = $(this).html();
+              num++;
+            });
+            var nm = 0;
+            $('.ylypnm').each(function(){
+              $(this).attr('id','a'+bid[nm]);
+              nm++;
+            });
+           	var data = suan();
+               	give(data);
+		}
+			
+		});
+	}).on("mouseout",".jianyao",function(){
+		$(this).css('backgroundColor','').css('color','#FFF');
+	});
+
+		//药解
+			//药解关闭按钮
+	$('#yjtc').mouseover(function(){
+		$('#yjtc').css('backgroundColor','#F83607');
+		$('#yjtc').css('color','#FFF');
+		$('#yjtc').click(function(){
+			$(".zhezhao").css("display","none");
+			$('#yjk').slideUp();
+		});
+	}).mouseout(function(){
+		$('#yjtc').css('backgroundColor','');
+		$('#yjtc').css('color','');
+	});
+
+
+
+
+		$(document).on("dblclick",".yp3",function(){
+	var str = $(this).find('.ylypnm').val();
+	
+	if(str == '' || str == undefined){
+
+		layer.alert('亲，药品不能为空哦！',{icon:7});
+
+		return false;
+	}else{
+		$.ajax({
+			type:"post",
+			url:"{:U('Yaojie/index')}",
+			dataType:"json",
+			data:{"str":str},
+			success:function(result){
+				$('#yjk').contents().find("#drug_name").val(result[0]['drug_name']);
+				$('#yjk').contents().find("#input_code").val(result[0]['input_code']);
+				$('#yjk').contents().find("#units").val(result[0]['drug_units']);
+				$('#yjk').contents().find("#price").val(result[0]['price']);
+				$('#yjk').contents().find("#other_name").text(result[0]['other_name']);
+				$('#yjk').contents().find("#source").html(result[0]['source']);
+				$('#yjk').contents().find("#xz").html(result[0]['xz']);
+				$('#yjk').contents().find("#pz").html(result[0]['pz']);
+				$('#yjk').contents().find("#xw").html(result[0]['xw']);
+				$('#yjk').contents().find("#gj").html(result[0]['gj']);
+				$('#yjk').contents().find("#gn").html(result[0]['gn']);
+				$('#yjk').contents().find("#zz").html(result[0]['zz']);
+				$('#yjk').contents().find("#yfyl").html(result[0]['yfyl']);
+				$('#yjk').contents().find("#tsyf").html(result[0]['tsyf']);
+				$('#yjk').contents().find("#zysx").html(result[0]['zysx']);
+				$('#yjk').contents().find("#zc").html(result[0]['zc']);
+				$('#yjk').contents().find("#tsyf").html(result[0]['tsyf']);
+				$('#yjk').contents().find("#zysx").html(result[0]['zysx']);
+				$('#yjk').contents().find("#yfyl").html(result[0]['yfyl']);
+				$('#yjk').contents().find("#tsyf").html(result[0]['tsyf']);
+				$('#yjk').contents().find("#zysx").html(result[0]['zysx']);
+				$('#yjk').contents().find("#syz").html(result[0]['syz']);
+				$('#yjk').contents().find("#lcyy").html(result[0]['lcyy']);
+				$('#yjk').contents().find("#jbyy").html(result[0]['jbyy']);
+				$('#yjk').contents().find("#xdyj").html(result[0]['xdyj']);
+				$('#yjk').contents().find("#cydbf").html(result[0]['cydbf']);
+				$('#yjk').contents().find("#photo img").attr('src',result[0]['src']);
+			}
+		});
+	}
+	$('#yjk').slideDown();
+});
+		//药解结束
+
+		//右击出删除
+		$(document).on('mousedown','.zykf_yp',function(e){
+			if(3 == e.which){ 
+				 aaaid = $(this).find('.yp3').find('.ylypnm').attr('id');
+				// alert(id);
+        $('#myMenu').show().css({
+            'top':e.pageY+'px',
+            'left':e.pageX+'px'
+        });
+        e.preventDefault();
+
+          		};
+          
+		});
+			$('#myMenu').click(function(){
+          
+          		var str='#'+aaaid;
+          		// alert(str);
+          		$('.cfmx').find(str).parent().parent().find('.yp1').find('.jianyao').mouseover().click();
+          		$(this).hide();
+          	});
+		//删除药品效果
+		   $(window).click(function(){
+        $('#myMenu').hide();
+    })
+		$('#myMenu').mouseover(function(){
+			$(this).css('backgroundColor','#FE252D').css('color','#FFF');
+		}).mouseout(function(){
+			$(this).css('backgroundColor','rgba(255,255,255,0.7)').css('color','');
+		});
+	//减药结束
+	//
+	//
+	//
+	//
+	//
+	//
+		// 删除处方
+		$(document).on('mouseover','.cfcdys',function(){
+			$(this).css('backgroundColor','#EC5845').css('color','#FFF');
+			
+		}).on('mouseout','.cfcdys',function(){
+			$(this).css('backgroundColor','').css('color','#CFCFCF');
+		});
+	
+
+
+		$(document).on('click','.cfcdys',function(){
+			var sh = $('.dtnew:first').find('td').eq(1).html();
+				 if(sh == '已收费'){
+				 	layer.alert('收费后的处方不可删除！',{icon:7});
+          return false;
+				 }
+				 
+		 	var cfid = $(this).parent().parent().find('td:last').html();
+				 
+				 	$.ajax({
+				url:"{:U('Ajax/deleteCf')}",
+				type:"post",
+				data:{cfid:cfid},
+				dataType:"json",
+				success:function(data){
+
+					$('.dtcfli:first').click();
+
+					layer.alert(data,{icon:7});
+				},
+				error:function(){
+					// alert('Ajax请求失败');
+				}
+			});
+
+
+				 	// alert(nn);
+				 	$(this).parent().parent().detach();
+          if($('.dtcfli').length<1){
+            $('#xzcfall').click();
+          }
+				 // }
+		});
+
+
+
+
+	//保存处方
+	$('#abccfalj').click(function(){
+			//获取所有药品code
+			var zycode = [];
+			var num = 0;
+			$('.cfmx').find(".yincangcode").each(function(){
+         		zycode[num] = $(this).val();
+         		num+=1;
+			});
+			if(zycode.length<1){
+				layer.alert('请选择药品',{icon:7});
+				return false;
+			}
+			//获取所有证型
+			var zx = $('.cfmx').find(".zx").html();
+			//获取所有治法
+			var zf = $('.cfmx').find(".zf").html();
+			//获取所有病名
+			var bm = $('.cfmx').find(".zyname").html();
+			// 获得所有的药品用量
+			var ypkg = [];
+			var num1 = 0; 
+			$('.cfmx').find(".ypylke").each(function(){
+         		ypkg[num1] = $(this).val();
+         		num1+=1;
+			});
+			var n1 = 1;
+			$.each(ypkg,function(k,v){
+				if(v<0.1){
+					layer.alert('第'+n1+'味药的用量过小，请修改',{icon:7});
+					exit();
+				};
+				n1 = n1*1+1;
+			});
+			//获取所有单位
+			var dw = [];
+			var num9 = 0;
+			$('.cfmx').find(".dw11").each(function(){
+         		dw[num9] = $(this).html();
+         		num9+=1;
+			});
+			//获得所有的煎法
+			var num2 = 0;
+			var jianfa =[];
+			$('.cfmx').find('.jfselect').each(function(){
+         		jianfa[num2] = $(this).find("option:selected").text();
+         		num2+=1;
+			});
+			//获得剂量
+			var jiliang = $('#jlinp').val();
+			//获得医嘱
+			var yizhu = $('#yztext').val();
+			//是否为孕妇
+			var yunfu = 0;
+			if($('#yfchecked').is(':checked')){
+				yunfu = 1;//是孕妇
+			}else{
+				yunfu = 0;//不是孕妇
+			}
+			//获取所有药品名
+			var num3 = 0;
+			var yaoming = [];
+			$('.cfmx').find('.ylypnm').each(function(){
+         		yaoming[num3] = $(this).val();
+         		num3+=1;
+			});
+			var ypxuhao = [];
+			var num4 = 0;
+			$('.cfmx').find('.b1').each(function(){
+         		ypxuhao[num4] = $(this).html();
+         		num4+=1;
+			});
+			//获取处方号
+			var cfCode = $('.cfmx').find('#hiddenCode').html();
+			//获取处方名
+			var cfm = $('#ycydcfm').html();
+			var cfname = cfm;
+			//获取处方树
+			var cftree = $('#ycydcfs').html();
+			// 获取煎法用法用量
+			var jf1 = 1;
+			var jfv = $('#bcjf12').val();
+			 $('#bcjf12').children("option").each(function(){
+				if($(this).val() == jfv){
+					jf1 =  $(this).html();
+
+				}
+			});
+			var yf1 = 1;
+			var yfv = $('#bcjf13').val();
+			$('#bcjf13').children("option").each(function(){
+				if($(this).val() == yfv){
+					yf1 =  $(this).html();
+				}
+			});
+			var yl1 = 1;
+			var ylv = $('#bcjf14').val();
+			$('#bcjf14').children("option").each(function(){
+				if($(this).val() == ylv){
+					yl1 =  $(this).html();
+
+				}
+			});
+			// 保存处方
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/zyBaocun')}",
+            data:{ypxuhao:ypxuhao,zycode:zycode,yaoming:yaoming,ypkg:ypkg,jianfa:jianfa,yunfu:yunfu,jiliang:jiliang,yizhu:yizhu,cfname:cfname,cftree:cftree,dw:dw,jf1:jf1,yf1:yf1,yl1:yl1,cfm:cfm,zx:zx,zf:zf,bm:bm,cfcode:cfCode},
+            dataType:'json',
+            success:function(dd)
+            {
+              $('#hiddenCode').html(dd);
+				
+               layer.alert('保存成功！',{icon:1});
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+
+			//判断是否需要提交审核
+			if($('#xtshornot').is(':checked')){
+				// 保存处方到待审核表
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/baoSh')}",
+            data:{ypxuhao:ypxuhao,zycode:zycode,yaoming:yaoming,ypkg:ypkg,jianfa:jianfa,yunfu:yunfu,jiliang:jiliang,yizhu:yizhu,cfname:cfname,cftree:cftree,dw:dw,jf1:jf1,yf1:yf1,yl1:yl1,cfm:cfm,zx:zx,zf:zf,bm:bm,cfcode:cfCode},
+            dataType:'json',
+            success:function(dd)
+            {
+          		// alert(dd);
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+			}else{
+				// 没有勾选提交审核
+			};
+
+	});
+//保存处方结束
+
+
+
+		//医嘱勾选的框框
+		$(document).on('click','.zykf_yzmr',function(){
+			if($(this).find('input').is(':checked')){
+				$(this).css('backgroundColor','#2FBEB1').css('color','#FFF');
+			}else{
+				$(this).css('backgroundColor','#e6e6e6').css('color','#999999');
+			}
+		});
+
+		 $('#bing11').highcharts({
+        
+        
+    }); 
+
+
+    
+    $('#bing22').highcharts({
+        
+        
+    }); 
+
+    $('#wrphpic').highcharts({
+        
+    });
+
+
+
+    //药解
+    //
+    
+    $(document).on("dblclick",".yp3",function(){
+	var str = $(this).children("input[type=text]").val();
+	$(".zhezhao").css("display","block");
+	$(".zhezhao").css("filter","alpha(opacity:80)");
+	$(".zhezhao").css("opacity","0.8");
+	if(str == '' || str == undefined){
+		layer.alert('亲，药品不能为空哦！',{icon:7});
+		return false;
+	}else{
+		$.ajax({
+			type:"post",
+			url:"{:U('Yaojie/index')}",
+			dataType:"json",
+			data:{"str":str},
+			success:function(result){
+				$('#yjk').contents().find("#drug_name").val(result[0]['drug_name']);
+				$('#yjk').contents().find("#input_code").val(result[0]['input_code']);
+				$('#yjk').contents().find("#units").val(result[0]['drug_units']);
+				$('#yjk').contents().find("#price").val(result[0]['price']);
+				$('#yjk').contents().find("#other_name").text(result[0]['other_name']);
+				$('#yjk').contents().find("#source").html(result[0]['source']);
+				$('#yjk').contents().find("#xz").html(result[0]['xz']);
+				$('#yjk').contents().find("#pz").html(result[0]['pz']);
+				$('#yjk').contents().find("#xw").html(result[0]['xw']);
+				$('#yjk').contents().find("#gj").html(result[0]['gj']);
+				$('#yjk').contents().find("#gn").html(result[0]['gn']);
+				$('#yjk').contents().find("#zz").html(result[0]['zz']);
+				$('#yjk').contents().find("#yfyl").html(result[0]['yfyl']);
+				$('#yjk').contents().find("#tsyf").html(result[0]['tsyf']);
+				$('#yjk').contents().find("#zysx").html(result[0]['zysx']);
+				$('#yjk').contents().find("#zc").html(result[0]['zc']);
+				$('#yjk').contents().find("#tsyf").html(result[0]['tsyf']);
+				$('#yjk').contents().find("#zysx").html(result[0]['zysx']);
+				$('#yjk').contents().find("#yfyl").html(result[0]['yfyl']);
+				$('#yjk').contents().find("#tsyf").html(result[0]['tsyf']);
+				$('#yjk').contents().find("#zysx").html(result[0]['zysx']);
+				$('#yjk').contents().find("#syz").html(result[0]['syz']);
+				$('#yjk').contents().find("#lcyy").html(result[0]['lcyy']);
+				$('#yjk').contents().find("#jbyy").html(result[0]['jbyy']);
+				$('#yjk').contents().find("#xdyj").html(result[0]['xdyj']);
+				$('#yjk').contents().find("#cydbf").html(result[0]['cydbf']);
+				$('#yjk').contents().find("#photo img").attr('src',result[0]['src']);
+			}
+		});
+	}
+	$('#yjk').slideDown();
+});
+
+    //结束
+    //保存至经验方
+    $('#sub').click(function(){
+			 
+         
+           // 获取数据保存至经验方详情
+			//获取所有药品code
+			var zycode = [];
+			var num = 0;
+			$('.cfmx').find(".yincangcode").each(function(){
+         		zycode[num] = $(this).val();
+         		num+=1;
+			}); 
+			//获得所有的药品用量
+			var ypkg = [];
+			var num1 = 0; 
+			$('.cfmx').find(".ypylke").each(function(){
+         		ypkg[num1] = $(this).val();
+         		num1+=1;
+			});
+
+			//获取所有单位
+			var dw = [];
+			var num9 = 0;
+			$('.cfmx').find(".dw11").each(function(){
+         		dw[num9] = $(this).html();
+         		num9+=1;
+			});
+			//获得所有的煎法
+			var num2 = 0;
+			var jianfa =[];
+			$('.cfmx').find('.jfselect').each(function(){
+         		jianfa[num2] = $(this).find("option:selected").text();
+         		num2+=1;
+			}); 
+			//获取所有药品名
+			var num3 = 0;
+			var yaoming = [];
+			$('.cfmx').find('.ylypnm').each(function(){
+         		yaoming[num3] = $(this).val();
+         		num3+=1;
+			});
+			// console.log(yaoming);
+			// 获取药品序号
+			var ypxuhao = [];
+			var num4 = 0;
+			$('.cfmx').find('.b1').each(function(){
+         		ypxuhao[num4] = $(this).html();
+         		num4+=1;
+			}); 
+
+
+			var cont = $('#jycont').val();
+			var name = $('#jynamet').val();
+			 $.ajax({
+        type:"post",
+        url:"{:U('Ajax/cunJy')}",
+        data:{name:name,Attending:cont,drug_no:ypxuhao,code:zycode,zyname:yaoming,drug_units:dw,usage:jianfa,amount:ypkg},
+        success:function (data) {
+        	// console.log(data);
+        	// window.history.go(0);
+        	$('#qqqq').click();
+        	layer.alert('添加成功',{icon:7});
+        },error:function(){
+        	// alert('ajax请求失败');
+        }
+    });
+		});
+	//保存经验方结束
+    //上移下移变图片
+    $('#shangyi').mouseover(function(){
+			$(this).attr('src','__PUBLIC__/img/up_hover.png');
+		}).mouseout(function(){
+			$(this).attr('src','__PUBLIC__/img/up.png');
+		});
+		$('#xiayi').mouseover(function(){
+			$(this).attr('src','__PUBLIC__/img/down_hover.png');
+		}).mouseout(function(){
+			$(this).attr('src','__PUBLIC__/img/down.png');
+		});
+		//真正的上移下移开始
+		
+	$(document).on('focus','.ylypnm',function(){
+		var id = $(this).attr('id');
+		 ss123 = '#'+id;
+		
+		
+	});
+	
+	$('#shangyi').click(function(){
+		// alert(ss123);
+
+			var benNa = $('.cfmx').find(ss123).val();
+		var benKg = $('.cfmx').find(ss123).parent().next().find('.ypylspan').find('input').val();
+		var shangNa = $('.cfmx').find(ss123).parent().parent().prev().find('.yp3').find('.ylypnm').val();
+		var shangKg = $('.cfmx').find(ss123).parent().parent().prev().find('.yp4').find('.ypylspan').find('input').val();
+		var xiaNa = $('.cfmx').find(ss123).parent().parent().next().find('.yp3').find('.ylypnm').val();
+		var xiaKg =  $('.cfmx').find(ss123).parent().parent().next().find('.yp4').find('.ypylspan').find('input').val();
+		var benWr = $('.cfmx').find(ss123).next().val();
+		var benCode = $('.cfmx').find(ss123).next().next().val();
+		var shangWr = $('.cfmx').find(ss123).parent().parent().prev().find('.yp3').find('.ylypnm').next().val();
+		var shangCode = $('.cfmx').find(ss123).parent().parent().prev().find('.yp3').find('.ylypnm').next().next().val();
+		if(shangNa){
+
+				$('.cfmx').find(ss123).val(shangNa);
+				$('.cfmx').find(ss123).parent().next().find('.ypylspan').find('input').val(shangKg);
+				$('.cfmx').find(ss123).parent().parent().prev().find('.yp3').find('.ylypnm').val(benNa);
+				$('.cfmx').find(ss123).parent().parent().prev().find('.yp4').find('.ypylspan').find('input').val(benKg);
+				$('.cfmx').find(ss123).next().val(shangWr);
+				$('.cfmx').find(ss123).next().next().val(shangCode);
+				$('.cfmx').find(ss123).parent().parent().prev().find('.yp3').find('.ylypnm').next().val(benWr);
+				$('.cfmx').find(ss123).parent().parent().prev().find('.yp3').find('.ylypnm').next().next().val(benCode);
+				var aa = ss123.split('a');
+				var bb = aa[1];
+				var cc = bb-1;
+				var dd = '#a'+cc;
+				ss123 = dd;
+        $('.cfmx').find(ss123).parent().parent().attr('class','zykf_yp zykf_yp2');
+        $('.zykf_yp').not($('.cfmx').find(ss123).parent().parent()).attr('class','zykf_yp');
+			}else{
+				layer.alert('已经是第一味药了',{icon:7});
+			}
+				
+		
+			
+		});
+		$('#xiayi').click(function(){
+				
+			
+			var benNa = $('.cfmx').find(ss123).val();
+		var benKg = $('.cfmx').find(ss123).parent().next().find('.ypylspan').find('input').val();
+		var shangNa = $('.cfmx').find(ss123).parent().parent().prev().find('.yp3').find('.ylypnm').val();
+		var shangKg = $('.cfmx').find(ss123).parent().parent().prev().find('.yp4').find('.ypylspan').find('input').val();
+		var xiaNa = $('.cfmx').find(ss123).parent().parent().next().find('.yp3').find('.ylypnm').val();
+		var xiaKg =  $('.cfmx').find(ss123).parent().parent().next().find('.yp4').find('.ypylspan').find('input').val();
+		var benWr = $('.cfmx').find(ss123).next().val();
+		var benCode = $('.cfmx').find(ss123).next().next().val();
+		var xiaWr = $('.cfmx').find(ss123).parent().parent().next().find('.yp3').find('.ylypnm').next().val();
+		var xiaCode = $('.cfmx').find(ss123).parent().parent().next().find('.yp3').find('.ylypnm').next().next().val();
+		if(xiaNa){
+			$('.cfmx').find(ss123).val(xiaNa);
+				$('.cfmx').find(ss123).parent().next().find('.ypylspan').find('input').val(xiaKg);
+				$('.cfmx').find(ss123).parent().parent().next().find('.yp3').find('.ylypnm').val(benNa);
+				$('.cfmx').find(ss123).parent().parent().next().find('.yp4').find('.ypylspan').find('input').val(benKg);
+
+				$('.cfmx').find(ss123).next().val(xiaWr);
+				$('.cfmx').find(ss123).next().next().val(xiaCode);
+				$('.cfmx').find(ss123).parent().parent().next().find('.yp3').find('.ylypnm').next().val(benWr);
+				$('.cfmx').find(ss123).parent().parent().next().find('.yp3').find('.ylypnm').next().next().val(benCode);
+				var aa = ss123.split('a');
+				var bb = aa[1];
+				var cc = bb*1+1;
+				var dd = '#a'+cc;
+				ss123 = dd;
+        $('.cfmx').find(ss123).parent().parent().attr('class','zykf_yp zykf_yp2');
+        $('.zykf_yp').not($('.cfmx').find(ss123).parent().parent()).attr('class','zykf_yp');
+				// alert(ss123);
+			}else{
+				layer.alert('已经是最后一味药了',{icon:7});
+			}
+				
+			
+			
+		});
+		//上移下移结束
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		// 选择药品
+		$(document).on("input",".ylypnm",function(){
+      var pd = $('.dtnew:first').find('td').eq(1).html();
+      if(pd == '已收费'){
+         layer.alert('已收费处方不可修改');
+         $('.dtnew:first').click();
+         return false;
+      }
+			numb = 0;
+			$('#zykf_cxypk').scrollTop(0);
+			fangid = $(this).attr('id');
+				// var top = $(this).offset().top 
+				// var left = $(this).offset().left
+				// var winhei = document.body.clientHeight;
+				// var winh = winhei/2;
+				// if(top>winh){
+				// 	top=top-270;
+				// }
+				// top = top+50;
+				// left = left+100;
+				// $('#zykf_cxypk').css('top',top+'px');
+				// $('#zykf_cxypk').css('left',left+'px');
+
+				var val = $(this).val();
+					if(val.length<1){
+						$('#zykf_cxypk').fadeOut();
+					}else{
+						$.ajax({
+            type:'POST',
+            url:"{:U('Kaifang/jingYanajax2')}",
+            data:{str:val},
+            dataType:'json',
+            success:function(dd)
+            {
+                // var str = '<ul>';
+                // $.each(dd,function(idx,item){
+                // //输出
+                // // alert(item.id+"号："+item.name);
+              		// str += '<li class="zydrugLi">'+item.drug_name+'</li>';
+                // });
+                // str += '</ul>';
+               // $('#zykf_cxypk').html(str);
+               var str = '<table width="100%"><tr style="background-color:#E2ECF8; font-weight:bold;"><td style="border-right:1px solid #CCCCFF;width:40%;">名称</td><td style="border-right:1px solid #CCCCFF;width:20%;">性味</td><td style="width:40%;">别名</td><td style="display:none;">code</td></tr>';
+               $.each(dd,function(idx,item){
+               	str+='<tr class="zydrugLi" style="border-bottom:1px solid #CCCCFF;"><td style="border-right:1px solid #CCCCFF;">'+item.name+'</td><td style="border-right:1px solid #CCCCFF;">'+item.xw+'</td><td>'+item.other_name+'</td><td style="display:none;">'+item.code+'</td></tr>';
+               });
+               	str+='</table>';
+               	$('#zykf_cxypk').html(str);
+               	$('.zydrugLi:first').css('backgroundColor','#80B0E2').css('color','#fff');
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        });
+
+
+				$('#zykf_cxypk').fadeIn(function(){
+					$('.zydrugLi:first').css('backgroundColor','#80B0E2').css('color','#fff');
+				});
+				$(this).blur(function(){
+				$('#zykf_cxypk').fadeOut();
+			});
+					}
+			});
+		$(document).on('focus','.ylypnm',function(){
+			numb = 0;
+		});
+
+			//li的鼠标移入移出
+		$(document).on('mouseover','.zydrugLi',function(){
+			$(this).css('backgroundColor','#80B0E2');
+			$(this).css('color','#FFF');
+			
+		}).on('mouseout','.zydrugLi',function(){
+			$(this).css('backgroundColor','');
+			$(this).css('color','');
+		});
+
+		//中药li的点击
+		//点击
+		$(document).on('click','.zydrugLi',function(){
+
+				var cod = $(this).find('td').eq(3).html();
+				var nam = $(this).find('td').eq(0).html();
+				var othnm = $(this).find('td').eq(2).html();
+				if(othnm.length>0){
+					nam = othnm;
+				}
+				var num3 = 0;
+			var yaoming = [];
+			$('.cfmx').find('.ylypnm').each(function(){
+         		yaoming[num3] = $(this).val();
+         		num3+=1;
+			});
+			if($.inArray(nam,yaoming)>-1){
+				$('.ypylke').blur();
+				// $('#zykf_cxypk').html('');
+				var aaa = '#'+fangid;
+				 
+				layer.alert('不能添加相同药品哦',{icon:7});
+				$('.cfmx').find(aaa).val('');
+				$('.cfmx').find(aaa).focus();
+				return false;
+			};
+				var sss = '#'+fangid;
+				$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/jia')}",
+            data:{val:cod},
+            dataType:'json',
+            success:function(dd)
+            {
+               var code = dd.drug_code;
+               var wrp = dd.xw1;
+              $('.cfmx').find(sss).next('input').val(wrp);
+              $('.cfmx').find(sss).next('input').next('input').val(code);
+              	var data = suan();
+               	give(data);
+               	$('#zykf_cxypk').html('');
+
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        });
+				$('.cfmx').find(sss).val(nam);
+				setOp();
+			});
+
+
+
+    //全选
+    $('#allche').click(function(){
+    	if($('#qxche').is(':checked')){
+			$('.cfmx').find('input:checkbox').prop('checked','checked');
+		}else{
+			$('.cfmx').find('input:checkbox').prop('checked',false);
+		}
+    });
+
+      //提交审核处理
+    $('#xtshornot').click(function(){
+    	if($('#xtshornot').is(':checked')){
+			$('#shalj').attr('disabled','disabled');
+		}else{
+			$('#shalj').attr('disabled',false);
+		}
+    });
+
+
+    //历史处方li
+     $(document).on('mouseover','.sty1',function(){
+			$(this).css('backgroundColor','#57B4CF');
+			$(this).css('color','#fff');
+			// $('.xzcfinput').css('color','#000');
+		}).on('mouseout','.sty1',function(){
+			$(this).css('backgroundColor','');
+			$(this).css('color','');
+		}).on('click','.sty1',function(){
+			var code = $(this).find('td:first').html();
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/cfDetail')}",
+            data:{code:code},
+            dataType:'json',
+            success:function(dd)
+            {
+            	console.log(dd);
+            	var str = '';
+            
+               
+               	$.each(dd,function(idx,item){
+               		str += '<div class="zykf_yp"><div class="yp1"><b class="b1">'+item.row_number+'</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect"><php>for($y=0;$y<count($jianlist);$y++){echo "<option>".$jianlist[$y][name]."</option>";}</php></select></div><div class="yp3"><input type="text" value="'+item.drug_name+'"class="ylypnm" disabled="disabled"><input type="hidden" value="'+item.xw1+'" class="wrphhid"><input type="hidden" class="yincangcode" value="'+item.code+'"></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="'+item.amount+'" class="ypylke">'+item.drug_units+'</span></div></div>';
+                });
+                str += '<div id="hiddenCode" style="display:none;">'+code+'</div>';
+             
+               	$('.cfmx').html(str);
+               	$('#yztext').val(dd[0]['yz']);
+               
+               	var data = suan();
+               	give(data);
+               	// $('#ycydcfm').html(cfm);
+               	// $('#ycydcfs').html(tree);
+            },
+            error:function()
+            {
+              
+            }
+        });
+		}).on('dblclick','.sty1',function(){
+			var codea = '';
+			//弄一个新的ID
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/getId')}",
+            data:{cfcode:11},
+            dataType:'json',
+            success:function(dd)
+            {
+            	codea = dd;
+            }});
+			var drugNum=$(this).find('td:first').html();
+		var r=confirm("您确定要复制当前处方？");
+		if(r){
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/sjFuzhi')}",
+            data:{cfh:drugNum},
+            dataType:'json',
+            success:function(dd)
+            {
+            	
+            	var sel = $('#hidsel').html();
+               $('.dtcfli:first').before('<tr class="dtcfli"><td><span>'+dd[0]['presc_name']+'</span></td><td>未审核</td><td><span class="cfcdys">X</span></td><td style="display:none;"></td><td style="display:none;">'+codea+'</td></tr>');
+               $('.dtcfli:first').find('td:first').html(dd[0]['presc_name']);
+               $('.dtcfli:first').attr('class','dtcfli dtnew');
+               $('#ycydcfm').html(dd[0]['presc_name']);
+			$('.dtcfli').not($('.dtcfli:first')).attr('class','dtcfli');
+               var str = '';
+
+               $.each(dd,function(idx,item){
+              		str += '<div class="zykf_yp"><div class="yp1"><b class="b1">'+item.row_number+'</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect">'+sel+'</select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+item.row_number+'"value="'+item.drug_name+'"><input type="hidden" value="'+item.xw1+'" class="wrphhid"><input type="hidden" class="yincangcode" value="'+item.drug_code+'"></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="'+item.amount+'" class="ypylke">'+item.drug_units+'</span></div></div>';
+                });
+              	$('.cfmx').html(str);
+              	$('#abccfalj').click();
+              	
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+		}
+		});
+		$(document).on('focus','.jfselect1',function(){
+			$(this).html($('#hidsel').html());
+			$(this).attr('class','jfselect');
+		});
+    //dtcfli移入移出
+    $(document).on('mouseover','.dtcfli',function(){
+			$(this).css('backgroundColor','#57B4CF');
+			$(this).css('color','#fff');
+			// $('.xzcfinput').css('color','#000');
+		}).on('mouseout','.dtcfli',function(){
+			$(this).css('backgroundColor','');
+			$(this).css('color','');
+		}).on('click','.dtcfli',function(){
+      var cls = $(this).find('td').eq(1).html();
+      if(cls == '已收费'){
+        $('#abccfalj').attr('disabled','disabled');
+        $('#shalj').attr('disabled','disabled');
+        $('#wsygxyz').attr('disabled','disabled');
+        $('#make').attr('disabled','disabled');
+        
+      }else{
+        $('#abccfalj').attr('disabled',false);
+        $('#shalj').attr('disabled',false);
+        $('#wsygxyz').attr('disabled',false);
+        $('#make').attr('disabled',false);
+      }
+
+			$(this).attr('class','dtcfli dtnew');
+			$('.dtcfli').not($(this)).attr('class','dtcfli');
+			var cfh = $(this).find('td:last').html();
+			var cfm = $(this).find('td:first').find('span').html();
+			var tree = $(this).find('td:last').prev().html();
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/cfDetail')}",
+            data:{code:cfh},
+            dataType:'json',
+            success:function(dd)
+            {
+            
+            	// console.log(dd);
+            	var str = '';
+               // console.log(dd);
+               if(dd[0]['code']){
+               
+               	$.each(dd,function(idx,item){
+               		if(!item.usage){
+               			item.usage='';
+               		}else{
+               			if(item.usage>0){
+               				item.usage='';
+               			}
+               		}
+               		str += '<div class="zykf_yp"><div class="yp1"><b class="b1">'+item.row_number+'</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect1 jfselect"><option>'+item.usage+'</option></select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+item.row_number+'"value="'+item.drug_name+'"><input type="hidden" value="'+item.xw1+'" class="wrphhid"><input type="hidden" class="yincangcode" value="'+item.code+'"></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="'+item.amount+'" class="ypylke"><span class="dw11">'+item.drug_units+'</span></span></div></div>';
+                });
+                str += '<div id="hiddenCode" style="display:none;">'+cfh+'</div>';
+               }else{
+               		str = '<div id="hiddenCode" style="display:none;">'+cfh+'</div>';
+               }
+              
+               	$('.cfmx').html(str);
+               	$('#yztext').val(dd[0]['yz']);
+               	// alert(dd[0]['yz']);
+               	$(window).click();
+               	$('#ycydcfm').html(cfm);
+               	$('#ycydcfs').html(tree);
+               
+               	var data = suan();
+               	give(data);
+                  //一进来比例体重弄个数组
+
+     $('.ypylke').each(function(){
+        hiskg23[nn23] = $(this).val();
+        nn23++;
+    });
+
+            },
+            error:function()
+            {
+               // alert('Ajax请求失败');
+            }
+        });
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/szjj')}",
+            data:{tree:tree},
+            dataType:'json',
+            success:function(dd)
+            {
+               console.log(dd);
+               var str = '';
+              $.each(dd,function(){
+              	if($(this)[0]==999){
+              		str+='';
+              	}else{
+              		str += '<h4>'+$(this)[0]['szz']+'</h4>'+$(this)[0]['jjxx']+'</p>'
+              	}
+                  
+              });
+             $('.szjjleft').html(str);
+              	 	 var ll = $('.szjjleft').html().length;
+
+		
+		 // if(ll>0){
+		 // 	$('#fllowSz').slideDown();
+		 // }else{
+		 // 	$('#fllowSz').hide();
+		 // }
+         
+            },
+            error:function()
+            {
+               
+            }
+        });
+	});
+		$('.dtcfli:first').click();
+
+	//双击修改处方名
+	$(document).on('mousedown','.dtcfli',function(e){
+     if (3 == e.which) {
+      var val = $(this).find('td:first').find('span').html();
+    
+    $('#cf_name').val(val);
+    $('#hideYYY').click();
+    }
+		
+	});
+	$('#cf_nameqd').click(function(){
+		var valne = $('#cf_name').val();
+		$('#ycydcfm').html(valne);
+		$('.dtnew:first').find('td:first').find('span').html(valne);
+		$('.dtnew:first').find('td:first').attr('title',valne);
+	});
+	//用药比例
+
+		$('#jdfgb1').mouseover(function(){
+		$('#jdfgb1').css('backgroundColor','#F83607');
+		$('#jdfgb1').css('color','#FFF');
+		$('#jdfgb1').click(function(){
+			$('#qujdfdiv').slideUp();
+		});
+	}).mouseout(function(){
+		$('#yjtc').css('backgroundColor','');
+		$('#yjtc').css('color','#CCC');
+	});
+
+		$('#yyblalj9').click(function(){
+	 
+//   		//把那俩弄成空的
+//   		$('#czcfhmd').html('');
+//   		$('#xtypxdi').html('');
+//   		$('#btypxdi').html('');
+//   		setHop2([]);
+//      // 获取药品名
+//      var zyname = [];
+//      var num3 = 0;
+//    			$('.cfmx').find(".ylypnm").each(function(){
+//          		zyname[num3] = $(this).val();
+//          		num3+=1;
+// 			});
+// 			  // 获取温热平寒
+//      var zywrph = [];
+//      var num5 = 0;
+//    			$('.cfmx').find(".wrphhid").each(function(){
+//          		zywrph[num5] = $(this).val();
+//          		num5+=1;
+// 			});
+// 			// alert(zywrph);
+// 			//全局变量存code
+// 			zycode123 = [];
+//     	 	var num = 0;
+//    			$('.cfmx').find(".yincangcode").each(function(){
+//          		zycode123[num] = $(this).val();
+//          		num+=1;
+// 			});
+// 			var arrname = zyname;
+//    			var str = zyname.join(',');
+   		
+//    		$('#grcfxdiv').html(str);
+   		
+//           var zywrph100 = [];
+//      var num100 = 0;
+//    			$('.cfmx').find(".wrphhid").each(function(){
+//          		zywrph100[num100] = $(this).val();
+//          		num100+=1;
+// 			});
+// setHop(zywrph100);
+ // 获取药品名
+     var zyname = [];
+     var num3 = 0;
+         $('.cfmx').find(".ylypnm").each(function(){
+             zyname[num3] = $(this).val();
+             num3+=1;
+     });
+       // 获取温热平寒
+     var zywrph = [];
+     var num5 = 0;
+         $('.cfmx').find(".wrphhid").each(function(){
+             zywrph[num5] = $(this).val();
+             num5+=1;
+     });
+     // alert(zywrph);
+     //全局变量存code
+     var zycode123 = [];
+       var num = 0;
+         $('.cfmx').find(".yincangcode").each(function(){
+             zycode123[num] = $(this).val();
+             num+=1;
+     });
+         var a = [];
+    $(this).attr("href",'{:U("Index/blView")}'+'?name='+zyname+'&code='+zycode123+'&wrph='+zywrph);
+  		
+	});
+	//参照处方
+	$('#czcfxdiv').mouseover(function(){
+		$(this).css('backgroundColor','#345075').css('color','#fff');
+		$(this).click(function(){
+			$('#czcfhmd').html('');
+  			$('#xtypxdi').html('');
+  			$('#btypxdi').html('');
+  			setHop2([]);
+			$('#qujdfdiv').slideDown();
+			$('#zbzdjsm').focus();
+		});
+	}).mouseout(function(){
+		$(this).css('backgroundColor','');
+		$(this).css('color','');
+	});
+	$('#zbzdjsm').bind('input propertychange',function(){
+    		var val = $(this).val();
+    		// alert(val);
+    		$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/jdSel')}",
+            data:{val:val},
+            dataType:'json',
+            success:function(dd)
+            {
+
+            	var str = '';
+            	$.each(dd,function(idx,item){
+              		str += '<tr class="qjdftr"><td>'+item.name+'<input type="hidden" class="hideTree" value="'+item.tree+'"></td></tr>';
+                });
+                $('#qjdfcontent').html(str);
+
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+     });
+	//取经典方tr
+	$(document).on('mouseover','.qjdftr',function(){
+		$(this).css('backgroundColor','#649EEA');
+		$(this).css('color','#FFF');
+		
+	}).on('mouseout','.qjdftr',function(){
+		$(this).css('backgroundColor','');
+		$(this).css('color','');
+	});
+
+	//点击参照的处方
+	$(document).on('click','.qjdftr',function(){
+
+			var tree = $(this).find('input').val();
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/jdOne')}",
+            data:{tree:tree},
+            dataType:'json',
+            success:function(dd)
+            {
+                // console.log(dd);
+                var wrph = [];
+                //取过来的经典方，温热平寒数组
+                 $.each(dd,function(idx,item){
+              		wrph.push(item.xw1);
+                });
+                 setHop2(wrph);
+                var str1 = [];
+                $.each(dd,function(idx,item){
+              		str1.push(item.drug_name);
+                });
+                var sstr = str1.join(',');
+                //经典code
+                var jdcode = [];
+                $.each(dd,function(idx,item){
+              		jdcode.push(item.drug_code);
+                });
+                //结束
+                $('#czcfhmd').html(sstr);
+                //放到PHP不同
+                $.ajax({
+            type:'POST',
+            url:"{:U('Ajax/sameDif')}",
+            data:{aa:zycode123,bb:jdcode},
+            dataType:'json',
+            success:function(dd)
+            {
+            	$('#qujdfdiv').slideUp();
+            	// console.log(dd);
+            	var btstr = '';
+            	$.each(dd,function(k,v){
+            		btstr+=v.drug_name+',';
+            	});
+            	// var nes = dd.join(',');
+            	$('#btypxdi').html(btstr);
+            	
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+                //结束
+                //第三个ajax，看相同
+            		$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/diffSam')}",
+            data:{cc:zycode123,dd:jdcode},
+            dataType:'json',
+            success:function(dd)
+            {
+            	// console.log(dd);
+            		var xtstr = '';
+            	$.each(dd,function(k,v){
+            		xtstr+=v.drug_name+',';
+            	});
+            	$('#xtypxdi').html(xtstr);
+            	$('#qujdfdiv').slideUp();
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+            	//结束3
+
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        });
+	});
+
+
+		//审核
+		$('#shalj').click(function(){
+      $('#yfsyyp').hide();
+      $('#ddymymb').show();
+      $('#mmb').hide();
+			$('#foo').show();
+			$('#shzh3').show();
+			$('#ystjan').attr('disabled','disabled');
+			$('#yfjyypbrtgshoo').hide();
+			$('#ydypjc').hide();
+			$('#tlcbyp').hide();
+			$('#yfjyyp').hide();
+			$('#yfsyys').hide();
+			$('#pwjjw').hide();
+			$('#pwjjf').hide();
+			$('#sbfsjw').html('');
+			$('#tfsy').html('');
+			$('#ysjy').html('');
+			$('#ypcb').html('');
+			$('#dxs').html('');
+			$('#yfsy').hide();
+			$('#yfjy').hide();
+			//获取所有药品code
+			var zycode = [];
+			var num3 = 0;
+			var nua = 0;
+			var ypname = [];
+			var ypkg = [];
+			var ypcode = [];
+			var num = 0;
+		
+			var len = $('.dtcfli2').length;
+			var ber = nua-len;
+			var bao = $('#tableid').find('tr').eq(nua).find('td').eq(2).html();
+			var sh = $('#tableid').find('tr').eq(nua).find('td').eq(1).html();
+      
+			if(bao == '未保存'){
+				layer.alert('请您先保存处方！',{icon:7});
+				return false;
+			}else if(sh == '已审核'){
+				layer.alert('该处方已通过审核',{icon:7});
+				return false;
+			}else{
+				$('.cfmx').find(".yincangcode").each(function(){
+         		zycode[num3] = $(this).val();
+         		num3+=1;
+			});
+			$('.cfmx').find(".ylypnm").each(function(){
+				ypname[num] = $(this).val();
+				num+=1;
+			});
+			var num1 = 0;
+			$('.cfmx').find(".ypylke").each(function(){
+				ypkg[num1] = $(this).val();
+				num1+=1;
+			});
+			var num2 = 0;
+			$('.cfmx').find(".yincangcode").each(function(){
+				ypcode[num2] = $(this).val();
+				num2+=1;
+			});
+			
+			var yunfu = 0;//0为不是孕妇
+			if($('#yfchecked').is(':checked')){
+				yunfu = 1;
+			}else{
+				yunfu = 0;
+			}
+      var strdd = '<table width="100%" border="1" style="text-align:center;"><tr><td><b>药品</b></td><td><b>用量</b></td></tr>';
+      for (var o = 0 ; o < ypname.length; o++) {
+        strdd += '<tr><td>'+ypname[o]+'</td><td>'+ypkg[o]+'克</td></tr>';
+      }
+      strdd += '</table>';
+      $('#mmb').html(strdd);
+			
+			if(yunfu == 0){
+				$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/women12')}",
+            data:{val:ypcode,'ypyl':ypkg},
+            dataType:'json',
+            success:function(dd)
+            {
+              if(dd['two']>0){
+                $('#ddymymb').show();
+                $('#mmb').hide();
+              }else{
+                $('#mmb').show();
+                $('#ddymymb').hide();
+              };
+            	$('#foo').hide();
+            	$('#shzh3').hide();
+            	$('#ystjan').attr('disabled',false);
+                //反胃
+                var strf = '';
+            	var strw = '';
+            	var arr = [];
+            	 $.each(dd['fw'],function(idx,item){
+               		if($.inArray(item.id,arr) == -1){
+               			arr.push(item.id);
+               			if(item.lx == 1){
+               				$('#pwjjf').show();
+               				var yp1 = $("input[type='hidden'][value="+item.yp1+"]").prev().prev().val();
+               				var xh1 = $("input[type='hidden'][value="+item.yp1+"]").parent().prev().prev().find('.b1').html();
+               				var xh2 = $("input[type='hidden'][value="+item.yp2+"]").parent().prev().prev().find('.b1').html();
+               				var yp2 = $("input[type='hidden'][value="+item.yp2+"]").prev().prev().val();
+               				strf += '第'+xh1+'味药【'+yp1+'】与第'+xh2+'味药【'+yp2+'】是反药<br/>';
+               			}else if(item.lx == 2){
+               				$('#pwjjw').show();
+               				var xh1 = $("input[type='hidden'][value="+item.yp1+"]").parent().prev().prev().find('.b1').html();
+               				var xh2 = $("input[type='hidden'][value="+item.yp2+"]").parent().prev().prev().find('.b1').html();
+               				var yp1 = $("input[type='hidden'][value="+item.yp1+"]").prev().prev().val();
+               				var yp2 = $("input[type='hidden'][value="+item.yp2+"]").prev().prev().val();
+               				strw += '第'+xh1+'味药【'+yp1+'】与第'+xh2+'味药【'+yp2+'】是畏药<br/>';
+               			}else{
+               				var xh1 = $("input[type='hidden'][value="+item.yp1+"]").parent().prev().prev().find('.b1').html();
+               				var xh2 = $("input[type='hidden'][value="+item.yp2+"]").parent().prev().prev().find('.b1').html();
+               				var yp1 = $("input[type='hidden'][value="+item.yp1+"]").prev().prev().val();
+               				var yp2 = $("input[type='hidden'][value="+item.yp2+"]").prev().prev().val();
+               				// str += '第'+xh1+'味药'+yp1+'与第'+xh2+'味药'+yp2+'有冲突<br/>';
+               			}
+
+               		};
+
+                });
+            	$('#pwjjf1').html(strf);
+            	$('#pwjjw1').html(strw);
+            	//超量
+            	if(dd['over'].length>0){
+						$("#ylcbyp").show();
+						$("#ylcbyp1").html(dd['over']);
+					}else{
+						$("#ylcbyp").hide();
+					}
+            	//有毒
+            	var str2 = '';
+					 $.each(dd['du'],function(idx,item){
+               			// var dx = '';
+               				var xh1 = 0;
+               			if(item.dx == 1){
+               				$('#ydypjc').show();
+               				xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+               				str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>有毒</td><td>'+item.zysx+'</td></tr>';
+               			}else if(item.dx == 2){
+               				$('#ydypjc').show();
+               				xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+               				str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>小毒</td><td>'+item.zysx+'</td></tr>';
+               			}else if(item.dx == 3){
+               				$('#ydypjc').show();
+               				xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+               				str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>大毒</td><td>'+item.zysx+'</td></tr>';
+               			}else if(item.dx == 4){
+               				$('#ydypjc').show();
+               				xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+               				str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>剧毒</td><td>'+item.zysx+'</td></tr>';
+               			}
+               		 });
+               		 $('.deltr1').detach();
+               		 $('#ydypjc1').after(str2);
+
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        		});
+			}else{
+				$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/women')}",
+            data:{val:ypcode,'ypyl':ypkg},
+            dataType:'json',
+            success:function(dd)
+            {
+              if(dd['two']>0){
+                $('#ddymymb').show();
+                $('#mmb').hide();
+              }else{
+                $('#mmb').show();
+                $('#ddymymb').hide();
+              };
+            	$('#shzh3').hide();
+            	$('#foo').hide();
+            	if(dd['jy']<1){
+            		$('#ystjan').attr('disabled',false);
+            	}else{
+            		$('#ystjan').attr('disabled','disabled');
+            	};
+            	//孕妇
+            	var xh = 0;
+            	
+            	var yfsy = '';
+            	var yfjy = '';
+                $.each(dd['women'],function(idx,item){
+                	
+               		// alert(item.drug_name+item.pregnant_women);
+               		if(item.bz == '慎用'){
+               			
+            			$('#yfsyyp').show();
+               			
+               			xh = $("input[type='hidden'][value="+item.xxdm+"]").parent().prev().prev().find('.b1').html();
+               			$('#yfsy').show();
+               			yfsy+='第'+xh+'味药【'+item.xxmc+'】，';
+               		}else if(item.bz == '禁用'){
+
+               			$('#yfjyypbrtgshoo').show();
+               			$('#yfjyyp').show();
+               			
+               			
+               			$('#yfjy').show();
+               			xh = $("input[type='hidden'][value="+item.xxdm+"]").parent().prev().prev().find('.b1').html();
+               			yfjy+='第'+xh+'味药【'+item.xxmc+'】，';
+               			
+               		}else{
+               			// 无
+               		}
+                });
+                yfsy+='为孕妇慎用药品';
+                yfjy+='为孕妇禁用药品';
+                $('#yfsyyp1').html(yfsy);
+                $('#yfjyyp1').html(yfjy);
+                //反胃
+                var strf = '';
+            	var strw = '';
+            	var arr = [];
+            	 $.each(dd['fw'],function(idx,item){
+               		if($.inArray(item.id,arr) == -1){
+               			arr.push(item.id);
+               			if(item.lx == 1){
+               				$('#pwjjf').show();
+               				var yp1 = $("input[type='hidden'][value="+item.yp1+"]").prev().prev().val();
+               				var xh1 = $("input[type='hidden'][value="+item.yp1+"]").parent().prev().prev().find('.b1').html();
+               				var xh2 = $("input[type='hidden'][value="+item.yp2+"]").parent().prev().prev().find('.b1').html();
+               				var yp2 = $("input[type='hidden'][value="+item.yp2+"]").prev().prev().val();
+               				strf += '第'+xh1+'味药【'+yp1+'】与第'+xh2+'味药【'+yp2+'】是反药<br/>';
+               			}else if(item.lx == 2){
+               				$('#pwjjw').show();
+               				var xh1 = $("input[type='hidden'][value="+item.yp1+"]").parent().prev().prev().find('.b1').html();
+               				var xh2 = $("input[type='hidden'][value="+item.yp2+"]").parent().prev().prev().find('.b1').html();
+               				var yp1 = $("input[type='hidden'][value="+item.yp1+"]").prev().prev().val();
+               				var yp2 = $("input[type='hidden'][value="+item.yp2+"]").prev().prev().val();
+               				strw += '第'+xh1+'味药【'+yp1+'】与第'+xh2+'味药【'+yp2+'】是畏药<br/>';
+               			}else{
+               				var xh1 = $("input[type='hidden'][value="+item.yp1+"]").parent().prev().prev().find('.b1').html();
+               				var xh2 = $("input[type='hidden'][value="+item.yp2+"]").parent().prev().prev().find('.b1').html();
+               				var yp1 = $("input[type='hidden'][value="+item.yp1+"]").prev().prev().val();
+               				var yp2 = $("input[type='hidden'][value="+item.yp2+"]").prev().prev().val();
+               				// str += '第'+xh1+'味药'+yp1+'与第'+xh2+'味药'+yp2+'有冲突<br/>';
+               			}
+
+               		};
+
+                });
+            	$('#pwjjf1').html(strf);
+            	$('#pwjjw1').html(strw);
+              //超量
+              if(dd['over'].length>0){
+            $("#ylcbyp").show();
+            $("#ylcbyp1").html(dd['over']);
+          }else{
+            $("#ylcbyp").hide();
+          }
+            	 //有毒
+              var str2 = '';
+           $.each(dd['du'],function(idx,item){
+                    // var dx = '';
+                      var xh1 = 0;
+                    if(item.dx == 1){
+                      $('#ydypjc').show();
+                      xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+                      str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>有毒</td><td>'+item.zysx+'</td></tr>';
+                    }else if(item.dx == 2){
+                      $('#ydypjc').show();
+                      xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+                      str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>小毒</td><td>'+item.zysx+'</td></tr>';
+                    }else if(item.dx == 3){
+                      $('#ydypjc').show();
+                      xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+                      str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>大毒</td><td>'+item.zysx+'</td></tr>';
+                    }else if(item.dx == 4){
+                      $('#ydypjc').show();
+                      xh1 = $("input[type='hidden'][value="+item.code+"]").parent().prev().prev().find('.b1').html();
+
+                      str2+='<tr class="deltr1"><td>'+item.drug_name+'</td><td>剧毒</td><td>'+item.zysx+'</td></tr>';
+                    }
+                   });
+                   $('.deltr1').detach();
+                   $('#ydypjc1').after(str2);
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        		});
+			}
+
+			}
+		});
+
+		//预审通过
+		$('#ystjan').click(function(){
+		
+		
+			var code1 = $('#hiddenCode').html();
+			// alert(newnu);
+			$('#gbgbgbb').click();
+			//alert($('#hiddenCode').html());
+			$.ajax({
+				url:"{:U('Ajax/shenhe')}",
+				type:"post",
+				data:{'code':code1},
+				dataType:"json",
+				success:function(data){
+					layer.alert(data,{icon:1});
+					
+					$('.dtnew:first').find('td').eq(1).html('已审核');
+					$('#gbgbgbb').click();
+				}
+			})
+		});
+		//审核结束
+
+});
+	
+</script>
+<script>
+$(".titp").click(function(){
+	$(this).next(".xwgjdl").slideToggle(300).siblings(".xwgjdl").slideUp(300);
+});
+$(".xwgjdl dt").click(function(){
+	$(this).next(".xwgjul").toggle();
+	$(this).next(".gjul").toggle();
+});
+$(".gjul li").click(function(){
+	$(this).next(".lastul").toggle();
+});
+</script>
+<script>
+function apds(con){
+	var id=con.id;
+  var sh = $('.dtnew:first').find('td').eq(1).html();
+         if(sh == '已收费'){
+          layer.alert('收费后的处方不可更改！',{icon:7});
+          return false;
+         }
+	if($(con).is(':checked')){
+		$.ajax({
+			type:"post",
+			url:"__CONTROLLER__/apds",
+			dataType:"json",
+			data:{"code":id},
+			success:function(e){
+				var code=e[0]['drug_code'];
+				var name=e[0]['drug_name'];
+				var xw1=e[0]['xw1'];
+				var nua = 0;
+			
+				if($('.cfmx').find('.b1').length<1){
+				 var number = 0;
+				}else{	 
+				 var number = $('.cfmx').find('.b1:last').html();
+				}
+				 // alert(number);
+				 var num = number*1+1;
+				// alert(code+name+xw1);
+				var sss = $('.jfselect').eq(0).html();
+				if(!sss){
+					sss = '';
+				}
+				var num3 = 0;
+			var yaoming = [];
+			$('.cfmx').find('.yincangcode').each(function(){
+         		yaoming[num3] = $(this).val();
+         		num3+=1;
+			});
+			var nam = name;
+			if($.inArray(code,yaoming)>-1){
+				layer.alert('不能添加相同药品哦',{icon:7});
+				return false;
+			};
+				var str = '<div class="zykf_yp" name="'+name+'"><div class="yp1"><b class="b1">'+num+'</b><span class="jianyao" title="减药"></span></div><div class="yp2"><select class="jfselect1 jfselect">'+sss+'</select></div><div class="yp3"><input type="text" name="ylypm" class="ylypnm" id="'+'a'+num+'"value="'+name+'"><input type="hidden" value="'+xw1+'" class="wrphhid"><input type="hidden" class="yincangcode" value="'+code+'"></div><div class="yp4"><input type="checkbox" name="xuanzeyp" class="xzypche"><span class="ypylspan"><input type="text" name="ypyongliang" value="0.00" class="ypylke">'+'克'+'</span></div></div>';
+				$('.zykf_yp:last').after(str);
+				$('.ylypnm:last').focus();
+				var data = suan();
+               	give(data);
+			}
+		});
+	}else{
+		$('div[name='+con.name+']').find('.yp1').find('.jianyao').mouseover().click();
+	}
+}
+</script>
+<script type="text/javascript">
+	$(function(){
+			//判断有没有当天处方
+		var listnum = $('.dtcfli').length;
+		if(listnum<1){
+			$('#xzcfall').click();
+			$('.ylypnm:first').select();
+		};
+	});
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

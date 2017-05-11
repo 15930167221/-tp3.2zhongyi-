@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>患者查询</title>
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/chaxun.css">
+    <!-- 日历新css -->
+    <link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+
+    <!-- 分页效果 -->
+    <link href="__PUBLIC__/css/mypage.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <!--  -->
+    <!-- 分页结束 -->
+
+    <!-- 别删开始 -->
+
+   
+    <!-- Le styles -->
+
+    <!-- <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/style.css"> -->
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/loader-style.css">
+
+
+    <link href="__PUBLIC__/muban/assets/js/footable/css/footable.core.css?v=2-0-1" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/muban/assets/js/footable/css/footable.standalone.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/muban/assets/js/footable/css/footable-demos.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/js/dataTable/lib/jquery.dataTables/css/DT_bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/js/dataTable/css/datatables.responsive.css">
+    <!-- 别删结束 -->
+    <!-- 日历js -->
+    <script type="text/javascript" src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+</head>
+<!-- 阻止右键 -->
+<!-- <body oncontextmenu=self.event.returnValue=false onselectstart="return false"> -->
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+    <div class="bg">
+    <!-- <div class="title center" id="title">查询窗口</div> -->
+    <form action="{:U('Index/chaxun')}"  method="get">
+    <!-- 区分是否是表单 -->
+    <input type="hidden" value="1" name="qufenbiaodan">
+    <div class="chaxun center">
+        <div>
+            <span class="glyphicon glyphicon-search" style="margin-left: 8px;color: #333;"></span>&nbsp;
+        </div>
+        <div class="cxfont">查询条件:</div>
+        <div class="nb" style="margin-left:-9%;line-height: 0px;margin-top: 55px;">
+            <label for="userName">姓名：</label>
+            <input autocomplete="off" type="text" name="br_name" value="<?php echo $tjymxx['br_name'];?>" id="userName">
+        </div>
+        <div class="nb" style="line-height: 0px;margin-top: 55px;">
+            <span>就诊日期：</span>
+            <!-- 隐藏开始日期 -->
+            <input type="hidden" class="tjkaishiriqi" value="<?php echo $tjymxx['p_datekai'];?>">
+            <!-- 实际日期 -->
+            <span>
+                <input style="width: 100px;height: 30px;font-size: 16px;" id="datebut1" name="p_datekai" type="text" readonly="readonly" >
+            </span>
+            <!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#datebut1',{isinitVal:true,initAddVal:[-30],format: 'YYYY-MM-DD'});
+                </script>
+            <span>至</span>
+            <span>
+            <!-- 隐藏终止日期 -->
+            <input type="hidden" class="tjzhongzhiriqi" value="<?php echo $tjymxx['p_datezhong'];?>">
+            <!-- <input type="text" name="p_datezhong" class="ghrq" id="datebut2" onClick="jeDate({dateCell:'#datebut2',format:'YYYY-MM-DD'})" onfocus="new Calendar().show(this)" readonly="readonly"> -->
+            <input style="width: 100px;height: 30px;font-size: 16px;" id="datebut2" name="p_datezhong" type="text" readonly="readonly" >
+            </span>
+            <!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#datebut2',{isinitVal:true,initAddVal:[0],format: 'YYYY-MM-DD'});
+                </script>
+        </div>
+        
+        <div class="nb" style="line-height: 0px;margin-top: 55px;">
+            <span><label for="blh">病历号：</label></span>
+            <span><input autocomplete="off" type="text" name="br_id" value="<?php echo $tjymxx['br_id'];?>" id="blh"></span>
+        </div>
+        <div class="nb" style="line-height: 0px;margin-top: 60px;">
+            <label><!-- <span><input type="checkbox"></span> --><span>性别：</span></label>
+            <if condition="$tjymxx.xb eq '女' ">
+                    <label><span><input type="radio" name="xb" value="男" >
+                        <span>男</span>
+                    </span></label>
+                    <label><span><input type="radio" name="xb" value="女" checked="checked">
+                        <span>女</span>
+                    </span></label>
+                <elseif condition="$tjymxx.xb eq '男' "/>
+                    <label><span><input type="radio" name="xb" value="男" checked = "checked">
+                        <span>男</span>
+                    </span></label>
+                    <label><span><input type="radio" name="xb" value="女">
+                        <span>女</span>
+                    </span></label>
+                <else />
+                    <label><span><input type="radio" name="xb" value="男" >
+                        <span>男</span>
+                    </span></label>
+                    <label><span><input type="radio" name="xb" value="女">
+                        <span>女</span>
+                    </span></label>
+            </if>
+               
+        </div>
+        <div class="but">
+            <button text="submit" style=" background-color:#30bdb5;height:30px;line-height:20px;width:90px;border-radius:3px; border:0px;color: #fff;text-align: center;">查询</button>
+        </div>
+    </div>
+    </form>
+    <div class="cxtable center" style="width: 97%; height: 72%;overflow: auto;">
+        <!-- 分页开始 -->
+        <table style="table-layout: fixed;" border="1" bordercolor="#ccc" width="100%">
+                    <thead>
+                        <tr  style="background-color: #E2ECF8;">
+                            <th width="10%" height="40px" style="text-align: center;">病历号</th>
+                            <th width="10%" style="text-align: center;">姓名</th>
+                            <th width="10%" style="text-align: center;">性别</th>
+                            <th width="20%" style="text-align: center;">就诊日期</th>
+                            <th width="10%" style="text-align: center;">电话</th>
+                            <th width="20%" style="text-align: center;">预约日期</th>
+                            <th width="15%" style="text-align: center;">操作</th>
+                        </tr>
+                    </thead>
+                    <volist name="data" id="vo">   
+                        <tr class="cxtr1" name="cxtableSty">
+                            <td>{$vo.br_id}</td>
+                            <td>{$vo.br_name}</td>
+                            <td>{$vo.xb}</td>
+                            <td>{$vo.p_date}</td>
+                            <td>{$vo.tel}</td>
+                            <td>{$vo.p_date}</td>
+                            <!-- <td>{$vo.xh}</td> -->
+                            <!--ajax 隐藏域用于主键（病历号）的操作 -->
+                            <input type="hidden" class="ajaxChacanshu" value="{$vo.br_id}">
+                            <td>
+                                <span class="ajaxChaXiangxi" data-toggle="modal" data-target="#myModal">详细信息</span>
+                                <span><a href='{:U("Index/dengji" ,array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' style="color: blue; font-size: 15px;">登记</a></span>
+                                <span><a href='{:U("Index/yuyue" ,array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' style="color: blue; font-size: 15px;">预约</a></span>
+                            </td>
+                        </tr>
+                    </volist>
+                    
+                </table>        
+    </div>
+    <div style="margin-top: 5px;float: right;margin-right: 20px;">
+         <div class="result page">
+            <div class="pages">
+                <div class="yemianfenyequxiao">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+       
+</div>
+    <script type="text/javascript">
+    // jeDate.skin('gray');
+</script>
+    <!--查询患者详细信息模态框-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">患者详细信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <table border="0" class="mbt">
+                    <tr>
+                        <td style="letter-spacing:7px;">病历号</td>
+                        <td><input type="text" id="ajaxmtbrid" readonly="readonly"></td>
+                        <td>电　　话</td>
+                        <td><input type="text" id="ajaxmttel" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>姓　　名</td>
+                        <td><input type="text" id="ajaxmtbrname" readonly="readonly"></td>
+                        <td>性　　别</td>
+                        <td>
+                            <label><input type="radio" id="ajaxmtxbnan" name="xb" disabled="disabled"><span>男</span></label>
+                            <label><input type="radio" id="ajaxmtxbnv" name="xb" disabled="disabled"><span>女</span></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>年　　龄</td>
+                        <td ><input id="ajaxmtnl" type="text" readonly="readonly"></td>
+                        <td>出生年月</td>
+                        <td><input type="text" id="ajaxmtcsdate" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>身份证号</td>
+                        <td colspan="3"><input id="ajaxmtpass" type="text" class="lontext" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>单　　位</td>
+                        <td colspan="3"><input type="text" id="ajaxmtdw" class="lontext" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>E - Mail</td>
+                        <td><input id="ajaxmtemail" type="text" readonly="readonly"></td>
+                        <td>传　　真</td>
+                        <td><input type="text" id="ajaxmtfax" readonly="readonly"></td>
+                    </tr>
+                   <!--  <tr>
+                        <td>挂号日期：</td>
+                        <td><input type="text" id="ajaxmtpdategua" readonly="readonly"></td>
+                        <td>预约日期：</td>
+                        <td><input type="text" id="ajaxmtpdate" readonly="readonly"></td>
+                    </tr> -->
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <!--<button type="button" class="btn btn-primary">提交更改</button>-->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <script src="__PUBLIC__/js/jeDate/jedate.js"></script>
+    <!-- 别删开始 -->
+    <!-- <script type="text/javascript" src="__PUBLIC__/muban/assets/js/preloader.js"></script> -->
+    <!-- <script type="text/javascript" src="__PUBLIC__/muban/assets/js/app.js"></script> -->
+    <!-- <script type="text/javascript" src="__PUBLIC__/muban/assets/js/load.js"></script> -->
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/main.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/toggle_close.js"></script>
+    <script src="__PUBLIC__/muban/assets/js/footable/js/footable.js?v=2-0-1" type="text/javascript"></script>
+    <script src="__PUBLIC__/muban/assets/js/footable/js/footable.sort.js?v=2-0-1" type="text/javascript"></script>
+    <script src="__PUBLIC__/muban/assets/js/footable/js/footable.filter.js?v=2-0-1" type="text/javascript"></script>
+    <script src="__PUBLIC__/muban/assets/js/footable/js/footable.paginate.js?v=2-0-1" type="text/javascript"></script>
+    <script src="__PUBLIC__/muban/assets/js/footable/js/footable.paginate.js?v=2-0-1" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+    $(function() {
+        $('.footable-res').footable();
+    });
+    </script>
+<script type="text/javascript">
+        //功能：将回车键转tab键
+        jQuery(function () {
+            jQuery('input:text:first').focus();
+            var $inp = jQuery('input:text');
+            $inp.bind('keydown', function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    e.preventDefault();
+                    var nxtIdx = $inp.index(this) + 1;
+                    jQuery(":input:text:eq(" + nxtIdx + ")").focus();
+                }
+            });
+        });    
+    </script>
+    <script type="text/javascript">
+    $(function() {
+        $('#footable-res2').footable().bind('footable_filtering', function(e) {
+            var selected = $('.filter-status').find(':selected').text();
+            if (selected && selected.length > 0) {
+                e.filter += (e.filter && e.filter.length > 0) ? ' ' + selected : selected;
+                e.clear = !e.filter;
+            }
+        });
+
+        $('.clear-filter').click(function(e) {
+            e.preventDefault();
+            $('.filter-status').val('');
+            $('table.demo').trigger('footable_clear_filter');
+        });
+
+        $('.filter-status').change(function(e) {
+            e.preventDefault();
+            $('table.demo').trigger('footable_filter', {
+                filter: $('#filter').val()
+            });
+        });
+
+        $('.filter-api').click(function(e) {
+            e.preventDefault();
+
+            //get the footable filter object
+            var footableFilter = $('table').data('footable-filter');
+
+            alert('about to filter table by "tech"');
+            //filter by 'tech'
+            footableFilter.filter('tech');
+
+            //clear the filter
+            if (confirm('clear filter now?')) {
+                footableFilter.clearFilter();
+            }
+        });
+    });
+    </script>
+    <!-- 别删结束 -->
+</body>
+</html>
+
+<script src="__PUBLIC__/js/tr.js"></script>
+<script type="text/javascript">
+    $(".ajaxChaXiangxi").click(function(){
+        $id = $(this).parent().parent().find(".ajaxChacanshu").val();
+        // alert($id);
+        $.ajax({
+            type:'get',
+            url:'{:U("Index/chaxunxiangxi")}',
+            data:{"id":$id},
+            dataType:'json',
+            success:function(dd){
+                // alert(dd);
+                // console.log(dd);
+                // 获取对应的病人基本信息
+                $br_id = dd[0]['br_id'];
+                $br_name = dd[0]['br_name'];
+                $tel = dd[0]['tel'];
+                $nl = dd[0]['nl'];
+                $cs_date = dd[0]['cs_date'];
+                $pass = dd[0]['pass'];
+                $dw = dd[0]['dw'];
+                $tel = dd[0]['tel'];
+                $xb = dd[0]['xb'];
+                $email = dd[0]['e_mail'];
+                $ghf = dd[0]['ghf'];
+                $fax = dd[0]['fax'];
+                $p_date = dd[0]['p_date'];
+                // 通过js将信息添加到页面
+                $("#ajaxmtbrid").val($br_id);
+                $("#ajaxmtbrname").val($br_name);
+                $("#ajaxmttel").val($tel);
+                $("#ajaxmtnl").val($nl);
+                $("#ajaxmtcsdate").val($cs_date);
+                $("#ajaxmtpass").val($pass);
+                $("#ajaxmtdw").val($dw);
+                $("#ajaxmtemail").val($email);
+                $("#ajaxmtfax").val($fax);
+                $("#ajaxmtpdategua").val($p_date);
+                $("#ajaxmtpdate").val($p_date);
+                 // 判断性别
+                if($xb=="男"){
+                    // alert("n");
+                    $("#ajaxmtxbnan").attr("checked","checked");
+                }else if($xb=="女"){
+                    // alert("v");
+                    $("#ajaxmtxbnv").attr("checked","checked");
+                }
+            },
+            error:function(){
+                alert(Ajax请求失败);
+            }
+        });
+    });
+</script>
+<!-- js改变日期条件带到下个页面(将查询条件一直带着) -->
+<script type="text/javascript">
+    $(function(){
+        // 获取隐藏的开始日期
+        var tjkaishi =$(".tjkaishiriqi").val();
+        //判断是否为空
+        if (!tjkaishi == '') {
+            // 赋值
+            $("#datebut1").val(tjkaishi);
+        }
+            
+        var tjzhong =$(".tjzhongzhiriqi").val();
+        //判断是否为空
+        if (!tjzhong == '') {
+            // 赋值
+            $("#datebut2").val(tjzhong);
+        }
+    });
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

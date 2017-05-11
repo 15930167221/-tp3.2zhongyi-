@@ -1,0 +1,112 @@
+html,body{
+	width:100%;height:100%;
+	margin:0px auto;padding:0px;
+}
+.content{
+	width:80%;height:88%;border-radius:3px;border:2px double #ccc;
+	margin-left:10%;position:relative;
+}
+#str{
+	width:58%;height:86%;overflow:auto;
+	float:left;
+}
+#str span{
+	line-height:35px;
+}
+.strp{
+	font-size:18px;font-family:黑体；
+}
+#rightab{
+	width:40%;height:86%;margin-left:1%;overflow:auto;
+	float:left;
+}
+.dxcon{
+	width:100%;
+}
+.dxcon tr{
+	width:100%;height:30px;
+}
+.dxcon tr th,td{
+	border: 1px solid #000;height:100%;line-height:30px; 
+}
+.bottom{
+	width:100%;height:55px;background:#d7dcdf;
+	text-align:center;left;0;bottom:0;position:absolute;
+}
+.bottom input{
+	border:none;border-radius:5px;width:100px;height:35px;line-height:35px;
+	color:#fff;font-size:16px;margin-top:10px;
+}
+.blue{
+	color:blue;font-size:16px;
+}
+/*****审核通过content*****/
+#side{
+	width:80%;height:78%;border-radius:3px;border:2px double #ccc;
+	margin-left:10%;overflow:auto;
+}
+.passinfo{
+	width:80%;margin-left:10%;
+	text-align:center;bottom:3px;
+}
+.passinfo tr{
+	width:100%;height:25px;
+}
+.passinfo tr td,th{
+	width:49%;height:25px;border:1px solid #000;
+	line-height:25px;text-align:center;
+}
+.botq{
+	width:80%;height:55px;background:#ccc;
+	margin-left:10%;
+}
+.botq input{
+	border:none;border-radius:5px;width:100px;height:30px;line-height:30px;
+	color:#fff;font-size:16px;margin-top:10px;
+}
+/**审核结果滚动条**/
+#str::-webkit-scrollbar {
+    width:8px;
+}
+#str::-webkit-scrollbar-track {
+    background-color:#EEE;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#str::-webkit-scrollbar-thumb {
+    background-color:gray;
+    -webkit-border-radius:2em;
+    -moz-border-radius:2em;
+    border-radius:2em;
+}
+#rightab::-webkit-scrollbar {
+    width:8px;
+}
+#rightab::-webkit-scrollbar-track {
+    background-color:#EEE;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#rightab::-webkit-scrollbar-thumb {
+    background-color:gray;
+    -webkit-border-radius:2em;
+    -moz-border-radius:2em;
+    border-radius:2em;
+}
+#side::-webkit-scrollbar {
+    width:8px;
+}
+#side::-webkit-scrollbar-track {
+    background-color:#EEE;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#side::-webkit-scrollbar-thumb {
+    background-color:gray;
+    -webkit-border-radius:2em;
+    -moz-border-radius:2em;
+    border-radius:2em;
+}

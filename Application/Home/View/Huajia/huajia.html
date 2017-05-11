@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>划价收费_中医健康管理系统</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/huajia.css">
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<!-- 遮罩层 -->
+	<div class="zhezhao" style="display:none;width:100%;height:100%;background-color:#444444;position:absolute;"></div>
+	<input type="hidden" name="br_id" id="br_id" value="{$br_id}">
+	<input type="hidden" name="xh" id="xh" value="{$xh}">
+	<form id="shoufei" name="shoufei" method="post" action="{:U('Huajia/huajia',array('flag' => 1))}">
+	<div class="tool">
+		<div class="tool_l">
+			<img src="__PUBLIC__/img/yhk.png"><span>划价收费</span>
+		</div>
+		<div class="tool_r">
+			<input type="button" name="sf" onClick="sub()" value="￥ 收费">
+			<input type="button" name="tf" data-toggle="modal" data-target="#myModal" value="✍ 退费">
+			<input type="button" name="sc" value="✘ 删除" onClick="doFun('doShow')">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" name="wcjz" value="✔ 完成就诊" id="wcjz">
+			<p id="demo"></p>
+		</div>
+	</div>
+	<div class="center">
+		<div class="center_t">
+			<table class="tab1">
+				<tr>
+					<td class="tab1_l">
+						<span class="tiao"></span>
+						<span>&nbsp;&nbsp;收费项目</span>
+					</td>
+					<td class="tab1_r">
+						<h4>
+							票据号:
+							<input type="text" name="sf_pjh" value="{$pjh}" readonly>
+						</h4>
+					</td>
+				</tr>
+			</table>
+			<table class="tab2">
+				<tr>
+					<th style="border-left:2px solid #CCC" width="25%">费用名称</th>
+					<th width="15%">规格</th>
+					<th width="15%">单位</th>
+					<th width="15%">单价</th>
+					<th width="15%">数量</th>
+					<th style="border-right:2px solid #CCC;" width="15%">金额</th>
+				</tr>
+				<tr>
+					<td><!-- 通过选择名称在数据库查询其他信息 -->
+						<input type="text" id="name" name="name" value="" onfocus=" this.style.imeMode='disabled'" onkeydown="changeItem()" autocomplete="off">
+					</td>
+					<td><input type="text" id="guige" name="guige" value="" readonly></td>
+					<td><input type="text" id="danwei" name="danwei" value="" readonly></td>
+					<td><input type="number" id="danjia" name="danjia" onfocus="this.select()" value="" min="0"></td>
+					<td><input type="number" id="number" name="number" value="" min="0"></td>
+					<td><input type="number" id="jine" name="jine" value="" readonly min="0"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="center_c">
+			<table class="tab3">
+				<tr>
+					<td width="60%" class="tab3_l">
+						<span class="tiao"></span>
+						<span>&nbsp;&nbsp;收费列表</span>
+					</td>
+				</tr>
+			</table>
+			<div class="table4">
+				<table id="tab4" class="tab4">
+					<tr>
+						<th width="5%">序号</th>
+						<th width="35%">项目名称</th>
+						<th width="15%">单位</th>
+						<th width="15%">单价</th>
+						<th width="15%">数量</th>
+						<th width="15%">金额</th>
+					</tr>
+				</table>
+				<div id="tb2">
+				<table id="tab4_1" class="tab4_1">
+					<!--中药处方 -->
+					<volist name="zykf" id="vo">
+						<tr class="sty1" name="tableSty" id="{$vo.presc_no}">
+							<td width="5%" class='cen'><input type="hidden" id="xuhao" name="xuhao[<?php echo $key+1;?>]" value="<?php echo $key+1;?>"><?php echo $key+1;?></td>
+							<td class="left" width="35%"><input type="hidden" id="xmname" name="xmname[<?php echo $key+1;?>]" value="中草药">中草药</td>
+							<td class="left" width="15%"><input type="hidden" id="danwei" name="danwei[<?php echo $key+1;?>]" value="{$zyyp.drug_units}">{$zyyp.drug_units}</td>
+							<td width="15%"><input type="hidden" id="danjia" name="danjia[<?php echo $key+1;?>]" value="{$zyyp.price}">{$zyyp.price}</td>
+							<td width="15%"><input type="hidden" id="number" name="number[<?php echo $key+1;?>]" value="{$zykf.0.dose}"><?php echo number_format($zykf[0][dose],2);?></td>
+							<td width="15%"><input type="hidden" id="jine" name="jine[<?php echo $key+1;?>]" value="{$zyyp.costs}">{$zyyp.costs}</td>
+						</tr>
+					</volist>
+					<!--西药处方 -->
+					<?php
+						$num = count($zykf);
+						if($num == 0){
+							$num = $num+1;
+						}else{
+							$num = $num+1;
+						}
+					?>
+					<volist name="xykf" id="te">
+						<?php
+							$xy = M('xydrugcf_detial');//西药处方表
+							$xy_detail = M('drug_dict');//西药药品明细表
+							$xycf = $xy -> where("cf_id = '$te[cf_id]'") -> select();
+							$len = count($xycf);
+							$a = 0;
+							for($i=0;$i<$len;$i++){
+								$code = $xycf[$i]['yp_code'];
+								$xycf_de = $xy_detail -> where("drug_indicator = 1 and drug_code = '$code'") -> count();
+								$a = $a + $xycf_de;
+								$res = $xycf[$i][yp_total_cost] + $xycf[$i][yp_total_cost];
+								$res = number_format($res,2);
+							}
+							echo "<tr class='sty1' name='tableSty' id='$te[cf_id]'>
+								<td width='5%' class='cen'><input type='hidden' id='xuhao' name='xuhao[$num]' value='$num'>$num</td>";
+							if($a == 0){
+								echo "<td class='left' width='35%'><input type='hidden' id='xmname' name='xmname[$num]' value='中成药'>中成药</td>";
+							}else{
+								echo "<td class='left' width='35%'><input type='hidden' id='xmname' name='xmname[$num]' value='西药'>西药</td>";
+							}
+							echo "<td class='left' width='15%'><input type='hidden' id='danwei' name='danwei[$num]' value='/'>/</td>
+								<td width='15%'><input type='hidden' id='danjia' name='danjia[$num]' value='$res'>$res</td>
+								<td width='15%'><input type='hidden' id='number' name='number[$num]' value='1.00'>1.00</td>
+								<td width='15%'><input type='hidden' id='jine' name='jine[$num]' value='$res'>$res</td>
+							</tr>";
+							$num += 1;
+						?>
+					</volist>
+				</table>
+				</div>
+				<div class="hjje">
+					<table class="tab3">
+						<tr>
+							<td width="90%" align="right"><b>合计金额：</b></td>
+							<td width="10%" align="right"><font color='#30BEB2' size="+1"><b>￥0.00</b></font></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+	<!-- 退费 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	        	<a class="close" data-dismiss="modal" style="margin-right:30px; margin-top:10px;">&times;</a>
+	        	<iframe src="{:U('Huajia/tuifei')}" width="100%" height="400" style="border:none;"></iframe>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- 双击弹框 -->
+	<div class="dbdiv" id="dbdiv">
+		<div class="dbexit">
+			<button type="button" id="close" class="close btn" onClick="close()">&times;</button>
+		</div>
+		<table id="dbtab">
+			<thead>
+				<tr>
+					<th width='8%'>序号</th>
+					<th width='25%'>项目名称</th>
+					<th width='8%'>数量</th>
+					<th width='24%'>单位</th>
+					<th width='8%'>剂数</th>
+					<th width='12%'>零售价</th>
+					<th width='15%'>金额</th>
+				</tr>
+			</thead>
+		</table>
+		<div id="tb4">
+			<table id="dbtab_1"></table>
+		</div>
+		<table id="dbtab_3"></table>
+	</div>
+
+	<!-- 删除按钮 -->
+	<div id="Dshow" style="display:none;">
+		<div class="box">
+    		<h3>提示</h3>
+        	<p class="info">确定要删除选中项目？</p>
+        	<p class="btnX"><input type="button" value="确定" onClick="doFun('doClose')" /><input type="button" value="取消" onClick="doFun('returnFalse')" /></p>
+    	</div>
+	</div>
+	<!-- 收费项目检索 -->
+	<div id="xmjs">
+		<table id="dbtab_4">
+			<tr>
+			<th width="40%">名称</th>
+			<th width="5%">规格</th>
+			<th width="10%">单位</th>
+			<th width="15%">单价</th>
+			<th width="30%">拼音码</th>
+			</tr>
+		</table>
+		<div id="tb6">
+			<table id="dbtab_5"></table>
+		</div>
+		<div class="tishi">
+			<p>Esc退出当前录入窗口</p>
+		</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/huajia.js"></script>
+<script>
+	$(document).ready(function(){
+	 	$("#name").focus();
+	});
+	/*项目名称检索*/
+	var currentLine = 0, offsetTr = 0;
+	$("#name").on('keyup',function(env){
+		var str = $(this).val();
+		$("#dbtab_5 tr").unbind("dblclick");
+		$("#xmjs").css("display","block");
+		$.ajax({
+			type:"post",
+			url:"__CONTROLLER__/sfxmjs",
+			dataType:"json",
+			data:{"str":str},
+			success:function(res){
+				var str1 = '';
+				for(var i=0;i<res.length;i++){
+					str1 += "<tr id='itstr'><td width='40%' align='left'>&nbsp;&nbsp;"+res[i].item_name+"</td><td width='5%' align='left'>&nbsp;&nbsp;"+res[i].item_spec+"</td><td width='10%' align='left'>&nbsp;&nbsp;"+res[i].units_code+"</td><td width='15%' align='right'>"+res[i].price+"</td><td width='30%' align='left'>&nbsp;&nbsp;"+res[i].input_code+"</td></tr>";
+				}
+				$("#dbtab_5").html(str1);
+				$("#dbtab_5 tr").bind("dblclick",function(){
+					$("#name").val(($(this).find("td").eq(0).text()).trim());
+					$("#guige").val(($(this).find("td").eq(1).text()).trim());
+					$("#danwei").val(($(this).find("td").eq(2).text()).trim());
+					$("#danjia").val(($(this).find("td").eq(3).text()).trim());
+					if($("#danjia").val() == '.000'){
+						$("#danjia").focus();
+					}else{
+						$("#number").focus();
+					}
+					$("#xmjs").css("display","none");
+				});
+				$("#dbtab_5 tr").eq(currentLine).css("background-color","rgba(0,96,197,0.5)");
+				$("#dbtab_5 tr").eq(currentLine).css("color","#FFF");
+				$("#dbtab_5 tr").eq(currentLine).css("font-weight","bold");
+			}
+		});
+		/*键盘上下键操作*/
+		if(env.keyCode == 38){
+			offsetTr = 0;
+			currentLine--;
+			changeItem();
+		}else if(env.keyCode == 40){
+			offsetTr = 200;
+			currentLine++;
+			changeItem();
+		}else if(env.keyCode == 13 && currentLine > -1){
+			addUser();
+		}else{
+			currentLine = 0;
+		}
+		/*结束*/
+	});
+	//上下键改变tr状态
+	function changeItem(){
+		if(document.all){
+		    var it = document.getElementById("dbtab_5").children[0];
+		}else{
+		    var it = document.getElementById("dbtab_5");
+		}
+
+		for(i=0;i<it.rows.length;i++){
+		    it.rows[i].className = "";
+		}
+		if(currentLine < 0){
+		    currentLine = it.rows.length - 1;
+		}
+		if(currentLine == it.rows.length){
+		    currentLine = 0;
+		}
+		//it.rows[currentLine].className="highlight";
+		if(document.getElementById("tb6")){
+			document.getElementById("tb6").scrollTop = it.rows[currentLine].offsetTop-offsetTr;
+		}
+	}
+	//项目名称回车
+	function addUser(){
+		var it = document.getElementById("dbtab_5");
+		if(document.all){
+			var it = document.getElementById("dbtab_5").children[0];
+		}
+		var obj = it.rows[currentLine];
+		$("#name").val(($(obj).find("td").eq(0).text()).trim());
+		$("#guige").val(($(obj).find("td").eq(1).text()).trim());
+		$("#danwei").val(($(obj).find("td").eq(2).text()).trim());
+		$("#danjia").val(($(obj).find("td").eq(3).text()).trim());
+		if($("#danjia").val() == '.000'){
+			$("#danjia").focus();
+		}else{
+			$("#number").focus();
+		}
+		$("#xmjs").css("display","none");
+	}
+	//单价回车
+	$("#danjia").on('keyup',function(e){
+		if(e.keyCode == 13){
+			if($("#danjia").val() == 0 || $("#danjia").val() == .000 || $("#danjia").val() < 0){
+				return false;
+			}else{
+				$("#number").focus();
+			}
+		}
+	});
+	//数量回车
+	$("#number").on('keyup',function(e){
+		var number = $("#number").val();
+		var price = $("#danjia").val();
+		var zh = (number*price).toFixed(2);
+		$("#jine").val(zh);
+		if(e.keyCode == 13){
+			if($("#number").val() == '' || $("#number").val() < 0){
+				return false;
+			}else{
+				var id = $(".tab4_1").find("tr").length;
+		        var name = $("#name").val();
+		        var danwei = $("#danwei").val();
+		        var danjia = parseFloat($("#danjia").val()).toFixed(3);
+		        var number = parseFloat($("#number").val()).toFixed(2);
+		        var jine = $("#jine").val();
+		        $(".tab4_1").append("<tr class='sty1' name='tableSty'><td width='5%' class='cen'><input type='hidden' id='xuhao' name='xuhao["+(id+1)+"]' value='"+(id+1)+"'>"+(id+1)+"</td><td class='left' width='35%'><input type='hidden' id='xmname' name='xmname["+(id+1)+"]' value='"+name+"'>"+name+"</td><td class='left' width='15%'><input type='hidden' id='danwei' name='danwei["+(id+1)+"]' value='"+danwei+"'>"+danwei+"</td><td width='15%'><input type='hidden' id='danjia' name='danjia["+(id+1)+"]' value='"+danjia+"'>"+danjia+"</td><td width='15%'><input type='hidden' id='number' name='number["+(id+1)+"]' value='"+number+"'>"+number+"</td><td width='15%'><input type='hidden' id='jine' name='jine["+(id+1)+"]' value='"+jine+"'>"+jine+"</td></tr>");
+
+			    //清空上方数据
+			    $("#name").val('');
+				$("#guige").val('');
+			    $("#danwei").val('');
+			    $("#danjia").val('');
+			    $("#number").val('');
+			    $("#jine").val('');
+
+			        //总计
+			    var zje = 0.00;
+			    $(".tab4_1 tr").each(function(){
+              	obj = $(this).find("td:last").text();
+                	zje = (Number(zje) + Number(obj)).toFixed(2);
+            	});
+			    $(".tab3 tr td:last").text('￥'+zje);
+			    $(".tab3 tr td:last").css("color","#30BEB2");
+			    $(".tab3 tr td:last").css("font-weight","bold");
+			    $(".tab3 tr td:last").css("font-size","20px");
+			    $("#name").focus();
+			}
+		}
+	});
+	$(document).on('keyup',function(){
+		e = window.event;
+		switch(e.keyCode){
+		    case 27:
+		    	document.getElementById('xmjs').style.display="none";
+		} 
+	})
+</script>
+<script>
+		//收费页面收费列表
+		function ajaxFun(){
+			$.ajax({
+				type:"post",
+				url:"__CONTROLLER__/ajax",
+				dataType:"json",
+				data:{
+					"name":$("#name").val(),
+				},
+				success:function(sfxmdata){
+					var guige = "";
+					var danwei = "";
+					var danjia = "";
+					for(var i=0;i<sfxmdata.length;i++){
+						$("#guige").val(sfxmdata[i].item_spec);
+						$("#danwei").val(sfxmdata[i].units_code);
+						$("#danjia").val(sfxmdata[i].price);
+					}
+				}
+			})
+		}
+
+
+		//生成总金额
+		$(document).ready(function(){
+			var zje = 0.00;
+			$(".tab4_1 tr").not(":first").each(function(){
+				obj = $(this).find("td:last").text();
+				zje = (Number(zje) + Number(obj)).toFixed(2);
+			});
+			$(".tab3 tr td:last").text('￥'+zje);
+			$(".tab3 tr td:last").css("color","#30BEB2");
+			$(".tab3 tr td:last").css("font-weight","bold");
+			$(".tab3 tr td:last").css("font-size","20px");
+		});
+
+		//中药or西药双击事件
+		$(document).on('dblclick','.sty2',function(){
+			$(".dbdiv").css('display','block');
+			$(".dbdiv").css('width',(window.screen.width)/2);
+			$(".dbdiv").css('height',(window.screen.height)/2);
+        	$(".dbdiv").fadeTo('slow', 0.99);
+        	$(".zhezhao").css("display","block");
+			$(".zhezhao").css("filter","alpha(opacity:80)");
+			$(".zhezhao").css("opacity","0.8");
+			var id = $(this).attr("id");
+			var len = $(this).attr("id").length;
+			$.ajax({
+				type:"post",
+				url:"__CONTROLLER__/yplist",
+				dataType:"json",
+				data:{"id":id,
+					"len":len
+				},
+				success:function(sfdetail){
+					var str = "";
+					var zcosts = 0;
+					for(var i=0;i<sfdetail.length;i++){
+						str += "<tr><td width='8%'>"+sfdetail[i]['id']+"</td><td align='left' width='25%'>"+sfdetail[i]['xmname']+"</td><td align='right' width='8%'>"+sfdetail[i]['amount']+"</td><td align='left' width='24%'>"+sfdetail[i]['units']+"</td><td align='right' width='8%'>"+sfdetail[i]['dose']+"</td><td align='right' width='12%'>"+sfdetail[i]['price']+"</td><td align='right' width='15%'>"+sfdetail[i]['costs']+"</td></tr>";
+						var count = i;
+						zcosts += parseFloat(sfdetail[i]['costs']);
+					}
+					str1 = "<tr><td colspan='4' align='left'>共<font color='#30BEB2'><b>"+i+"</b></font>味药</td><td colspan='3' align='right'><font color='#30BEB2'><b>合计金额：<font color='#30BEB2'>￥"+zcosts.toFixed(2)+"</font></b></td></tr>";
+					$("#dbtab_1").html(str);
+					$("#dbtab_3").html(str1);
+				}
+			})
+		})
+
+		$("#close").click(function(){
+			$(".dbdiv").css('display','none');
+			$(".zhezhao").css("display","none");
+		})
+	</script>
+	<!-- 完成就诊 -->
+	<script>
+		$(document).on("click","#wcjz",function(){
+			var id = $("#br_id").val();
+			var xh = $("#xh").val();
+			 //未审核
+	            var wshenhezt= 0;
+	            //已驳回
+	            var bohuizt = 0;
+	        $.ajax({
+	            url:"{:U('JianKangAjax/huoquzhuangtai')}",
+	            type:'post',
+	            dataType:'json',
+	            success:function(dd){
+	                //便利获取有几个状态
+	                $.each(dd,function(idx,item){
+	                    // 未审核
+	                    if (item.indicate == 0) {
+	                        wshenhezt = wshenhezt + 1;
+	                       
+	                    }
+	                    // 驳回
+	                    if (item.indicate == 4) {
+	                        bohuizt = bohuizt + 1;
+	                       
+	                    }
+
+	                })
+	                //判断没有未审核的 并且没有被驳回的
+	                if (wshenhezt ==0 && bohuizt==0 ) {
+	                     layer.confirm('确认完成就诊',{
+	                        icon: 7, title:'提示',
+	                        btn:['确认','返回修改！']
+	                    },function(index){                //confirm确认
+	                        $.ajax({
+								type:"get",
+								url:"__CONTROLLER__/jieshu",
+								dataType:"json",
+								data:{
+									"br_id":id,
+									"xh":xh,
+								},
+								success:function(a){
+									if(a == 1){
+										$("#sblh", parent.document).html('');
+									    $("#sxm", parent.document).html('');
+									    $("#sbxb", parent.document).html('');
+									    $("#sbnl", parent.document).html('');
+									    $("#sbdate",parent.document).html('');
+									    $("#hznatian",parent.document).html('');
+									    location.href = "{:U('Index/jiezhen')}";
+									}
+								}
+							})
+	                     
+	                    });
+	                }else{
+	                     layer.confirm('有'+bohuizt+'条处方被驳回！ 有'+wshenhezt+'条处方未审核',{
+	                        icon: 7, title:'提示',
+	                        btn:['完成就诊','返回修改！']
+	                    },function(index){                //confirm确认
+	                       $.ajax({
+								type:"get",
+								url:"__CONTROLLER__/jieshu",
+								dataType:"json",
+								data:{
+									"br_id":id,
+									"xh":xh,
+								},
+								success:function(a){
+									if(a == 1){
+										$("#sblh", parent.document).html('');
+									    $("#sxm", parent.document).html('');
+									    $("#sbxb", parent.document).html('');
+									    $("#sbnl", parent.document).html('');
+									    $("#sbdate",parent.document).html('');
+									    $("#hznatian",parent.document).html('');
+									    location.href = "{:U('Index/jiezhen')}";
+									}
+								}
+							})
+	                     
+	                    });
+	                }
+	                 // alert(bohuizt);
+	                   
+	            }
+	        })
+	  });
+	</script>
+	<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" class="tfhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>退费_中医健康管理系统</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/huajia.css">
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script src="__PUBLIC__/js/jeDate/jedate.js"></script>
+</head>
+<body class="tfbody" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<div class="zhezhao" style="display:none;width:100%;height:100%;background-color:#444444;z-index:2;position:absolute;"></div>
+	<div class="modal-header" style="margin-top:-1%">
+		<h4 class="modal-title" id="myModalLabel">&nbsp;&nbsp;门诊退费</h4>
+	</div>
+	<div class="modal-body">
+	    <div class="modal-body-left">
+	        <div class="modal-body-left-top">
+	        <form id="chaxun" method="post" action="{:U('Huajia/tuifei')}">
+	            收费日期：
+	            <input type="text" name="sf_date" value="{$sfrq}" placeholder="请选择时间！" id="datebut" onClick="jeDate({dateCell:'#datebut',format:'YYYY-MM-DD'})" readonly="readonly" style="height:30px;">
+	            <input type="button" name="query" onClick="chaxun()" value="✔ 查询">
+	            <br><br>
+	        </form>
+	    		        <div style="float:left;margin-top:-10%;margin-left:825px;">
+	    		        	<input type="button" id="tf" name="tf" value="✍ 退费">
+	    		        </div>
+	        </div>
+	        <div class="modal-body-left-con">
+	        	<div class="sflb">
+	    					<span class="tiao"></span>
+	    					<span>&nbsp;&nbsp;发票信息</span>
+	        	</div>
+	            <table class="tab5">
+	            	<thead>
+	            		<tr>
+	            			<th style="border-left:2px solid #CCC;" width="30%">票据号</th>
+	            			<th width="20%">姓名</th>
+	            			<th width="20%">收费金额</th>
+	            			<th style="border-right:2px solid #CCC;" width="30%">病历号</th>
+	            		</tr>
+	            	</thead>
+	            </table>
+	            <div id="tb3">
+	            	<table class="tab5_1">
+	            		<volist name="sfls" id="vo">
+	            			<tr class="trc" id="{$vo.invoice_no}">
+	            				<td width="30%">{$vo.invoice_no}</td>
+	            				<td width="20%">{$arr.$key.br_name}</td>
+	            				<td width="20%" align="right">{$arr.$key.total}</td>
+	            				<td width="30%">{$arr.$key.br_id}</td>
+	            			</tr>
+	            		</volist>
+	            	</table>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="modal-body-right">
+	        <div class="modal-body-right-con">
+	        	<div class="sflb1">
+	        		<span class="tiao"></span>
+	        		<span>&nbsp;&nbsp;收费明细</span>
+	        	</div>
+	            <table class="tab6">
+	            	<thead>
+	            		<tr>
+	            			<th style="border-left:2px solid #CCC;" width="12%">序号</th>
+	            			<th width="38%">项目名称</th>
+	            			<th width="12%">单位</th>
+	            			<th width="12%">单价</th>
+	            			<th width="12%">数量</th>
+	            			<th style="border-right:2px solid #CCC;" width="12%">金额</th>
+	            		</tr>
+	            	</thead>
+	            </table>
+	            <div id="tb3">
+	            	<table class="tab6_1"></table>
+	            </div>
+	        </div>
+	    </div>
+	    <form name="tf" id="tuifei" method="post" action="{:U('Huajia/tuifei2')}">
+			<input type="hidden" id="checked_pjh" name="checked_pjh" value="">
+			<input type="hidden" id="checked_id" name="checked_id" value="">
+		</form>
+	</div>
+	<!-- 双击弹框 -->
+	<div class="dbdiv2" id="dbdiv2">
+		<div class="dbexit">
+			<button type="button" id="close" class="close btn" onClick="close()">&times;</button>
+		</div>
+		<table id="dbtab">
+			<thead>
+				<tr>
+					<th width='8%'>序号</th>
+					<th width='25%'>项目名称</th>
+					<th width='10%'>数量</th>
+					<th width='20%'>单位</th>
+					<th width='10%'>剂数</th>
+					<th width='12%'>零售价</th>
+					<th width='15%'>金额</th>
+				</tr>
+			</thead>
+		</table>
+		<div id="tb4">
+			<table id="dbtab_1"></table>
+		</div>
+		<table id="dbtab_2"></table>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/huajia.js"></script>
+<script>
+	//退费页面左边发票信息单击事件
+	$(".trc").click(function(){
+		$("#checked_pjh").val(this.children[0].innerHTML);
+		$("#checked_id").val(this.children[3].innerHTML);
+		var id = $(this).attr("id");
+		$(this).toggleClass("trsty1");
+		$(".trsty1").not(this).attr("class","trsty");
+		$.ajax({
+			type:"post",
+			url:"__CONTROLLER__/tuifei1",
+			dataType:"json",
+			data:{"invoice_no":id},
+			success:function(sflbarr){
+				var str = "";
+				var ztotal = 0;
+				for(var i=0;i<sflbarr.length;i++){
+					str += "<tr class='sty2' name='tableSty' id='"+sflbarr[i]['id']+"'><td align='center' width='10%'>"+sflbarr[i]['serial_no']+"</td><td align='left' width='40%'>"+sflbarr[i]['item_name']+"</td><td align='left' width='12%'>"+sflbarr[i]['units']+"</td><td align='right' width='12%'>"+sflbarr[i]['unit_price']+"</td><td align='right' width='12%'>"+sflbarr[i]['amount']+"</td><td align='right' width='12%'>"+sflbarr[i]['total']+"</td></tr>";
+						ztotal += parseFloat(sflbarr[i]['total']);
+				}
+				str += "<tr><td colspan='3' align='right'><b>合计金额：</b></td><td colspan='3' align='right'><font color='#30BEB2'><b>￥"+ztotal.toFixed(2)+"</b></font></td></tr>";
+				$(".tab6_1").html(str);
+				}
+			})
+		})
+
+		//中药or西药双击事件
+		$(document).on('dblclick','.sty2',function(){
+			$(".dbdiv2").css('display','block');
+			$(".dbdiv2").css('width',(window.screen.width)/2);
+			$(".dbdiv2").css('height',(window.screen.height)/2);
+        	$(".dbdiv2").fadeTo('slow', 0.99);
+        	$(".zhezhao").css("display","block");
+			$(".zhezhao").css("filter","alpha(opacity:80)");
+			$(".zhezhao").css("opacity","0.8");
+			var id = $(this).attr("id");
+			var len = $(this).attr("id").length;
+			$.ajax({
+				type:"post",
+				url:"__CONTROLLER__/yplist",
+				dataType:"json",
+				data:{"id":id,
+					"len":len
+				},
+				success:function(sfdetail){
+					var str = "";
+					var zcosts = 0;
+					for(var i=0;i<sfdetail.length;i++){
+						str += "<tr><td width='8%'>"+sfdetail[i]['id']+"</td><td align='left' width='25%'>"+sfdetail[i]['xmname']+"</td><td align='right' width='10%'>"+sfdetail[i]['amount']+"</td><td align='left' width='20%'>"+sfdetail[i]['units']+"</td><td align='right' width='10%'>"+sfdetail[i]['dose']+"</td><td align='right' width='12%'>"+sfdetail[i]['price']+"</td><td align='right' width='15%'>"+sfdetail[i]['costs']+"</td></tr>";
+						var count = i;
+						zcosts += parseFloat(sfdetail[i]['costs']);
+					}
+					str1 = "<tr><td colspan='4' align='left'>共<font color='#30BEB2'><b>"+i+"</b></font>味药</td><td colspan='3' align='right'><font color='#30BEB2'><b>合计金额：<font color='#30BEB2'>￥"+zcosts.toFixed(2)+"</font></b></td></tr>";
+					$("#dbtab_1").html(str);
+					$("#dbtab_2").html(str1);
+				}
+			})
+		})
+
+		$("#close").click(function(){
+			$(".dbdiv2").css('display','none');
+			$(".zhezhao").css("display","none");
+		})
+
+		$("#tf").click(function(){
+			if($("#checked_pjh").val() == ''){
+				return false;
+			}else{
+				$("#tuifei").submit();
+			}
+		})
+</script>
+<script type="text/javascript">
+	jeDate.skin('gray');
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/note.css"/>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/editor/styles/simditor.css"/>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/module.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/hotkeys.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/simditor.js"></script>
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<script>
+$(document).ready(function(){
+	var editor = new Simditor({
+		textarea:$('#editor'),
+		toolbar:['title','bold','italic','underline','strikethrough','color','|','ol','ul','blockquote', 'table','link','hr','indent','outdent'],
+		placeholder:'请在此输入内容......',
+	});
+});
+function frsub(){
+	if($('input[type=hidden]')==''){
+		layer.alert("请选择目录！");
+	}else if($('input[name=list]').val()=='' || $('#editor').val()==''){
+		layer.alert("标题或内容不能为空！");
+	}else{
+		$('#fr').submit();
+	}
+}
+</script>
+<body>
+<script>
+	document.oncontextmenu=new Function("event.returnValue=false;");
+</script>
+	<br>
+	<br>
+	<form action="__CONTROLLER__/consub" method="post" id="fr">
+		标题：<input type="text" name="list" class="mlk">
+		(<span style="color:red;">*必填</span>)&emsp;&emsp;
+		<input type="button" value="保 存" onclick="frsub()" class="sub">
+		<input type="hidden" name="p_id" value="1">
+		<br><br><hr style="width:100%;height:3px;background:#000;"/><br>
+		<div class="outsidetxt" id="mldiv">
+			<textarea id="editor" name="contents" autofocus></textarea>
+		</div>
+	</form>
+</body>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

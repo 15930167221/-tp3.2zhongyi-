@@ -1,0 +1,111 @@
+<extend name="Layout/main"/>
+
+<block name="main">
+<!-- 分页效果 -->
+    <link href="__PUBLIC__/css/mypage.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <!-- 分页结束 -->
+    <div class="page-container">
+         <div class="text-c">
+         	<form action="{:U("Admin/China/index")}" method="get">
+            <input type="text" class="input-text" style="width:250px" placeholder="输入药品名称" id="" name="drug_name">
+            <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜药品</button>
+            </form>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+            <a href="javascript:;" onclick="admin_add('添加药品','{:U('Admin/China/add')}','900','600')"
+               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加药品</a></span>
+            <span class="r">共有数据：<strong>{$info.count}</strong> 条</span> </div>
+        <div class="mt-20">
+        <table class="table table-border table-bordered table-bg">
+            <thead>
+            <tr class="text-c">
+                
+                <th>代码</th>
+                <th>名称</th>
+                <th>别名</th>
+                <th>单位</th>
+                <th>单价</th>
+                <th>输入码</th>
+                <th>标志</th>
+                <th>注意事项</th>
+               
+                
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="info.list" id="item">
+                    <tr class="text-c">
+                        
+                        <td>{$item.drug_code}</td>
+                        <td>{$item.drug_name}</td>
+                        <td> 
+						<php>if($item['other_name']){</php>
+                        <a href="javascript:;"
+                               onclick="admin_add('别名详情','{:U('Admin/China/other', array('otn' => $item['other_name']))}'
+                               ,'800','400')">
+                                <button>别名</button>
+                            </a>
+			
+						<php>}else{}</php>
+                        </td>
+                        <td>克</td>
+                        <td>{$item.price}</td>
+                        <td>{$item.input_code}</td>
+                        <td><php>if($item['bz']==1){</php>系统自带<php>}else{echo '用户添加';}</php></td>
+                        <td>{$item.zysx}</td>
+                        
+                        <td class="td-manage">
+                        <a href="javascript:;"
+                               onclick="admin_add('编辑详情','{:U('Admin/China/Yaojie', array('code' => $item['drug_name']))}'
+                               ,'800','500')">
+                                <i class="Hui-iconfont">&#xe616;</i>
+                            </a>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+                        	 <a href="javascript:;"
+                               onclick="admin_add('编辑详情','{:U('Admin/China/edit', array('code' => $item['drug_code']))}'
+                               ,'800','430')">
+                                <i class="Hui-iconfont">&#xe6df;</i>
+                            </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="h-text-sc" id="{$item.drug_code}"><i class="Hui-iconfont">&#xe6e2;</i></a>
+
+                        </td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="result page">
+        <div class="pages">
+          {$info.page}
+        </div>
+    </div>
+    <script type="text/javascript">
+        /*删除*/
+        $(document).on("click", '.h-text-sc', function () {
+            var op_obj = $(this).parents("tr");
+            var id = $(this).attr('id');
+            layer.confirm('确认要删除吗？',function(){
+                $.ajax({
+                    type:'POST',
+                    dataType: 'json',
+                    url:'{:U("Admin/China/delete")}',
+                    data:{code:id},
+                    success: function (result) {
+                       if (result.status) {
+                            op_obj.remove();              
+                            layer.msg(result.msg,{icon:1,time:1000});
+                        } else {
+                            layer.msg(result.msg,{icon:0,time:2000});
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+</block>

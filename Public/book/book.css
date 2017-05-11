@@ -1,0 +1,39 @@
+/**/
+.top{
+	width:100%;
+	height:50px;
+}
+h3{ 
+	margin-left:10%;
+	color:#DDAA00;
+	line-height:20px;
+	float:left;
+}
+.top span {
+	float:left;
+	margin-top:1.3%;
+	margin-left:5%;
+}
+.center{
+	width:80%;
+	margin-left:10%;
+	float:left;
+	border:1px solid #333;
+}
+.c_left{
+	width:25%;
+	height:590px;
+	float:left;
+	background:#eee;
+}
+ul li{
+	line-height:30px;
+}
+.c_right{
+	width:75%;
+	height:590px;
+	float:left;
+}
+h2{
+	margin:20% 40%;
+}

@@ -1,0 +1,175 @@
+*{font-size:14px;}
+html,body{width:100%;height:100%;}
+a{text-decoration:none;}
+img{border:0px;}
+/*ul{list-style:none;list-style-position:inside;}*/
+.W{width:1366px;}
+.center{margin:0px auto;}
+.bg{height:100%;width:100%;}
+.title{
+    height:55px;text-align:center;font-size:30px;line-height:55px;
+    letter-spacing:20px;font-weight:bolder;color:#050093;padding-top:10px;
+}
+.yuyue{
+    height:45px;line-height:45px;background:#e1e1e1;margin-left:42px;
+}
+.yuyue img{height:36px;width:30px;}
+.yuyue .yyfont{margin-left:1em;font-size:16px;color:#000;font-weight:bold;}
+.yuyue .yychecked{width:100%;height:60px;}
+#xdri{
+	height:35px;border-radius:3px;margin-top:8px;margin-bottom:8px;
+	float:right;margin-right:1.5em;
+}
+#xdri option{
+	height:30px;line-height:30px;background:#edf0f2;
+}
+#depart{
+    float:right;height:50px;margin-right:3em;
+}
+#depart select{
+    height:35px;border-radius:3px;outline:none;
+    font-weight:normal;
+}
+#depart select option{
+    background:#edf0f2;
+}
+/*表格区*/
+.yyinf{width:96%;height:72%;}
+.yytab{
+    margin-top:30px;width:100%;height:100%;overflow:auto;
+    background-color:#fefefc;
+}
+.yytab table{text-align:center;border:1px solid #ccc;border-radius:5px;}
+.yytab table tr:nth-child(odd){background:#F4F4F4;}
+.yytab table td:nth-child(even){color:#C00;}
+.yytab table tr{height:35px;line-height:35px;font-size:14px;border-bottom:1px solid #ccc;}
+.yytab table tr th{
+    background-color:#e2ecf8;border-top:1px solid #ffffff;text-align:center;font-size:16px;
+}
+.yytab table tr:hover{
+    font-weight:bold;
+}
+.yytab table tr:last-child{border-bottom:1px solid #CCCCCC;}
+
+.yytab table .sty1 td{color:#000000;}
+.yytab table .sty1:hover{background-color:rgba(135,206,250,0.7);}
+.yytab table .sty2 td{background-color:rgba(0,96,197,0.5);color:#ffffff;}
+.yytab table tr td span{color:#0338d9;cursor:pointer;text-align:center;}
+.yytab table .sty2 td span{color:#FFFFFF;}
+/*统计栏*/
+.yytj{
+	width:100%;background-color:#fff;margin-bottom:0px;
+}
+.yemianfenyequxiao{
+	height:30px;line-height:30px;text-align:right;float:right;
+}
+/*患者详细信息模态框*/
+.modal-header{background-color:#edf0df;}
+.modal-body{background-color:#fff;margin:0px auto;padding:0px;}
+.modal-footer{background-color:#fff;margin-top:0px;text-align:center;}
+.modal-body .mbt{
+	width:80%;margin-left:10%;table-layout:fixed;padding:0px;
+	border-collapse:separate;border-spacing:8px; 
+	text-align:left;
+}
+.modal-body .mbt tr{width:100%;height:25px;line-height:25px;}
+.modal-body .mbt tr td{
+	line-height:25px;font-weight:normal;
+}
+.modal-body .mbt tr td input{
+	
+}
+/*滚动条美化*/
+#check::-webkit-scrollbar {
+    width:10px;
+}
+#check::-webkit-scrollbar-track {
+    background-color:gray;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#check::-webkit-scrollbar-thumb {
+    background-color:#EEE;
+    -webkit-border-radius:2em;
+    -moz-border-radius:2em;
+    border-radius:2em;
+}
+#cfscroll{
+    height:86%;overflow:auto;
+}
+#cfscroll::-webkit-scrollbar {
+    width:12px;
+}
+#cfscroll::-webkit-scrollbar-track {
+    background-color:gray;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#cfscroll::-webkit-scrollbar-thumb {
+    background-color:#EEE;
+    -webkit-border-radius:2em;
+    -moz-border-radius:2em;
+    border-radius:2em;
+}
+/* .cons{
+    width:80%;margin-left:10%;background:purple;
+} */
+.d1{
+    float:left;margin:5px;background-color:#F5F5F5;
+    width:150px;height:100px;border:1px #E1E1E1 solid;
+}
+.d2{
+    width:20px;height:28px;border-bottom-left-radius: 10px;
+    border-bottom-right-radius:10px;background-color:#2FBBB5;
+    text-align:center;color:#FFF;margin-left:5px;
+}
+.d3{
+    border:1px #ccc solid;width:60px;height:20px;
+    border-width:0 0 1px 0;position:relative;left:80px;top:-15px;
+}
+.d4{
+    border:0px;width:80px;border-width:0 0 1px 0;position:relative;
+    left:10px;top:-5px;font-size:20px;font-family:楷体;
+}
+.d5{
+    border:0px;width:70px;border-width:0 0 1px 0;
+    position:relative;left:60px;top:-5px;text-align:right;
+}
+/***底部分页***/
+.botpage{
+    width:100%;height:30px;
+}
+.botdiv{
+    width:100%;
+}
+.pagediv{
+    height:30px;float:right;
+}
+.pagediv div{
+    text-align:right;
+}
+.pagediv a,span{
+    text-decoration:none;
+    line-height:25px;margin-right:8px;
+}
+.num{
+    width:25px;height:25px;line-height:25px;float:left;
+    border:1px solid #ccc;color:#000;cursor:pointer;
+    display:block;text-align:center;
+}
+.current{
+    width:25px;height:25px;line-height:25px;float:left;
+    background:#30bdb5;color:#fff;cursor:pointer;
+    display:block;text-align:center;
+}
+.first,.end,.next,.prev{
+    width:65px;height:25px;line-height:25px;color:#000;
+    cursor:pointer;border:1px solid #ccc;
+    display:block;text-align:center;float:left;
+}
+.rows{
+    margin-right:8px;list-style-type:none;float:left;margin-right:15px;
+    line-height: 25px;float:left;
+}

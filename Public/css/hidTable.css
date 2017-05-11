@@ -1,0 +1,15 @@
+/*总div*/
+#cxHid{height:180px;width:500px;background-color:#ffffff;position: absolute;left:218px;z-index:10;overflow: auto;display:none;}
+#cxHid2{height:130px;width:500px;background-color:#ffffff;position: absolute;left:218px;z-index:10;overflow: auto;display:none;}
+#cxHid3{
+    height:200px;width:500px;background-color:#ffffff;position: absolute;left:414px;z-index:10;overflow: auto;
+    display:none;border:2px solid #dddddd;
+}
+#cxHid table tr th,#cxHid2 table tr th,#cxHid3 table tr th{
+    height:30px;line-height:30px;text-align:center;font-weight: bold;background-color:#f5fafe;border:1px solid #ddd;
+}
+#cxHid table tr td,#cxHid2 table tr td,#cxHid3 table tr td{height:30px;line-height:30px;text-align:center;border:1px solid #ddd;}
+#cxHid table .sty1:hover,#cxHid3 table .sty1:hover{background-color:rgba(0, 96, 197, 0.4);}
+#cxHid table .sty2,#cxHid3 table .sty2{background-color: rgba(0,96,197,0.5);color: #ffffff;}
+#cxHid2 table .sty11:hover{background-color:rgba(0, 96, 197, 0.4);}
+#cxHid2 table .sty22{background-color: rgba(0,96,197,0.5);color: #ffffff;}

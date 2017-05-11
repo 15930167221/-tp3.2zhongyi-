@@ -1,0 +1,85 @@
+<extend name="Layout/main"/>
+
+<block name="main">
+    <div class="page-container">
+        <div class="text-c">
+            <form action="{:U('Admin/User/index')}" method="get">
+                <input placeholder="用户名称" name="name" value="{$param['name']}" style="width:250px" class="input-text" type="text">
+                <button class="btn btn-success" type="submit">
+                    <i class="Hui-iconfont">&#xe665;</i>搜索
+                </button>
+            </form>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l">
+                <a class="btn btn-primary radius"
+                   onclick="admin_add('机构添加','{:U('Admin/User/add')}','800','500')"
+                   href="javascript:;">
+                    <i class="Hui-iconfont"></i> 添加用户
+                </a>
+            </span>
+            <span class="r">共有数据：<strong>{$list.total}</strong> 条</span>
+        </div>
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-bg">
+                <thead>
+                <tr class="text-c">
+                    <th>ID</th>
+                    <th>用户名称</th>
+                    <th>用户编码</th>
+                    <th>性别</th>
+                    <th>所属机构</th>
+                    <th>联系方式</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list.list" id="vo">
+                    <tr class="text-c">
+                        <td>{$vo.id}</td>
+                        <td>{$vo.username}</td>
+                        <td>{$vo.code}</td>
+                        <td>{$vo.sex}</td>
+                        <td>{$vo.department}</td>
+                        <td>{$vo.userphone}</td>
+                        <td>{$vo.creatime}</td>
+                        <td>
+                            <a href="javascript:;"
+                               onclick="admin_add('编辑详情','{:U('Admin/User/edit', array('id' => $vo['id']))}'
+                               ,'800','500')">
+                                <i class="Hui-iconfont">&#xe6df;</i>
+                            </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="h-text-sc" id="{$vo.id}"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$list.page}
+    <script type="text/javascript">
+        /*删除*/
+        $(document).on("click", '.h-text-sc', function () {
+            var op_obj = $(this).parents("tr");
+            var id = $(this).attr('id');
+            layer.confirm('确认要删除吗？',function(){
+                $.ajax({
+                    type:'POST',
+                    dataType: 'json',
+                    url:'{:U("Admin/User/delete")}',
+                    data:{id:id},
+                    success: function (result) {
+                        if (result.status) {
+                            op_obj.remove();
+                            layer.msg(result.msg,{icon:1,time:1000});
+                        } else {
+                            layer.msg(result.msg,{icon:0,time:2000});
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+</block>

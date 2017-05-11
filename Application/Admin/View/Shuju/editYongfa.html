@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+	<head>
+		<style>
+			.inp{
+				width:400px;
+				height:40px;
+			}
+			.sub{
+				width:100px;
+				height:35px;
+				cursor:pointer;
+			}
+		</style>
+	</head>
+	<body>
+	  <form action='{:U("Admin/Yongfa/doEdit")}' method="post">
+	  	<br/><br/>
+		&nbsp;&nbsp;&nbsp;编　码：<input type="text"  placeholder="请填写编码" name="code" class="inp" value="<php>echo $list['code'];</php>"><br/><br/><br/>
+		&nbsp;&nbsp;&nbsp;名　称：<input type="text"  placeholder="请填写名称" name="name" class="inp" value="<php>echo $list['name'];</php>"><br/><br/><br/>
+		&nbsp;&nbsp;&nbsp;拼音码：<input type="text"  placeholder="请填写拼音码" name="input_code" class="inp" value="<php>echo $list['input_code'];</php>"><br/><br/><br/>
+		<input type="hidden" name="id" value="<php>echo $list['id'];</php>">
+		<center><input type="reset" value="重置" class="sub">&nbsp;&nbsp;&nbsp;<input type="submit" value="提交" class="sub"></center>
+	</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/note.css"/>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <style>
+		html,body{
+			width:100%;height:100%;position:relative;
+		}
+		a{
+			text-decoration:none;cursor:pointer;color:black;
+		}
+		a:hover{text-decoration:none;}
+	</style>
+</head>
+<script>
+window.onload=function(){
+	$('a').click(function(){
+		$(this).css('text-decoration','none');
+		$(this).next(".listul").slideToggle(500).siblings(".listul").slideUp(300);
+	});
+}
+</script>
+<script>
+    document.oncontextmenu=new Function("event.returnValue=false;");
+</script>
+<body>
+	<p class="titlep">目 录 列 表</p>
+	<div id="mldiv">
+		<a href="__CONTROLLER__/setnote?id=1" target="right">
+			<p class="listp">
+				<span class="glyphicon glyphicon-book" style="margin-left:1em;"></span>
+				<span>默认目录</span>
+			</p>
+		</a>
+		<ul class="listul">
+			<volist name="mrml" id="vo">
+				<a href="__CONTROLLER__/view?id={$vo.id}" target="right">
+					<li class="listli" id="{$vo.id}">&emsp;&emsp;{$vo.list}</li>
+				</a>
+			</volist>
+		</ul>
+		<foreach name="elet" item="ml">
+			<a href="__CONTROLLER__/setnote?id={$ml['ids']}" target="right">
+				<p class="listp">
+					<span class="glyphicon glyphicon-book" style="margin-left:1em;"></span>
+					<span>{$ml.element}</span>
+				</p>
+			</a>
+			<ul class="listul">
+				<volist name="res" id="vo">
+					<if condition="$vo['element'] eq $ml['element']">
+					<a href="__CONTROLLER__/view?id={$vo.id}" target="right">
+						<li class="listli" id="{$vo.id}">&emsp;&emsp;{$vo.list}</li>
+					</a>
+					</if>
+				</volist>
+			</ul>
+		</foreach>
+	</div>
+	<div class="divbottom">
+		<a href="__CONTROLLER__/setml" target="right">
+			<button class="btn btn-success" style="width:100px;background:#30bdb5;border:none;">
+				<b style="color:#fff;">新建目录</b>
+			</button>
+		</a>
+		<a href="__CONTROLLER__/delml" target="right">
+			<button class="btn btn-success" style="width:100px;background:#E84C3D;border:none;">
+				<b style="color:#fff;">删除目录</b>
+			</button>
+		</a>
+	</div>
+</body>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

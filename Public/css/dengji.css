@@ -1,0 +1,57 @@
+/*统配样式*/
+
+a{text-decoration:none;}
+img{border:0px;}
+/*ul{list-style:none;list-style-position:inside;}*/
+.W{width:1366px;}
+.center{margin:0px auto;}
+
+.bg{height:100%;width:100%;}
+/*标题*/
+.title{
+    height:55px;text-align:center;font-size:35px;line-height:55px;
+    letter-spacing:20px;font-weight:bolder;color:#050093;padding-top:10px;
+}
+.content{border-radius:10px;}
+.title2{
+    width:99%;height:40px;line-height:40px;
+}
+.title2 div{float:left;}
+.title2 .djfont{font-size:16px;color:#404040;font-weight:bold;}
+.title2 .djdate{float:right;}
+.title2 .djdate span{color:#404040;font-weight:bold;}
+.inf{
+    /*background-image:url(http://localhost/TP3.2.3pykj/Public/img/npbj.jpg);background-size:100% 100%;*/
+    background-repeat: no-repeat;border-top:2px solid #ccc;
+    width:100%;padding-top:20px;padding-bottom:20px;
+}
+/*表格*/
+.inf .mbt{width:95%;}
+.inf .mbt tr{height:50px; }
+.inf .mbt tr td input[type='text']{width:70%; height: 30px;}
+.inf .mbt tr td .lontext{width:70%!important;height: 150px}
+/*按钮区*/
+.but{height:40px;margin-bottom:10px; background-color: #fff;}
+.but .butt{float:right;margin-right:145px;}
+.but .butt1{float:right;margin-right:30px;}
+.but .first{margin-right:20px;}
+.but .butt button{padding:10px 30px!important;}
+.sty1:hover{background-color: #CCDFF5;}
+
+/*滚动条美化*/
+#tb2::-webkit-scrollbar,.xiacechufangyaopin::-webkit-scrollbar{
+	width:10px;height:10px;
+}
+/*#374554*/
+#tb2::-webkit-scrollbar-track,.xiacechufangyaopin::-webkit-scrollbar-track{
+	background-color: #c1c1c1;;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+#tb2::-webkit-scrollbar-thumb,.xiacechufangyaopin::-webkit-scrollbar-thumb{
+	background-color: #f1f2ec;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}

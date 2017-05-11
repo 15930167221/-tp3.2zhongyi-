@@ -1,0 +1,73 @@
+/*统配样式*/
+/**{margin:0px;padding:0px;font-family:宋体;font-size:14px;}rgba(0,0,0,0)!important*/
+*{font-size:14px;}
+html,body{width:100%;height:100%;}
+a{text-decoration:none;}
+img{border:0px;}
+/*ul{list-style:none;list-style-position:inside;}*/
+.W{width:1366px;}
+.center{margin:0px auto;}
+
+.bg{height:100%;width:100%;}
+/*接诊区标题*/
+.title{
+	height:55px;text-align:center;font-size:30px;line-height:55px;
+	letter-spacing:20px;font-weight:bolder;color:#050093;padding-top:10px;
+}
+/*预约筛选*/
+.yuyue{height:45px;line-height:45px;background:#e1e1e1;margin-left:42px;}
+.yuyue img{height:36px;width:30px;}
+.yuyue .yyfont{margin-left:8px;font-size:16px;color:#333;font-weight:bold;}
+.yuyue .yychecked{width:100%;height:60px;}
+#xdri{
+	height:35px;border-radius:3px;margin-top:8px;margin-bottom:8px;
+	float:right;margin-right:1.5em;
+}
+#xdri option{
+	height:30px;line-height:30px;background:#edf0f2;
+}
+.yuyue .yychecked .yydate{text-align:center;}
+.yuyue .yychecked .yydate option{cursor: pointer;}
+.yuyue .nowdate{float:right;margin-right:30px;}
+.yuyue .nowdate span{color:#7a1000;font-weight:bold;font-size:16px;}
+/*表格区*/
+.yyinf{width:96%;height:80%;}
+.yytab{
+	width:100%;height:100%;overflow:auto;
+	background-color:#fefefc;margin-top: 10px;margin-bottom: 10px;
+}
+.yytab table{text-align:center;border-radius:5px;}
+.yytab table tr:nth-child(odd){background:#F4F4F4;}
+.yytab table td:nth-child(even){color:#C00;}
+.yytab table tr{font-size:15px;height:30px;line-height:30px;}
+.yytab table tr th{
+	background-color:#e2ecf8;border-top:1px solid #ffffff;text-align: center;font-size:16px;
+}/* #C6E2FF天蓝色 */
+/*.yytab table tr td{font-size:15px;}*/
+/*.yytab table tr:last-child{border-bottom:1px solid #CCCCCC;}*/
+.yytab table .sty1 td{color:#000000;cursor: pointer;}
+/*.yytab table .sty1:hover{background-color:rgba(135,206,250,0.7);}*/
+.sty1:hover {font-weight: bold;}
+.yytab table .sty2 td{background-color:rgba(0,96,197,0.5);color:#ffffff;cursor: pointer;}
+.yytab table tr td span{color:#0338d9;cursor: pointer;text-align:center;}
+.yytab table .sty2 td span{color:#FFFFFF;}
+/*统计栏*/
+.yytj{
+	width:100%;background-color:#fff;margin-bottom:0px;
+}
+.yemianfenyequxiao{
+	height:30px;line-height:30px;text-align:right;float:right;
+}
+/*患者详细信息模态框*/
+.modal-header{background-color:#edf0df;height: 40px;}
+.modal-body{background-color:#fff;margin:0px auto;padding:0px;}
+.modal-footer{background-color:#fff;margin-top:0px;text-align:center;}
+.modal-body .mbt{
+	margin-left:5%;table-layout:fixed;padding:0px;
+	border-collapse:separate;border-spacing:8px;
+	text-align:left;
+}
+.modal-body .mbt tr{width:100%;height:25px;line-height:25px;}
+.modal-body .mbt tr td{
+	line-height:25px;font-weight:normal;
+}

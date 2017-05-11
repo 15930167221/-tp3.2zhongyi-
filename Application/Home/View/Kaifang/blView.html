@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="__PUBLIC__/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/blView.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+	<script type="text/javascript" src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/echarts.simple.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/imgTable.js"></script>
+</head>
+<body>
+		<!-- 参照处方div -->
+		<div id="czcf">
+			<div id="czt">
+				参照处方
+				<div id="exit">X</div>
+			</div>
+			<div id="czdiv2">
+				<input type="text" placeholder="请输入处方首字母" id="czinput">
+			</div>
+			<div id="czcot">
+				
+			</div>
+		</div>
+		<volist name="wrph" id="his">
+			<span class="wrphhid" style="display:none;">{$his}</span>
+		</volist>
+		<volist name="name" id="name">
+			<span class="namehid" style="display:none;">{$name}</span>
+		</volist>
+		<volist name="code" id="code">
+			<span class="codehid" style="display:none;">{$code}</span>
+		</volist>
+
+	<div id="outBig">
+		<div class="y-div" id="leftX">
+			<div class="top" id="bing11"></div>
+			<div class="mid"><button class="buton" id="aft">原始处方</button></div>
+			<div class="bot" id="sameList"></div>
+		</div>
+		<div class="y-div">
+			<div class="top" id="bing22"></div>
+			<div class="mid"><button class="buton" id="cz">参照处方</button></div>
+			<div class="bot" id="difList"></div>
+		</div>
+		<div class="y-div">
+			<div class="top" style="height:49%;"><div class="samed">　相同药品</div><div id="same" class="smdif"></div></div>
+			<!-- <div class="mid"><button class="buton">药品异同</button></div> -->
+			<div class="bot" style="height:49%;"><div class="samed">　不同药品</div><div id="dif" class="smdif"></div></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		$('#aft').click(function(){
+			var zywrph100 = [];
+     		var num100 = 0;
+   			$(".wrphhid").each(function(){
+         		zywrph100[num100] = $(this).html();
+         		num100+=1;
+			});
+		setHop(zywrph100);
+		});
+		var zycode = [];
+     	var cnam = 0;
+   			$(".codehid").each(function(){
+         		zycode[cnam] = $(this).html();
+         		cnam+=1;
+			});
+		var zywrph100 = [];
+     	var num100 = 0;
+   			$(".wrphhid").each(function(){
+         		zywrph100[num100] = $(this).html();
+         		num100+=1;
+			});
+		setHop(zywrph100);
+
+		var zyname100 = [];
+     	var name100 = 0;
+   			$(".namehid").each(function(){
+         		zyname100[name100] = $(this).html();
+         		name100+=1;
+			});
+   		var str = zyname100.join(',');
+   		
+   		$('#sameList').html(str);
+
+   		//按钮样式
+   		$('.buton').mouseover(function(){
+   			$(this).css('color','#3E4857');
+   		}).mouseout(function(){
+   			$(this).css('color','#000');
+   		});
+   		$('#exit').click(function(){
+   			$('#czcf').slideUp();
+   		});
+   		//参照处方
+		$('#cz').click(function(){
+			setHop2([]);
+			$('#same').html('');
+			$('#dif').html('');
+			$('#czcf').slideToggle();
+			$('#czinput').focus();
+		});
+		$('#czinput').bind('input propertychange',function(){
+    		var val = $(this).val();
+    		// alert(val);
+    		$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/jdSel')}",
+            data:{val:val},
+            dataType:'json',
+            success:function(dd)
+            {
+
+            	var str = '';
+            	$.each(dd,function(idx,item){
+              		str += '<tr class="qjdftr"><td>'+item.name+'<input type="hidden" class="hideTree" value="'+item.tree+'"></td></tr>';
+                });
+                $('#czcot').html(str);
+
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+     });
+			$(document).on('mouseover','.qjdftr',function(){
+		$(this).css('backgroundColor','#649EEA');
+		$(this).css('color','#FFF');
+		
+	}).on('mouseout','.qjdftr',function(){
+		$(this).css('backgroundColor','');
+		$(this).css('color','');
+	});
+	//点击参照的处方
+	$(document).on('click','.qjdftr',function(){
+			var tree = $(this).find('input').val();
+			$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/jdOne')}",
+            data:{tree:tree},
+            dataType:'json',
+            success:function(dd)
+            {
+                // console.log(dd);
+                var wrph = [];
+                //取过来的经典方，温热平寒数组
+                 $.each(dd,function(idx,item){
+              		wrph.push(item.xw1);
+                });
+                 setHop2(wrph);
+                var str1 = [];
+                $.each(dd,function(idx,item){
+              		str1.push(item.drug_name);
+                });
+                var sstr = str1.join(',');
+                //经典code
+                var jdcode = [];
+                $.each(dd,function(idx,item){
+              		jdcode.push(item.drug_code);
+                });
+                //结束
+                $('#difList').html(sstr);
+                //放到PHP不同
+                $.ajax({
+            type:'POST',
+            url:"{:U('Ajax/sameDif')}",
+            data:{aa:zycode,bb:jdcode},
+            dataType:'json',
+            success:function(dd)
+            {
+            	$('#czcf').slideUp();
+            	// console.log(dd);
+            	var btstr = '';
+            	$.each(dd,function(k,v){
+            		btstr+=v.drug_name+',';
+            	});
+            	// var nes = dd.join(',');
+            	$('#dif').html(btstr);
+            	
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+                //结束
+                //第三个ajax，看相同
+            		$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/diffSam')}",
+            data:{cc:zycode,dd:jdcode},
+            dataType:'json',
+            success:function(dd)
+            {
+            	// console.log(dd);
+            		var xtstr = '';
+            	$.each(dd,function(k,v){
+            		xtstr+=v.drug_name+',';
+            	});
+            	$('#same').html(xtstr);
+            	$('#czcf').slideUp();
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+            	//结束3
+
+            },
+            error:function()
+            {
+//                alert('Ajax请求失败');
+            }
+        });
+	});
+
+
+
+	});
+</script>
+</html>

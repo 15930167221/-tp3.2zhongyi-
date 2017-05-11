@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>药品使用统计查询_中医健康管理系统</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/easyui.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/chaxun.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/font.css">
+	<link href="__PUBLIC__/css/mypage.css" rel="stylesheet" type="text/css"/>
+	<style>
+		.yemianfenyequxiao div a,span{
+			text-decoration:none;float:left;
+			line-height:25px;margin-right:8px;
+		}
+	</style>
+	<script type="text/javascript" src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.easyui.min.js"></script>
+	<script src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+	<script>
+		function preview(oper){
+			if (oper < 10){
+				bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+				sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
+				eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
+				prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取htm
+				prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+				window.document.body.innerHTML=prnhtml;
+				window.print();
+				window.document.body.innerHTML=bdhtml;
+			}else{
+				window.print();
+			}
+		}
+	</script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<div class="top">
+		<div class="title">
+			<span class="glyphicon glyphicon-search" style="font-size:16px;"></span>
+			<span>药品使用统计</span>
+		</div>
+		<div class="tool">
+			<button  id="tongji" name="query" class="btn btn-success" type="button">✔ 统计</button>
+			<button  name="print" type="button" class="btn btn-success" onclick="preview(1);" style="background-color: #ff6501!important;">℗ 打印</button>
+			<!--<button  name="clear" onclick="window.location.reload()" class="btn btn-success" type="reset">↻ 清除</button>-->
+			<p id="demo"></p>
+		</div>
+	</div>
+	<div class="ypsy_cxtj">
+	<form action="" method="get">
+		<span>日期范围:</span>
+			<input id="start" name="startTime" type="text" readonly value="{$chaxtiaoj.startTime}"> <b>至</b>
+			<input id="end" name="endTime" type="text" readonly onClick="jeDate({dateCell:'#end',format:'YYYY-MM-DD',isinitVal:true,initAddVal:[0]})" value="{$chaxtiaoj.endTime}">
+			&nbsp;&nbsp;
+			<span>按药名:</span><input type="text" name="ypName" id="ypName" value="{$chaxtiaoj.ypName}">
+			<!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#start',{isinitVal:true,initAddVal:[-30],format: 'YYYY-MM-DD'});
+                </script>
+	</form>
+		<div id="hidTab">
+			<table width="100%">
+				<thead>
+					<tr>
+						<th width="20%">药品名称</th>
+						<th width="10%">单位</th>
+						<th width="25%">包装规格</th>
+						<th width="10%">剂型</th>
+						<th width="10%">含量</th>
+						<th width="15%">含量单位</th>
+					</tr>
+				</thead>
+				<tbody id="hidTabTb">
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="ypsy_center">
+		<!--startprint1-->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>药品名称</th>
+					<th>规格</th>
+					<th>剂型</th>
+					<th>数量</th>
+					<th>单位</th>
+					<th>金额</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+			<volist	name="yptj" id="doyptj">
+						<tr>
+							<td>
+								{$doyptj.drug_name}
+							</td>
+							<td>
+								{$doyptj.package_units}
+							</td>
+							<td>
+								{$doyptj.drug_form}
+							</td>
+							<td>
+								{$doyptj.num}
+							</td>
+							<td>
+								{$doyptj.drug_units}
+							</td>
+							<td>
+								{$doyptj.total}
+							</td>
+						</tr>
+					</volist>
+			</tbody>
+		</table>
+		<div style="width:100%;background-color:#fff;margin-bottom:0px;">
+			<div class="result page">
+				<div class="pages">
+					<div class="yemianfenyequxiao">
+						{$page}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--endprint1-->
+	</div>
+	<script type="text/javascript">
+//    	jeDate.skin('gray');
+		//点击进行统计
+		$("#tongji").click(function(){
+			var startTime=$("#start").val();
+			var endTime=$("#end").val();
+			var ypName=$("#ypName").val();
+			var staDate = new Date(startTime);
+			var endDate = new Date(endTime);
+			var str="";
+			if(staDate.getTime()>endDate.getTime()){
+				layer.alert("日期出错，请您重新选择！",{icon: 2});
+			}else{
+				if(startTime==""||endTime==""){
+					layer.alert("请检查您的查询条件！",{icon: 7});
+				}else{
+					$("form").attr("action", "{:U('Chaxun/yptongji')}" ).submit();
+					
+				}
+			}
+		})
+		//输入内容弹出框
+		$(document).on('input','#ypName',function(){
+			$("#hidTab").show(function(){});
+			var val=$(this).val();
+			var str="";
+			$.ajax({
+				url:"{:U('Chaxun/yptongjiInpAjax')}",
+				type:'post',
+				data:{'value':val},
+				dataType:'json',
+				success:function(data){
+					$.each(data,function(index,item){
+						if (item.hl == null) {
+							item.hl = '&nbsp;'
+						}
+						if (item.jxmc == null) {
+							item.jxmc = '&nbsp;'
+						}
+						if (item.dw == null) {
+							item.dw = '&nbsp;'
+						}
+						str += '<tr class="sty1" name="tableSty"><td>'+item.drug_name+'</td><td>'+item.units+'</td><td>'+item.drug_spec+'</td><td>'+item.jxmc+'</td><td>'+item.hl+'</td><td>'+item.dw+'</td></tr>';
+					})
+					$("#hidTabTb").html(str);
+				},
+			})
+		})
+		//选中变色并且弹框隐藏
+		$(document).on("click",".sty1",function(){
+			var tsty1=document.getElementsByName("tableSty");
+			for(var i=0;i<tsty1.length;i++){
+				tsty1[i].className="sty1";
+			}
+			$(this).attr("class","sty2");
+			var name=$(".sty2 td:first-child").html();
+			$("#ypName").val(name);
+			$("#hidTab").hide(function(){});
+		});
+		//弹框隐藏
+		$(document).click(function(){
+			$("#hidTab").hide(function(){});
+		})
+		$.jeDate("#start",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+		$.jeDate("#end",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+	</script>
+	<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</body>
+</html>

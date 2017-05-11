@@ -1,0 +1,20 @@
+/***页码样式***/
+.num{
+	width:25px;height:25px;line-height:25px;
+	border:1px solid #ccc;color:#000;cursor:pointer;
+	display:block;text-align:center;
+}
+.current{
+	width:25px;height:25px;line-height:25px;
+	background:#30bdb5;color:#fff;cursor:pointer;
+	display:block;text-align:center;
+}
+.first,.end,.next,.prev{
+	width:65px;height:25px;line-height:25px;color:#000;
+	cursor:pointer;border:1px solid #ccc;
+	display:block;text-align:center;
+}
+.rows{
+	margin-right:8px;list-style-type:none;float:left;margin-right:15px;
+	line-height: 25px;
+}

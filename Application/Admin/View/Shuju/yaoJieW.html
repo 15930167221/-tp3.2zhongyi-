@@ -1,0 +1,85 @@
+		<head>
+			<style>
+				body textarea{
+					width:80%;
+					height:100px;
+				}
+			</style>
+		</head>
+<!-- 药解 -->
+
+			<div class="yjdiv">
+				<div class="yjdiv-top">
+					
+					
+				</div>
+				<div class="yaojiemodal-tcon">
+					<table class="yaojiemodal-tcon-tab">
+						<tr>
+							<td align="right">
+								<b>药品名称：</b>
+							</td>
+							<td>
+								<input class="changg" type="input" id="drug_name" value="<php>echo $drug[0]['drug_name'];</php>" readonly>
+							</td>
+							<td align="right">
+								<b>输入码：</b>
+							</td>
+							<td>
+								<input class="changg" type="input" id="input_code" value="<php>echo $drug[0]['input_code'];</php>" readonly>
+							</td>
+							<td rowspan="3">
+								<div id="photo" style="width:100px;height:90px;">
+									<img src="<php>echo $drug[0]['src'];</php>" style="width:100px; height:90px; border:none;">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td rowspan="2" align="right">
+								<b>别名：</b>
+							</td>
+							<td rowspan="2">
+								<input class="nchangg" type="input" id="other_name" value="<php>echo $drug[0]['other_name'];</php>" readonly>
+							</td>
+							<td align="right">
+								<b>单位：</b>
+							</td>
+							<td>
+								<input class="changg" type="input" id="units" value="<php>echo $drug[0]['drug_units']</php>" readonly>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>单价：</b>
+							</td>
+							<td>
+								<input class="changg" type="input" id="price" value="<php>echo $drug[0]['price']</php>" readonly>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="yaojiemodal-con">
+				<form action="{:U("Admin/China/editYj")}" method="post">
+					<p><span class="b">来源：</span><span id="source"><php>echo $drug[0]['source'];</php></span></p>
+					<p><span class="b">性状：</span><span id="xz"><php>echo $drug[0]['xz'];</php></span></p>
+					<p><span class="b">炮制：</span><span id="pz"><php>echo $drug[0]['pz'];</php></span></p>
+					<p>
+						<span class="b">性味：</span><span id="xw"><php>echo $drug[0]['xw'];</php></span>
+						<span class="b" style="margin-left:30%;">归经：</span><span id="gj"><php>echo $drug[0]['gj'];</php></span>
+					</p>
+					<p><span class="b">功能：</span><span id="gn"><php>echo $drug[0]['gn'];</php></span></p>
+					<p><span class="b">主治：</span><span id="zz"><php>echo $drug[0]['zz'];</php></span></p>
+					<p><span class="b">用量用法 ：</span><span id="yfyl"><php>echo $drug[0]['yfyl'];</php></span></p>
+					<p><span class="b">特殊用法 ：</span><span id="tsyf"><php>echo $drug[0]['tsyf'];</php></span></p>
+					<p><span class="b">注意事项：</span><span id="zysx"><php>echo $drug[0]['zysx'];</php></span></p>
+					<p><span class="b">贮藏：</span><span id="zc"><php>echo $drug[0]['zc'];</php></span></p>
+					<p><span class="b">适　应　证：</span><span id="syz"><textarea name="syz"><php>echo $drug[0]['syz'];</php></textarea></span></p>
+					<p><span class="b">临床　应用：</span><span id="lcyy"><textarea name="lcyy"><php>echo $drug[0]['lcyy'];</php></textarea></span></p>
+					<p><span class="b">鉴别　用药 ：</span><span id="jbyy"><textarea name="jbyy"><php>echo $drug[0]['jbyy'];</php></textarea></span></p>
+					<p><span class="b">现代　研究：</span><span id="xdyj"><textarea name="xdyj"><php>echo $drug[0]['xdyj'];</php></textarea></span></p>
+					<p><span class="b">常用代表方：</span><span id="cydbf"><textarea name="cydbf"><php>echo $drug[0]['cydbf'];</php></textarea></span></p>
+					<input type="hidden" name='hidecode' value="<php>echo $drug[0]['drug_code'];</php>">
+					<input type="submit" value='保存' style="width:80px;height:30px;font-size:15px;float:right;">
+				</form>
+				</div>
+			</div>

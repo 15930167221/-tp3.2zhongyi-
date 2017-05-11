@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>健康档案</title>
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/font.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/jkda.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/jiankang.css">
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <script src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+    <script src="__PUBLIC__/js/autosize.js"></script>
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<style>
+    @media print{
+        .wu{display:none;}
+        .jkda-table input[type="text"]{border-bottom:0px;}
+        text
+    }
+</style>
+<script language=javascript>
+    //    打印功能JS
+    function preview(oper)
+    {
+        $("#qrsj1").attr("value",$("#qrsj1").val());
+        $("#qrsj2").attr("value",$("#qrsj2").val());
+        if (oper < 10){
+            bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+            sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
+            eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
+            prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取htm
+            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+            window.document.body.innerHTML=prnhtml;
+            window.print();
+            window.document.body.innerHTML=bdhtml;
+        }
+        else {
+            window.print();
+        }
+    }
+    function sub11(inp,kuang,kuangInp){
+        $("#"+inp).html($("#"+kuangInp).val());
+//        alert($("#gms").offsetHeight);
+        $("#"+inp).css({"color":"red"})
+        $("."+kuang).hide();
+    }
+    $("#skinblue").jeDate({
+        isinitVal:true,
+        skinCell:"jedateblue",
+    });
+</script>
+<body>
+<!-- 遮罩层 -->
+<div class="zhezhao" style="display:none;width:100%;height:100%;background-color:#444444;z-index:3;position:absolute;"></div>
+<input type="hidden" value="{$jkSave}" id="jkdaSave">
+    <div class="bg">
+        <!--历史完成就诊记录-->
+        <div class="hisContent">
+            <div class="hisTitle">就诊日期（历次完成就诊记录）<button type="button" class="guanbi"><img src="__PUBLIC__/img/close.png" alt=""></button></div>
+            <div class="hisTable">
+                <table>
+                    <tr class="first-tr">
+                        <td colspan="2" id="bcbl" style="cursor: pointer">本次病历</td>
+                    </tr>
+                    <foreach name="his" item="vo">
+                    <tr class="other-tr">
+                        <td>{$vo.jz_date}</td>
+                        <td width="75">
+                            <div class="butt">
+                                <a href='{:U("Index/jiankang",array("jid"=>$vo[br_id],"jxh"=>$vo[xh]))}' class="ckcf">查看处方</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </foreach>
+                </table>
+            </div>
+        </div>
+        <!--顶部按钮-->
+        <div class="top-button">
+            <div>
+                <img src="__PUBLIC__/img/jkda.png" alt="">
+                <span>健康档案</span>
+            </div>
+            <span>
+                <button class="btn btn-success but2" id="wcjz" style="width:96px;">完成就诊</button>
+            </span>
+            <span>
+                <button class="btn btn-success but1" onclick="preview(1);" id="dayin" type="button" style="width:96px;">打&nbsp;印</button>
+            </span>
+            <span>
+                <button class="btn btn-success but2"  id="save" style="width:96px;">保&nbsp;存</button>
+            </span>
+            <span>
+                <button class="btn btn-success hisInf1 but2">历史完成就诊记录</button>
+            </span>
+        </div>
+        <!--健康档案-->
+        <div class="right">
+            <!--健康档案-->
+            <div class="right-center">
+                <div class="health-file center">
+                    <form action="{:U('Index/jiankangSave',array('wcjz'=>'1'))}" method="post" id="form1">
+                        <!--startprint1-->
+                        <table border="1" cellspacing="1" class="jkda-table">
+                            <div class="title">中医健康档案</div>
+                            <div class="title2">
+                                <div>
+                                    <span>就诊日期：</span>
+                                    <div style="display:none;" id="jzdate">{$data[0]['jz_date']}</div>
+                                    <php>
+                                        $data[0]['jz_date']=substr($data[0]['jz_date'],0,10);
+                                    </php>
+                                    <span id="jzrq">{$data.0.jz_date}</span>
+                                </div>
+                                <div>
+                                    <span>病历号：</span>
+                                    <span id="blnum">{$data.0.br_id}</span>
+                                </div>
+                            </div>
+                            <tr>
+                                <th width="8%"><label for="name">姓名</label></th>
+                                <td colspan="2" width="10%">
+                                    <span>
+                                        <input style="width:90%;" autocomplete="off" type="text" name="br_name" onkeydown="this.onkeyup();" value="{$data.0.br_name}" onkeyup="this.size=(this.value.length>6?this.value.length:6);" size="6" id="name">
+                                    </span>
+                                </td>
+                                <th width="6%"><label for="sex">性别</label></th>
+                                <td width="7%">
+                                    <span>
+                                        <input type="text" name="xb" autocomplete="off" value="{$data.0.xb}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="sex">
+                                    </span>
+                                </td>
+                                <th width="7%"><label for="ages">年龄</label></th>
+                                <td width="7%">
+                                    <span>
+                                        <input type="text" style="width:90%;color:blue;" name="nls" autocomplete="off" value="{$data.0.nl}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="ages" readonly style="color:blue;">
+                                        <!--出生年月控制-->
+                                        <input type="hidden" name="nl" autocomplete="off" value="{$data.0.nlt}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="age">
+                                    </span>
+                                </td>
+                                <th width="7%"><label for="birthday">出生日期</label></th>
+                                <td width="11%">
+                                    <span>
+                                        <input type="text" name="cs_date" value="{$data.0.cs_date}" style="width:80px;"  onClick="$.jeDate('#birthday',{isTime:true,maxDate:$.nowDate(0),startMax:$.nowDate(0),format: 'YYYY-MM-DD'})" size="1" id="birthday" autocomplete="off">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="userID">身份证号</label></th>
+                                <td colspan="3">
+                                    <span>
+                                        <input type="text" name="pass" autocomplete="off" value="{$data.0.pass}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>17?this.value.length:17);" size="17" id="userID">
+                                    </span>
+                                </td>
+                                <th colspan="2"><label for="phone">联系方式</label></th>
+                                <td colspan="3">
+                                    <span>
+                                        <input type="text" name="tel" autocomplete="off" value="{$data.0.tel}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>10?this.value.length:15);" size="10" id="phone">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="duo">工作单位</label></th>
+                                <td colspan="8">
+                                    <span>
+                                        <!-- <input type="text" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>20?this.value.length:20);" size="20" id="work"> -->
+                                        <textarea name="dw" id="duo" rows="1">{$data.0.dw}</textarea>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="main">主诉</label></th>
+                                <td colspan="8">
+                                    <span>
+                                        <textarea name="zs" id="main" rows="1">{$jk1.zs}</textarea>
+                                        <!--<input type="text" name="zs" value="{$jk1.zs}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>30?this.value.length:30);" size="30" id="main">-->
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="jws11">既往史</label></th>
+                                <td colspan="8">
+                                        <span>
+                                            <input type="text" name="jws" autocomplete="off" value="{$jk1.jws}" ondblclick="douCli('jws11','jws1','jws1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>5?this.value.length*2:5);" size="5" id="jws11">
+                                        </span>
+                                        <div class="jws1">
+                                            <div class="div1">
+                                                <input type="text" id="jws1inp" style="border:1px solid #ccc;" placeholder="既往病史（多选）">
+                                                <input type="button" value="提交" id="jws1tj" onclick="sub('jws11','jws1','jws1inp')">
+                                                <input type="button" value="关闭" class="clo">
+                                            </div>
+                                            <div class="div2">
+                                                <volist name="bls" id="vo">
+                                                    <if condition="$vo['typeid'] eq 1">
+                                                        <label><input type="checkbox" name="jws1" class="jiwangshi1" onclick="checked2('jiwangshi1','jws1inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                                    </if>
+                                                </volist>
+                                            </div>
+                                        </div>,
+                                        <span id="sj1">确认时间：</span>
+                                        <span>
+                                            <!-- <input type="date" name="" style="width:130px;"> -->
+                                            <input type="text" id="qrsj1" name="jws_date" value="{$jk1.jws_date}" style="width:80px;" onClick="$.jeDate('#qrsj1',{isTime:true,maxDate:$.nowDate(0),startMax:$.nowDate(0),format: 'YYYY-MM-DD'})" readonly="readonly">
+                                        </span>
+                                        <!--既往病史结束，传染病史开始-->
+                                        <span>
+                                            <input type="text" name="crbs" autocomplete="off" value="{$jk1.crbs}" ondblclick="douCli('crbs','jws2','jws2inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>5?this.value.length*2:5);" size="5" id="crbs">
+                                        </span>
+                                        <div class="jws2">
+                                            <div class="div1">
+                                                <input type="text" id="jws2inp" style="border:1px solid #ccc;" placeholder="传染病史（多选）">
+                                                <input type="button" value="提交" id="jws2tj" onclick="sub('crbs','jws2','jws2inp')">
+                                                <input type="button" value="关闭" class="clo">
+                                            </div>
+                                            <div class="div2">
+                                                <volist name="bls" id="vo">
+                                                    <if condition="$vo['typeid'] eq 2">
+                                                         <label><input type="checkbox" name="crbs1" class="jiwangshi2" onclick="checked2('jiwangshi2','jws2inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                                     </if>
+                                                </volist>
+                                            </div>
+                                        </div>,
+                                        <span>确认时间：</span>
+                                        <span>
+                                            <input type="text" name="crbs_date" value="{$jk1.crbs_date}" id="qrsj2" style="width:80px;" onClick="$.jeDate('#qrsj2',{isTime:true,maxDate:$.nowDate(0),startMax:$.nowDate(0),format: 'YYYY-MM-DD'})" readonly="readonly">
+                                        </span>
+                                </td>
+                            </tr>
+                            <tr style="position:relative;">
+                                <th rowspan="2"><label for="yw1">家庭史</label></th>
+                                <td colspan="5">
+                                    <span><label for="yw1">父亲：</label></span>
+                                        <!--<span>-->
+                                            <!--<input type="text" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="fq">-->
+                                        <!--</span>-->
+                                        <span><span class="wu">[</span>
+                                            <if condition="$jk1.jts_fq1 eq ''">
+                                            <input type="text" name="jts_fq1" ondblclick="douCli('yw1','jtsFar','jtsFarinp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" value="有无" id="yw1"><span class="wu">]</span>
+                                            <else/>
+                                             <input type="text" name="jts_fq1" ondblclick="douCli('yw1','jtsFar','jtsFarinp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" value="{$jk1.jts_fq1}" id="yw1"><span class="wu">]</span>
+                                            </if>
+                                        </span>/
+                                        <span>
+                                            <input type="text" name="jts_fq2" autocomplete="off" value="{$jk1.jts_fq2}" ondblclick="douCli('jtsFQ','jts11','jts11inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>8?this.value.length:8);" size="8" id="jtsFQ">
+                                        </span>
+                                </td>
+                                <div class="jtsFar">
+                                    <div class="div1">
+                                        <input type="text" id="jtsFarinp" style="border:1px solid #ccc;" placeholder="有无（单选）">
+                                        <input type="button" value="提交" id="jtsFartj" onclick="sub('yw1','jtsFar','jtsFarinp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <label class="dblCli"><input type="radio" name="jtsyw1" class="yw1" value="无" onclick="checked1('yw1','jtsFarinp')"><span>无</span></label>
+                                        <label class="dblCli"><input type="radio" name="jtsyw1" class="yw1" value="有" onclick="checked1('yw1','jtsFarinp')"><span>有</span></label>
+                                    </div>
+                                </div>
+                                <div class="jts11">
+                                    <div class="div1">
+                                        <input type="text" id="jts11inp" style="border:1px solid #ccc;" placeholder="既往病史（多选）">
+                                        <input type="button" value="提交" id="jts11tj" onclick="sub('jtsFQ','jts11','jts11inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 1">
+                                                <label><input type="checkbox" name="jtsFQ" class="gmcheck11" onclick="checked2('gmcheck11','jts11inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <td colspan="3">
+                                    <span><label for="yw2">母亲：</label></span>
+                                        <!--<span>-->
+                                            <!--<input type="text" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="mq">-->
+                                        <!--</span>-->
+                                        <span><span class="wu">[</span>
+                                            <if condition="$jk1.jts_mq1 eq ''">
+                                            <input type="text" name="jts_mq1" ondblclick="douCli('yw2','jtsMother','jtsMotherInp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" value="有无" id="yw2"><span class="wu">]</span>
+                                            <else/>
+                                            <input type="text" name="jts_mq1" value="{$jk1.jts_mq1}" ondblclick="douCli('yw2','jtsMother','jtsMotherInp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="yw2"><span class="wu">]</span>
+                                            </if>
+                                        </span>/
+                                        <span>
+                                            <input type="text" name="jts_mq2" autocomplete="off" value="{$jk1.jts_mq2}" ondblclick="douCli('jtsMQ','jts22','jts22Inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>6?this.value.length:6);" size="6" id="jtsMQ">
+                                        </span>
+                                </td>
+                                <div class="jtsMother">
+                                    <div class="div1">
+                                        <input type="text" id="jtsMotherInp" style="border:1px solid #ccc;" placeholder="有无（单选）">
+                                        <input type="button" value="提交" id="jtsMotherTj" onclick="sub('yw2','jtsMother','jtsMotherInp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <label class="dblCli"><input type="radio" name="jtsyw2" class="yw2" value="无" onclick="checked1('yw2','jtsMotherInp')"><span>无</span></label>
+                                        <label class="dblCli"><input type="radio" name="jtsyw2" class="yw2" value="有" onclick="checked1('yw2','jtsMotherInp')"><span>有</span></label>
+                                    </div>
+                                </div>
+                                <div class="jts22">
+                                    <div class="div1">
+                                        <input type="text" id="jts22inp" style="border:1px solid #ccc;" placeholder="既往病史（多选）">
+                                        <input type="button" value="提交" id="jts22tj" onclick="sub('jtsMQ','jts22','jts22inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 1">
+                                                <label><input type="checkbox" name="jtsMQ" class="gmcheck22" onclick="checked2('gmcheck22','jts22inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <td colspan="5">
+                                    <span><label for="yw3">兄弟姐妹：</label></span>
+                                        <!--<span>-->
+                                            <!--<input type="text" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="xdjm">-->
+                                        <!--</span>-->
+                                        <span><span class="wu">[</span>
+                                            <if condition="$jk1.jts_xdjm1 eq ''">
+                                            <input type="text" name="jts_xdjm1" ondblclick="douCli('yw3','jts3','jts3Inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" value="有无" id="yw3"><span class="wu">]</span>
+                                            <else/>
+                                            <input type="text" name="jts_xdjm1" value="{$jk1.jts_xdjm1}" ondblclick="douCli('yw3','jts3','jts3Inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="yw3"><span class="wu">]</span>
+                                            </if>
+                                        </span>/
+                                        <span>
+                                            <input type="text" name="jts_xdjm2" autocomplete="off" value="{$jk1.jts_xdjm2}" ondblclick="douCli('jtsXD','jts33','jts33Inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>8?this.value.length:8);" size="8" id="jtsXD">
+                                        </span>
+                                </td>
+                                <div class="jts3">
+                                    <div class="div1">
+                                        <input type="text" id="jts3Inp" style="border:1px solid #ccc;" placeholder="有无（单选）">
+                                        <input type="button" value="提交" id="jts3Tj" onclick="sub('yw3','jts3','jts3Inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <label class="dblCli"><input type="radio" name="jtsyw3" class="yw3" value="无" onclick="checked1('yw3','jts3Inp')"><span>无</span></label>
+                                        <label class="dblCli"><input type="radio" name="jtsyw3" class="yw3" value="有" onclick="checked1('yw3','jts3Inp')"><span>有</span></label>
+                                    </div>
+                                </div>
+                                <div class="jts33">
+                                    <div class="div1">
+                                        <input type="text" id="jts33inp" style="border:1px solid #ccc;" placeholder="既往病史（多选）">
+                                        <input type="button" value="提交" id="jts33tj" onclick="sub('jtsXD','jts33','jts33inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 1">
+                                                <label><input type="checkbox" name="jtsXD" class="gmcheck33" onclick="checked2('gmcheck33','jts33inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <td colspan="3">
+                                    <span><label for="yw4">子女：</label></span>
+                                    <!--<span>-->
+                                        <!--<input type="text" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="zn">-->
+                                    <!--</span>-->
+                                    <span><span class="wu">[</span>
+                                        <if condition="$jk1.jts_xdjm1 eq ''">
+                                        <input type="text" name="jts_zn1" ondblclick="douCli('yw4','jts4','jts4Inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" value="有无" id="yw4"><span class="wu">]</span>
+                                        <else/>
+                                        <input type="text" name="jts_zn1" value="{$jk1.jts_zn1}" ondblclick="douCli('yw4','jts4','jts4Inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="yw4"><span class="wu">]</span>
+                                        </if>
+                                    </span>/
+                                    <span>
+                                        <input type="text" name="jts_zn2" autocomplete="off" value="{$jk1.jts_zn2}" ondblclick="douCli('jtsZN','jts44','jts44Inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>6?this.value.length:6);" size="6" id="jtsZN">
+                                    </span>
+                                </td>
+                                <div class="jts4">
+                                    <div class="div1">
+                                        <input type="text" id="jts4Inp" style="border:1px solid #ccc;" placeholder="有无（单选）">
+                                        <input type="button" value="提交" id="jts4Tj" onclick="sub('yw4','jts4','jts4Inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <label class="dblCli"><input type="radio" name="jtsyw4" class="yw4" value="无" onclick="checked1('yw4','jts4Inp')"><span>无</span></label>
+                                        <label class="dblCli"><input type="radio" name="jtsyw4" class="yw4" value="有" onclick="checked1('yw4','jts4Inp')"><span>有</span></label>
+                                    </div>
+                                </div>
+                                <div class="jts44">
+                                    <div class="div1">
+                                        <input type="text" id="jts44inp" style="border:1px solid #ccc;" placeholder="既往病史（多选）">
+                                        <input type="button" value="提交" id="jts44tj" onclick="sub('jtsZN','jts44','jts44inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 1">
+                                                <label><input type="checkbox" name="jtsZN" class="gmcheck44" onclick="checked2('gmcheck44','jts44inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr style="position:relative;">
+                                <th><label for="gms">过敏史</label></th>
+                                <td colspan="6" style="width:395px;">
+                                    <span>
+                                        <textarea name="gms" id="gms" ondblclick="douCli('gms','gm','gmsinp')">{$jk1.gms}</textarea>
+                                        <!--<input type="text" name="gms" value="{$jk1.gms}" ondblclick="douCli('gms','gm','gmsinp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>10?this.value.length:10);" size="30" id="gms">-->
+                                    </span>
+                                </td>
+                                <div class="gm">
+                                    <div class="div1">
+                                        <input type="text" id="gmsinp" style="border:1px solid #ccc;" placeholder="过敏史（多选）">
+                                        <input type="button" value="提交" id="gmstj" onclick="sub11('gms','gm','gmsinp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 3">
+                                                <label><input type="checkbox" name="gm" class="gmcheck" onclick="checked2('gmcheck','gmsinp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th><label for="weight">体重</label></th>
+                                <td>
+                                        <span>
+                                            <input type="text" name="weight" autocomplete="off" value="{$jk1.weight}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="weight">
+                                        </span>
+                                    <span>KG</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="tw">生命体征</label></th>
+                                <td colspan="2">
+                                    <span><label for="tw">体温:</label></span>
+                                        <span>
+                                            <input type="text" name="temperature" autocomplete="off" value="{$jk1.temperature}" size="1" id="tw">
+                                        </span>
+                                    <span>℃</span>
+                                </td>
+                                <td colspan="2">
+                                    <span><label for="mb">脉搏:</label></span>
+                                        <span>
+                                            <input type="text" name="pulse" autocomplete="off" value="{$jk1.pulse}" size="1" id="mb">
+                                        </span>
+                                    <span>次/分</span>
+                                </td>
+                                <td colspan="2">
+                                    <span><label for="hx">呼吸:</label></span>
+                                        <span>
+                                            <input type="text" name="breath" autocomplete="off" value="{$jk1.breath}" size="1" id="hx">
+                                        </span>
+                                    <span>次/分</span>
+                                </td>
+                                <td colspan="2">
+                                    <span><label for="xy">血压:</label></span>
+                                        <span>
+                                            <input type="text" name="blood_pre1" autocomplete="off" value="{$jk1.blood_pre1}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1" id="xy">
+                                        </span>/
+                                        <span>
+                                            <input type="text" name="blood_pre2" autocomplete="off" value="{$jk1.blood_pre2}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length:1);" size="1">
+                                        </span>
+                                    <span>mmHg</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="3"><label for="wshen">整体状况</label></th>
+                                <th><label for="wshen">望神</label></th>
+                                <td colspan="7">
+                                    <span>
+                                        <input type="text" name="zt_wshen" autocomplete="off" value="{$jk1.zt_wshen}" ondblclick="douCli('wshen','zt1','zt1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="wshen">
+                                    </span>
+                                </td>
+                                <div class="zt1">
+                                    <div class="div1">
+                                        <input type="text" id="zt1inp" style="border:1px solid #ccc;" placeholder="望神（单选）">
+                                        <input type="button" value="提交" id="zt1tj" onclick="sub('wshen','zt1','zt1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 4">
+                                                <label class="dblCli"><input type="radio" name="wshen" class="wshen" onclick="checked1('wshen','zt1inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="wse">望色</label></th>
+                                <td colspan="7">
+                                    <span>
+                                        <input type="text" name="zt_wse" autocomplete="off" value="{$jk1.zt_wse}" ondblclick="douCli('wse','zt2','zt2inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="wse">
+                                    </span>
+                                </td>
+                                <div class="zt2">
+                                    <div class="div1">
+                                        <input type="text" id="zt2inp" style="border:1px solid #ccc;" placeholder="望色（单选）">
+                                        <input type="button" value="提交" id="zt2tj" onclick="sub('wse','zt2','zt2inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 5">
+                                                <label class="dblCli"><input type="radio" name="wse" class="wse" onclick="checked1('wse','zt2inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th width="5%"><label for="tt">望形</label></th>
+                                <th width="5%"><label for="tt">体态</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text" name="zt_tt" autocomplete="off" value="{$jk1.zt_tt}" ondblclick="douCli('tt','zt3','zt3inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="tt">
+                                    </span>
+                                </td>
+                                <div class="zt3">
+                                    <div class="div1">
+                                        <input type="text" id="zt3inp" style="border:1px solid #ccc;" placeholder="体态（单选）">
+                                        <input type="button" value="提交" id="zt3tj" onclick="sub('tt','zt3','zt3inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 6">
+                                                <label class="dblCli"><input type="radio" name="tt" class="tt" onclick="checked1('tt','zt3inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th colspan="2"><label for="tx">体型</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text" name="zt_tx" autocomplete="off" value="{$jk1.zt_tx}" ondblclick="douCli('tx','zt4','zt4inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="tx">
+                                    </span>
+                                </td>
+                                <div class="zt4">
+                                    <div class="div1">
+                                        <input type="text" id="zt4inp" style="border:1px solid #ccc;" placeholder="体型（单选）">
+                                        <input type="button" value="提交" id="zt4tj" onclick="sub('tx','zt4','zt4inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 7">
+                                                <label class="dblCli"><input type="radio" name="tx" class="tx" onclick="checked1('tx','zt4inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th rowspan="5"><label for="zl">现在状况</label></th>
+                                <th><label for="zl">睡眠</label></th>
+                                <th><label for="zl">质量</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <textarea name="xz_smzl" id="zl" rows="2" ondblclick="douCli('zl','xz1','xz1inp')">{$jk1.xz_smzl}</textarea>
+                                        <!--<input type="text" name="xz_smzl" value="{$jk1.xz_smzl}" ondblclick="douCli('zl','xz1','xz1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>12?this.value.length*2:12);" size="12" id="zl">-->
+                                    </span>
+                                </td>
+                                <div class="xz1">
+                                    <div class="div1">
+                                        <input type="text" id="xz1inp" style="border:1px solid #ccc;" placeholder="睡眠质量（多选）">
+                                        <input type="button" value="提交" id="xz1tj" onclick="sub11('zl','xz1','xz1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 8">
+                                                <label><input type="checkbox" name="zl" class="xianzai1" onclick="checked2('xianzai1','xz1inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th colspan="2"><label for="sj">时间</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text" name="xz_smsj" autocomplete="off" value="{$jk1.xz_smsj}" ondblclick="douCli('sj','xz2','xz2inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>10?this.value.length*2:10);" size="10" id="sj">
+                                    </span>
+                                </td>
+                                <div class="xz2">
+                                    <div class="div1">
+                                        <input type="text" id="xz2inp" style="border:1px solid #ccc;" placeholder="睡眠时间（单选）">
+                                        <input type="button" value="提交" id="xz2tj" onclick="sub('sj','xz2','xz2inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 9">
+                                                <label class="dblCli"><input type="radio" name="sj" class="sj" onclick="checked1('sj','xz2inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="sy">食欲</label></th>
+                                <td colspan="7">
+                                    <span>
+                                        <input type="text" name="xz_sy" autocomplete="off" value="{$jk1.xz_sy}" ondblclick="douCli('sy','xz3','xz3inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>30?this.value.length*2:30);" size="30" id="sy">
+                                    </span>
+                                </td>
+                                <div class="xz3">
+                                    <div class="div1">
+                                        <input type="text" id="xz3inp" style="border:1px solid #ccc;" placeholder="食欲（单选）">
+                                        <input type="button" value="提交" id="xz3tj" onclick="sub('sy','xz3','xz3inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 10">
+                                                <label class="dblCli"><input type="radio" name="sy" class="sy" onclick="checked1('sy','xz3inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="kw">口味</label></th>
+                                <td colspan="7">
+                                        <span>
+                                            <input type="text" name="xz_kw" autocomplete="off" value="{$jk1.xz_kw}" ondblclick="douCli('kw','xz4','xz4inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>30?this.value.length*2:30);" size="30" id="kw">
+                                        </span>
+                                </td>
+                                <div class="xz4">
+                                    <div class="div1">
+                                        <input type="text" id="xz4inp" style="border:1px solid #ccc;" placeholder="口味（多选）">
+                                        <input type="button" value="提交" id="xz4tj" onclick="sub('kw','xz4','xz4inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 11">
+                                                <label><input type="checkbox" name="kw" class="xianzai4" onclick="checked2('xianzai4','xz4inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="dbc">大便</label></th>
+                                <th><label for="dbc">便次</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text"  style="width:50%;" name="xz_dbbc" autocomplete="off" value="{$jk1.xz_dbbc}" ondblclick="douCli('dbc','xz5','xz5inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>4?this.value.length*2:4);" size="4" id="dbc">
+                                    </span>
+                                </td>
+                                <div class="xz5">
+                                    <div class="div1">
+                                        <input type="text" id="xz5inp" style="border:1px solid #ccc;" placeholder="大便便次（单选）">
+                                        <input type="button" value="提交" id="xz5tj" onclick="sub('dbc','xz5','xz5inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 12">
+                                                <label class="dblCli"><input type="radio" name="dbc" class="dbc" onclick="checked1('dbc','xz5inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th colspan="2"><label for="bz">便质</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text" name="xz_dbbz"  style="width:50%;" autocomplete="off" value="{$jk1.xz_dbbz}" ondblclick="douCli('bz','xz6','xz6inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="bz">
+                                    </span>
+                                </td>
+                                <div class="xz6">
+                                    <div class="div1">
+                                        <input type="text" id="xz6inp" style="border:1px solid #ccc;" placeholder="大便便质（单选）">
+                                        <input type="button" value="提交" id="xz6tj" onclick="sub('bz','xz6','xz6inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 13">
+                                                <label class="dblCli"><input type="radio" name="bz" class="bz" onclick="checked1('bz','xz6inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="xbc">小便</label></th>
+                                <th><label for="xbc">便次</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text" style="width:50%;" name="xz_xbbc" autocomplete="off" value="{$jk1.xz_xbbc}" ondblclick="douCli('xbc','xz7','xz7inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="xbc">
+                                    </span>
+                                </td>
+                                <div class="xz7">
+                                    <div class="div1">
+                                        <input type="text" id="xz7inp" style="border:1px solid #ccc;" placeholder="小便便次（单选）">
+                                        <input type="button" value="提交" id="xz7tj" onclick="sub('xbc','xz7','xz7inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 14">
+                                                <label class="dblCli"><input type="radio" name="xbc" class="xbc" onclick="checked1('xbc','xz7inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th colspan="2"><label for="bs">便色</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text"  style="width:50%;" name="xz_xbbs" autocomplete="off" value="{$jk1.xz_xbbs}" ondblclick="douCli('bs','xz8','xz8inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="bs">
+                                    </span>
+                                </td>
+                                <div class="xz8">
+                                    <div class="div1">
+                                        <input type="text" id="xz8inp" style="border:1px solid #ccc;" placeholder="小便便色（单选）">
+                                        <input type="button" value="提交" id="xz8tj" onclick="sub('bs','xz8','xz8inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 15">
+                                                <label class="dblCli"><input type="radio" name="bs" class="bs" onclick="checked1('bs','xz8inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="xq">情志</label></th>
+                                <th><label for="xq">情性</label></th>
+                                <td colspan="3">
+                                    <span>
+                                        <input type="text" name="qz_xq" autocomplete="off" value="{$jk1.qz_xq}" ondblclick="douCli('xq','qz1','qz1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="xq">
+                                    </span>
+                                </td>
+                                <div class="qz1">
+                                    <div class="div1">
+                                        <input type="text" id="qz1inp" style="border:1px solid #ccc;" placeholder="情性（单选）">
+                                        <input type="button" value="提交" id="qz1tj" onclick="sub('xq','qz1','qz1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 16">
+                                                <label class="dblCli"><input type="radio" name="xq" class="xq" onclick="checked1('xq','qz1inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th colspan="2"><label for="xg">性格</label></th>
+                                <td colspan="2">
+                                    <span>
+                                        <input type="text" name="qz_xg" autocomplete="off" value="{$jk1.qz_xg}" ondblclick="douCli('xg','qz2','qz2inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="xg">
+                                    </span>
+                                </td>
+                                <div class="qz2">
+                                    <div class="div1">
+                                        <input type="text" id="qz2inp" style="border:1px solid #ccc;" placeholder="性格（单选）">
+                                        <input type="button" value="提交" id="qz2tj" onclick="sub('xg','qz2','qz2inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 17">
+                                                <label class="dblCli"><input type="radio" name="xg" class="xg" onclick="checked1('xg','qz2inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="xj">心悸</label></th>
+                                <td colspan="8"><span class="wu">[</span>
+                                    <if condition="$jk1.xj eq ''">
+                                    <input type="text" name="xj" ondblclick="douCli('xj','xj1','xj1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" value="有无" id="xj"><span class="wu">]</span>
+                                    <else/>
+                                    <input type="text" name="xj" value="{$jk1.xj}" ondblclick="douCli('xj','xj1','xj1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="xj"><span class="wu">]</span>
+                                    </if>
+                                </td>
+                                <div class="xj1">
+                                    <div class="div1">
+                                        <input type="text" id="xj1inp" style="border:1px solid #ccc;" placeholder="有无（单选）">
+                                        <input type="button" value="提交" id="xj1tj" onclick="sub('xj','xj1','xj1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <label class="dblCli"><input type="radio" name="xj1" class="xj" onclick="checked1('xj','xj1inp')" value="有"><span>有</span></label>
+                                        <label class="dblCli"><input type="radio" name="xj1" class="xj" onclick="checked1('xj','xj1inp')" value="无"><span>无</span></label>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th rowspan="2"><label for="ss">舌诊</label></th>
+                                <th><label for="ss">舌色</label></th>
+                                <td>
+                                        <span>
+                                            <input type="text" style="min-width:50px;" name="sz_ss" autocomplete="off" value="{$jk1.sz_ss}" ondblclick="douCli('ss','sz1','sz1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>2?this.value.length:2);" size="2" id="ss">
+                                        </span>
+                                </td>
+                                <div class="sz1">
+                                    <div class="div1">
+                                        <input type="text" id="sz1inp" style="border:1px solid #ccc;" placeholder="舌诊-舌色（单选）">
+                                        <input type="button" value="提交" id="sz1tj" onclick="sub('ss','sz1','sz1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 18">
+                                                <label class="dblCli"><input type="radio" name="ss" class="ss" onclick="checked1('ss','sz1inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th><label for="st">舌体</label></th>
+                                <td colspan="2">
+                                        <span>
+                                            <input type="text" style="min-width:50px;" name="sz_st" autocomplete="off" value="{$jk1.sz_st}" ondblclick="douCli('st','sz2','sz2inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="st">
+                                        </span>
+                                </td>
+                                <div class="sz2">
+                                    <div class="div1">
+                                        <input type="text" id="sz2inp" style="border:1px solid #ccc;" placeholder="舌诊-舌体（单选）">
+                                        <input type="button" value="提交" id="sz2tj" onclick="sub('st','sz2','sz2inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 19">
+                                                <label class="dblCli"><input type="radio" name="st" class="st" onclick="checked1('st','sz2inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th colspan="2"><label for="dt">动态</label></th>
+                                <td>
+                                    <span>
+                                        <input type="text"  style="min-width:50px;" name="sz_dt" autocomplete="off" value="{$jk1.sz_dt}" ondblclick="douCli('dt','sz3','sz3inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="dt">
+                                    </span>
+                                </td>
+                                <div class="sz3">
+                                    <div class="div1">
+                                        <input type="text" id="sz3inp" style="border:1px solid #ccc;" placeholder="舌诊-动态（单选）">
+                                        <input type="button" value="提交" id="sz3tj" onclick="sub('dt','sz3','sz3inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 20">
+                                                <label class="dblCli"><input type="radio" name="dt" class="dt" onclick="checked1('dt','sz3inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="tz">苔质</label></th>
+                                <td>
+                                    <span>
+                                        <input type="text"  style="min-width:50px;" name="sz_tz" autocomplete="off" value="{$jk1.sz_tz}" ondblclick="douCli('tz','sz4','sz4inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>2?this.value.length:2);" size="2" id="tz">
+                                    </span>
+                                </td>
+                                <div class="sz4">
+                                    <div class="div1">
+                                        <input type="text" id="sz4inp" style="border:1px solid #ccc;" placeholder="舌诊-苔质（单选）">
+                                        <input type="button" value="提交" id="sz4tj" onclick="sub('tz','sz4','sz4inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 21">
+                                                <label class="dblCli"><input type="radio" name="tz" class="tz" onclick="checked1('tz','sz4inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <th><label for="ts">苔色</label></th>
+                                <td colspan="5">
+                                    <span>
+                                        <input type="text" style="min-width:50px;" name="sz_ts" autocomplete="off" value="{$jk1.sz_ts}" ondblclick="douCli('ts','sz5','sz5inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>2?this.value.length*2:2);" size="2" id="ts">
+                                    </span>
+                                </td>
+                                <div class="sz5">
+                                    <div class="div1">
+                                        <input type="text" id="sz5inp" style="border:1px solid #ccc;" placeholder="舌诊-苔色（单选）">
+                                        <input type="button" value="提交" id="sz5tj" onclick="sub('ts','sz5','sz5inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 22">
+                                                <label class="dblCli"><input type="radio" name="ts" class="ts" onclick="checked1('ts','sz5inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="mz">脉诊</label></th>
+                                <td colspan="8">
+                                    <span>
+                                        <input type="text" name="mz" autocomplete="off" value="{$jk1.mz}" ondblclick="douCli('mz','mz1','mz1inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>15?this.value.length*2:15);" size="15" id="mz">
+                                    </span>
+                                </td>
+                                <div class="mz1">
+                                    <div class="div1">
+                                        <input type="text" id="mz1inp" style="border:1px solid #ccc;" placeholder="脉诊（多选）">
+                                        <input type="button" value="提交" id="mz1tj" onclick="sub('mz','mz1','mz1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2">
+                                        <volist name="bls" id="vo">
+                                            <if condition="$vo['typeid'] eq 23">
+                                                <label><input type="checkbox" name="mz1" class="maizhen1" onclick="checked2('maizhen1','mz1inp')" value="{$vo.name}"><span>{$vo.name}</span></label>
+                                            </if>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="tzbs">体质诊断</label></th>
+                                <td colspan="8">
+                                    <span>
+                                        <if condition="$jk1[tzzd] neq ''">
+                                        <textarea name="tzzd" id="tzbs" rows="1">{$jk1.tzzd}</textarea>
+                                        <else/>
+                                        <textarea name="tzzd" id="tzbs" rows="1">{$tzzd}</textarea>
+                                        </if>
+                                        <!--<input type="text" name="tzzd" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>68?this.value.length:68);" size="68" id="tzbs" value="{$tzzd}">-->
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="zyzd">中医诊断</label></th>
+                                <td colspan="4">
+                                    <span>
+                                        <if condition="$zyflag eq 1">
+                                            <textarea name="zyzd" id="zyzd" rows="2">{$zyChuzhiNameAll2}</textarea>
+                                            <!--<input type="text" name="zyzd" ondblclick="douCli('zyzd','zyzd1','zyzd1inp')" value="{$zyChuzhiNameAll2}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="zyzd">-->
+                                        <else/>
+                                            <textarea name="zyzd" id="zyzd" rows="2">{$jk2.zy_name}</textarea>
+                                            <!--<input type="text" name="zyzd" ondblclick="douCli('zyzd','zyzd1','zyzd1inp')" value="{$jk2.zy_name}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="zyzd">-->
+                                        </if>
+                                    </span>
+                                </td>
+                                <div class="zyzd1">
+                                    <div class="div1">
+                                        <input type="text" id="zyzd1inp" style="border:1px solid #ccc;" placeholder="中医病名">
+                                        <input type="button" value="提交" id="zyzd1tj" onclick="sub11('zyzd','zyzd1','zyzd1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2" id="zyzdDiv">
+                                        waiting...
+                                        <!--<volist name="zyName" id="zy">-->
+                                            <!--<label><input type="checkbox" name="zyzd1" class="zhongyi1" onclick="checked2('zhongyi1','zyzd1inp')" value="{$zy.name}"><span>{$zy.name}</span></label>-->
+                                        <!--</volist>-->
+                                    </div>
+                                </div>
+                                <th><label for="xyzd">西医诊断</label></th>
+                                <td colspan="3">
+                                    <span>
+                                        <if condition="$xyflag eq 1">
+                                            <textarea name="xyzd" id="xyzd" rows="2">{$xyNameXYB}</textarea>
+                                            <!--<input type="text" name="xyzd" ondblclick="douCli('xyzd','xyzd1','xyzd1inp')" value="{$xyNameXYB}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="xyzd">-->
+                                        <else/>
+                                            <textarea name="xyzd" id="xyzd" rows="2">{$jk2.xy_name}</textarea>
+                                            <!--<input type="text" name="xyzd" ondblclick="douCli('xyzd','xyzd1','xyzd1inp')" value="{$jk2.xy_name}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="xyzd">-->
+                                        </if>
+                                    </span>
+                                </td>
+                                <div class="xyzd1">
+                                    <div class="div1">
+                                        <input type="text" id="xyzd1inp" style="border:1px solid #ccc;" placeholder="西医病名">
+                                        <input type="button" value="提交" id="xyzd1tj" onclick="sub11('xyzd','xyzd1','xyzd1inp')">
+                                        <input type="button" value="关闭" class="clo">
+                                    </div>
+                                    <div class="div2" id="xybmDiv">
+                                        waiting...
+                                        <!--<volist name="xyName" id="xy">-->
+                                            <!--<label><input type="checkbox" name="xyzd1" class="xiyi1" onclick="checked2('xiyi1','xyzd1inp')" value="{$xy.name}"><span>{$xy.name}</span></label>-->
+                                        <!--</volist>-->
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><label for="zybz">辩证</label></th>
+                                <td colspan="4">
+                                    <span>
+                                        <if condition="$zyflag eq 1">
+                                            <textarea name="zybz" id="zybz" rows="1">{$zyBzAll2}</textarea>
+                                            <!--<input type="text" name="zybz" value="{$zyBzAll2}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="zybz">-->
+                                        <else/>
+                                            <textarea name="zybz" id="zybz" rows="1">{$jk2.lunzhi}</textarea>
+                                            <!--<input type="text" name="zybz" value="{$jk2.lunzhi}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="zybz">-->
+                                        </if>
+                                    </span>
+                                </td>
+                                <th><label for="zyzz">治则</label></th>
+                                <td colspan="3">
+                                    <span>
+                                        <if condition="$zyflag eq 1">
+                                            <textarea name="zyzz" id="zyzz" rows="1">{$zyZzAll2}</textarea>
+                                            <!--<input type="text" name="zyzz" value="{$zyZzAll2}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="zyzz">-->
+                                        <else/>
+                                            <textarea name="zyzz" id="zyzz" rows="1">{$jk2.lunzhi_sm}</textarea>
+                                            <!--<input type="text" name="zyzz" value="{$jk2.lunzhi_sm}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1" id="zyzz">-->
+                                        </if>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>处置</th>
+                                <input type="hidden" id="hiddenChuzhi" name="cz">
+                                <if condition="($cz eq 0) and ($cz neq '')">
+                                    <td colspan="8" id="chuzhi"><php>echo htmlspecialchars_decode($jk2['cz']);</php></td>
+                                <else/>
+                                    <td colspan="8" id="chuzhi">
+                                        <div class="chufang">
+                                            <!--中医诊断循环-->
+                                            <foreach name="zyChuzhi" item="cz" key="k">
+                                                <div>
+                                                    <span>【中药处方{$k+1}】：</span>
+                                                    <span>{$cz.presc_name}</span>
+                                                    <span>(<span>{$cz.dose}</span><span>剂</span>)</span>
+                                                    <span style="display:none;" class="cfid">{$cz.presc_no}</span><br/>
+                                                    <span>【用法】：　{$cz.usage1}　　{$cz.decoction}　　{$cz.dosage}</span>
+                                                </div>
+                                                <php>
+                                                    $zy2=M('Prescription_detail');
+                                                    $zyRes=$zy2->where("presc_no=$cz[presc_no]")->select();
+                                                </php>
+                                                <div>
+                                                    <ul>
+                                                        <!--药方循环-->
+                                                        <php>foreach($zyRes as $key => $zyInf){
+                                                            $zyInf['amount']=floatval($zyInf['amount']);
+                                                            $zyInf['drug_name']=trim($zyInf['drug_name']);
+                                                        </php>
+                                                        <if condition="$zyInf[usage] neq ''">
+                                                            <li><span><input type="text" class="zychinf1" value="{$zyInf.drug_name}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></span><span><input type="text" class="zychinf2" value="{$zyInf.amount}"></span><span>{$zyInf.drug_units}</span><span>(<span><input type="text" class="zychinf4" value="{$zyInf.usage}"></span>)</span></li>
+                                                            <else/>
+                                                            <li><span><input type="text" class="zychinf1" value="{$zyInf.drug_name}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></span><span><input type="text" class="zychinf2" value="{$zyInf.amount}"></span><span>{$zyInf.drug_units}</span></li>
+                                                        </if>
+                                                        <php>}</php>
+                                                    </ul>
+                                                </div>
+                                                <div style="clear:both;">
+                                                    <span>【医嘱】：</span><span><input type="text" value="{$cz.order_text}" style="width:85%;border:0px;"></span>
+                                                </div>
+                                            </foreach>
+                                        </div>
+                                        <div class="xiyao">
+                                            <!--西医诊治循环-->
+                                            <foreach name="xyChuzhi" item="cz" key="k">
+                                                <div>
+                                                    <if condition="$cz[fs] neq ''">
+                                                        <span>【西药处方{$k+1}】</span><span>:共{$cz.fs}天</span>
+                                                        <else/>
+                                                        <span>【西药处方{$k+1}】</span>
+                                                    </if>
+                                                </div>
+                                                <table class="xyInf" width="100%">
+                                                    <php>
+                                                        $beizhu="";
+                                                        $xy2=M('xydrugcf_detial');
+                                                        //$xyres=$xy2->join('useage_table on xydrugcf_detial.yp_useage=useage_table.useage_code')->join('usepl_table on xydrugcf_detial.yp_pl_day=usepl_table.usep_code')->where("cf_id='$cz[cf_id]'")->field('yp_name,yp_spec,yp_total_amount,yp_yc_amount,useage_name,usep_name,yp_mem')->select();
+                                                        //都改成中文
+                                                        $xyres=$xy2->where("cf_id='$cz[cf_id]'")->field('yp_name,yp_spec,yp_total_amount,yp_yc_amount,yp_useage,yp_pl_day,yp_mem')->select();
+                                                    </php>
+                                                    <?php foreach($xyres as $key => $xyInf){
+                                                    //$beizhu.=$xyInf['yp_mem'].";";
+                                                    $beizhu=$xyInf['yp_mem'];
+                                                    //去除多余空格
+                                                    $xyInf['yp_spec']=trim($xyInf['yp_spec']);
+                                                    //药品数量加单位
+                                                    $xydw=substr(trim($xyInf['yp_spec']),-3);//截取数量单位
+                                                    $xyInf['yp_total_amount']=floatval($xyInf['yp_total_amount']).$xydw;
+                                                    //药品次用量加单位（未完）
+                                                    $xyInf['yp_yc_amount']=$xyInf['yp_yc_amount'].'/次';
+                                                    ?>
+                                                    <tr>
+                                                        <td style="width:25%"><input class="xychinf" type="text" value="{$xyInf.yp_name}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></td>
+                                                        <td style="width:25%"><input class="xychinf" type="text" value="{$xyInf.yp_spec}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></td>
+                                                        <td style="width:10%"><input class="xychinf" type="text" value="{$xyInf.yp_total_amount}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></td>
+                                                        <td style="width:12.5%"><input class="xychinf" type="text" value="{$xyInf.yp_yc_amount}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></td>
+                                                        <td style="width:17.5%"><input class="xychinf" type="text" value="{$xyInf.yp_useage}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></td>
+                                                        <td style="width:10%"><input class="xychinf" type="text" value="{$xyInf.yp_pl_day}" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>1?this.value.length*2:1);" size="1"></td>
+                                                    </tr>
+                                                    <?php }?>
+                                                </table>
+                                                <div style="clear: both;">
+                                                    【备注】：<input type="text" value="{$beizhu}" style="width:85%;border:0px;">
+                                                </div>
+                                            </foreach>
+                                        </div>
+                                    </td>
+                                </if>
+                            </tr>
+                            <tr>
+                                <th>其他治疗计划</th>
+                                <td colspan="8">
+                                    <span>
+                                        <textarea name="elsePlan" id="qita" rows="2">{$jk1.elseplan}</textarea>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--endprint1-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--查看处方页面-->
+    <div class="ckcfdiv">
+        <!--历史就诊记录弹框判断 1 弹出-->
+        <div style="display:none" id="lsjudge">{$lijzjl}</div>
+        <div style="display:none" id="lsjzxh">{$lijzxh}</div>
+        <div class="ckcfdiv-top">
+            <div id="title">查看处方</div>
+            <div id="close">&times;</div>
+        </div>
+        <div class="ckcfdiv-center">
+            <select name="cfType" id="cfType">
+                <option value="1" selected>中药处方</option>
+                <option value="2">西药处方</option>
+            </select>
+            <button class="btn btn-success" id="fzcf">复制处方</button>
+        </div>
+        <div class="ckcfdiv-content">
+            <div class="content-left">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <th width="20%">选中</th>
+                            <th width="60%">处方号</th>
+                            <th width="20%">剂数</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody1">
+                        <!--ajax生成-->
+                    </tbody>
+                </table>
+            </div>
+            <div class="content-right">
+                <!--ajax生成-->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("#save").click(function(){
+            $("#hiddenChuzhi").val($("#chuzhi").html());
+            if($("#jkdaSave").val()==1){
+                layer.confirm('您的健康档案记录已存在，是否要进行覆盖？', {icon: 3, title:'提示'}, function(index){
+                    $("#form1").submit();
+                    layer.close(index);
+                },function(index){
+                    $("#jkSave",parent.document).html(0);
+                    layer.close(index);
+                });
+            }else{
+                $("#form1").submit();
+            }
+        })
+    </script>
+</body>
+</html>
+<script src="__PUBLIC__/js/bingshi.js"></script>
+<script>
+    //中医病名ajax
+    $(document).on('dblclick','#zyzd',function(){
+        var str="";
+        $.ajax({
+            url:"{:U('JianKangAjax/zybm')}",
+            type:'post',
+            dataType:'json',
+            success:function(data){
+                $.each(data,function(index,item){
+                    str += '<label><input type="checkbox" name="zyzd1" class="zhongyi1" onclick="checked2(\'zhongyi1\',\'zyzd1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+                })
+                $("#zyzdDiv").html(str);
+            }
+        })
+        $(".clo").not($("#zyzd1inp").nextAll('clo')).click();//只能打开一个框
+        $(".zyzd1").children('.div1').css('display','block');
+        var offset=$("#zyzd").offset();
+        $(".zyzd1").css("left","0px");
+        $(".zyzd1").css("top","0px");
+        $(".zyzd1").offset({top:offset.top+20,left:offset.left});
+        $("#zyzd1inp").val($("#zyzd").val());
+        $(".zyzd1").toggle();
+    })
+    //西医病名ajax
+    $(document).on('dblclick','#xyzd',function(){
+        var str="";
+        $(".clo").not($("#xyzd1inp").nextAll('clo')).click();//只能打开一个框
+        $(".xyzd1").children('.div1').css('display','block');
+        var offset=$("#xyzd").offset();
+        $(".xyzd1").css("left","0px");
+        $(".xyzd1").css("top","0px");
+        $(".xyzd1").offset({top:offset.top+20,left:offset.left});
+        $("#xyzd1inp").val($("#xyzd").val());
+        $(".xyzd1").toggle();
+        $.ajax({
+            url:"{:U('JianKangAjax/xybm')}",
+            type:'post',
+            dataType:'json',
+            success:function(data){
+                $.each(data,function(index,item){
+                    str += '<label><input type="checkbox" name="xyzd1" class="xiyi1" onclick="checked2(\'xiyi1\',\'xyzd1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+                })
+                $("#xybmDiv").html(str);
+            }
+        })
+    })
+//    既往史AJAX
+ $(document).on('input','#jws1inp',function(){
+     var val=$(this).val();
+     var str="";
+     $.ajax({
+         url:"{:U('JianKangAjax/jws')}",
+         type:'post',
+         data:{'value':val},
+         dataType:'json',
+         success:function(data){
+             $.each(data,function(index,item){
+                 str += '<label><input type="checkbox" name="jws1" class="jiwangshi1" onclick="checked2(\'jiwangshi1\',\'jws1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+             })
+            $(".jws1").children(".div2").html(str);
+         }
+     })
+ })
+//传染病史AJAX
+ $(document).on('input','#jws2inp',function(){
+     var val=$(this).val();
+     var str="";
+     $.ajax({
+         url:"{:U('JianKangAjax/crbs')}",
+         type:'post',
+         data:{'value':val},
+         dataType:'json',
+         success:function(data){
+             $.each(data,function(index,item){
+                 str += '<label><input type="checkbox" name="crbs1" class="jiwangshi2" onclick="checked2(\'jiwangshi2\',\'jws2inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+             })
+             $(".jws2").children(".div2").html(str);
+         }
+     })
+ })
+//    家庭史AJAX
+$(document).on('input','#jts11inp,#jts22inp,#jts33inp,#jts44inp',function(){
+    var th=$(this).parent(".div1").parent().attr('class');
+    var ids=$(this).attr('id');
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/jws')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                if(ids=='jts11inp'){
+                    str += ' <label><input type="checkbox" name="jtsFQ" class="gmcheck11" onclick="checked2(\'gmcheck11\',\'jts11inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+                }else if(ids=='jts22inp'){
+                    str += ' <label><input type="checkbox" name="jtsMQ" class="gmcheck22" onclick="checked2(\'gmcheck22\',\'jts22inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+                }else if(ids=='jts33inp'){
+                    str += ' <label><input type="checkbox" name="jtsXD" class="gmcheck33" onclick="checked2(\'gmcheck33\',\'jts33inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+                }else if(ids=='jts44inp'){
+                    str += ' <label><input type="checkbox" name="jtsZN" class="gmcheck44" onclick="checked2(\'gmcheck44\',\'jts44inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+                }
+            })
+            $("."+th).children(".div2").html(str);
+        }
+    })
+})
+//    过敏史
+$(document).on('input','#gmsinp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/gms')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label><input type="checkbox" name="gm" class="gmcheck" onclick="checked2(\'gmcheck\',\'gmsinp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".gm").children(".div2").html(str);
+        }
+    })
+})
+//    望神
+$(document).on('input','#zt1inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/wangshen')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="wshen" class="wshen" onclick="checked1(\'wshen\',\'zt1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".zt1").children(".div2").html(str);
+        }
+    })
+})
+//    望色
+$(document).on('input','#zt2inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/wangse')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="wse" class="wse" onclick="checked1(\'wse\',\'zt2inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".zt2").children(".div2").html(str);
+        }
+    })
+})
+//    体态
+$(document).on('input','#zt3inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/titai')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="tt" class="tt" onclick="checked1(\'tt\',\'zt3inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".zt3").children(".div2").html(str);
+        }
+    })
+})
+//    体形
+$(document).on('input','#zt4inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/tixing')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="tx" class="tx" onclick="checked1(\'tx\',\'zt4inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".zt4").children(".div2").html(str);
+        }
+    })
+})
+//    睡眠质量
+$(document).on('input','#xz1inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/shuimianzl')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label><input type="checkbox" name="zl" class="xianzai1" onclick="checked2(\'xianzai1\',\'xz1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz1").children(".div2").html(str);
+        }
+    })
+})
+//    睡眠时间
+$(document).on('input','#xz2inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/shuimiansj')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="sj" class="sj" onclick="checked1(\'sj\',\'xz2inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz2").children(".div2").html(str);
+        }
+    })
+})
+//食欲
+$(document).on('input','#xz3inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/shiyu')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="sy" class="sy" onclick="checked1(\'sy\',\'xz3inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz3").children(".div2").html(str);
+        }
+    })
+})
+//    口味
+$(document).on('input','#xz4inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/kouwei')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label><input type="checkbox" name="kw" class="xianzai4" onclick="checked2(\'xianzai4\',\'xz4inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz4").children(".div2").html(str);
+        }
+    })
+})
+//大便便次
+$(document).on('input','#xz5inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/dbbc')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="dbc" class="dbc" onclick="checked1(\'dbc\',\'xz5inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz5").children(".div2").html(str);
+        }
+    })
+})
+//大便便质
+$(document).on('input','#xz6inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/dbbz')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="bz" class="bz" onclick="checked1(\'bz\',\'xz6inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz6").children(".div2").html(str);
+        }
+    })
+})
+//小便便次
+$(document).on('input','#xz7inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/xbbc')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="xbc" class="xbc" onclick="checked1(\'xbc\',\'xz7inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz7").children(".div2").html(str);
+        }
+    })
+})
+//小便便色
+$(document).on('input','#xz8inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/xbbs')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="bs" class="bs" onclick="checked1(\'bs\',\'xz8inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xz8").children(".div2").html(str);
+        }
+    })
+})
+//    性情
+$(document).on('input','#qz1inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/xingqing')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="xq" class="xq" onclick="checked1(\'xq\',\'qz1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".qz1").children(".div2").html(str);
+        }
+    })
+})
+//性格
+$(document).on('input','#qz2inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/xingge')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="xg" class="xg" onclick="checked1(\'xg\',\'qz2inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".qz2").children(".div2").html(str);
+        }
+    })
+})
+//舌色
+$(document).on('input','#sz1inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/shese')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="ss" class="ss" onclick="checked1(\'ss\',\'sz1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".sz1").children(".div2").html(str);
+        }
+    })
+})
+//舌体
+$(document).on('input','#sz2inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/sheti')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="st" class="st" onclick="checked1(\'st\',\'sz2inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".sz2").children(".div2").html(str);
+        }
+    })
+})
+//动态
+$(document).on('input','#sz3inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/dongtai')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="dt" class="dt" onclick="checked1(\'dt\',\'sz3inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".sz3").children(".div2").html(str);
+        }
+    })
+})
+//苔质
+$(document).on('input','#sz4inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/taizhi')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="tz" class="tz" onclick="checked1(\'tz\',\'sz4inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".sz4").children(".div2").html(str);
+        }
+    })
+})
+//苔色
+$(document).on('input','#sz5inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/taise')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label class="dblCli"><input type="radio" name="ts" class="ts" onclick="checked1(\'ts\',\'sz5inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".sz5").children(".div2").html(str);
+        }
+    })
+})
+//    脉诊
+$(document).on('input','#mz1inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/maizhen')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label><input type="checkbox" name="mz1" class="maizhen1" onclick="checked2(\'maizhen1\',\'mz1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".mz1").children(".div2").html(str);
+        }
+    })
+})
+//西医诊断
+$(document).on('input','#xyzd1inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/xiyizd')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label><input type="checkbox" name="xyzd1" class="xiyi1" onclick="checked2(\'xiyi1\',\'xyzd1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".xyzd1").children(".div2").html(str);
+        }
+    })
+})
+//中医诊断
+$(document).on('input','#zyzd1inp',function(){
+    var val=$(this).val();
+    var str="";
+    $.ajax({
+        url:"{:U('JianKangAjax/zhongyizd')}",
+        type:'post',
+        data:{'value':val},
+        dataType:'json',
+        success:function(data){
+            $.each(data,function(index,item){
+                str += '<label><input type="checkbox" name="zyzd1" class="zhongyi1" onclick="checked2(\'zhongyi1\',\'zyzd1inp\')" value="'+item.name+'"><span>"'+item.name+'"</span></label>'
+            })
+            $(".zyzd1").children(".div2").html(str);
+        }
+    })
+})
+autosize(document.querySelectorAll('textarea'));
+$(document).on('input','input,textarea',function(){
+    $("#dayin").addClass('disabled');
+})
+$(document).ready(function(){
+    //给home元素赋病人信息
+    $("#sblh", parent.document).html($("#blnum").html());       //病历号
+    $("#sxm", parent.document).html($("#name").val());          //姓名
+    $("#sbxb", parent.document).html($("#sex").val());          //性别
+    $("#sbnl", parent.document).html($("#ages").val());          //年龄
+    $("#sbnl2", parent.document).html($("#age").val());         //库中年龄
+    $("#sbdate",parent.document).html($("#jzdate").html());     //就诊日期
+//    历史处方界面判断是否显示
+    if($("#lsjudge").html()==1){
+        $(".ckcfdiv").show(function(){});
+        var xh=$("#lsjzxh").html();
+        var str='';
+        $.ajax({
+            url:"{:U('JianKangAjax/ckcfAjax')}",
+            type:'post',
+            data:{'xh':xh},
+            dataType:'json',
+            success:function(data){
+                $.each(data,function(index,item){
+                    str+="<tr class='sty1' name='tableSty'><td><input type='checkbox' name='zyCheck' class='zyCheck'></td><td>"+item.presc_no+"</td><td>"+item.dose+"</td></tr>";
+                })
+                $("#tbody1").html(str);
+                $("#tbody1").children("tr").eq(0).click();
+            }
+        })
+    }
+    if($("#jkSave",parent.document).html()=='1'){
+        $.ajax({
+            url:"{:U('JianKangAjax/wcjz')}",
+            dataType:'json',
+            success:function(data){
+                if(data == 1){
+                    $("#sblh",parent.document).html('');
+                    $("#sxm",parent.document).html('');
+                    $("#sbxb",parent.document).html('');
+                    $("#sbnl",parent.document).html('');
+                    $("#sbdate",parent.document).html('');
+                   
+                    location.href="{:U('Index/jiezhen')}";
+                }
+            }
+        })
+    }
+})
+//点击历史处方中的处方号查看详细信息
+$(document).on("click",".sty1",function(){
+    var cfType=$("#cfType").val();                   //1中药处方？2西药处方
+    var cfNum=$(this).children("td").eq(1).html();  //处方号
+    var str='';
+    $.ajax({
+        url:"{:U('JianKangAjax/ckcfInf')}",
+        type:'post',
+        data:{'cfType':cfType,'cfNum':cfNum},
+        dataType:'json',
+        success:function(data){
+            if(cfType=='1'){                //中药右侧
+                $.each(data,function(index,item){
+                    str+='<div style="width:100%;" class="yongLaiKaZhude"><div class="zykuang"><div class="xuhao">'+item.drug_no+'</div><div class="yf">'+item.usage+'</div><div class="drugName">'+item.drug_name+'</div><div class="yongliang">'+item.amount+item.drug_units+'</div></div></div>';
+                })
+            }else if(cfType=='2'){          //西药右侧
+                str="<table width='100%'><thead><tr><th>药品名称</th><th>药品规格</th><th>数量</th><th>给药途径</th><th>次用量</th><th>频率</th><th>特殊用法</th><th>用药天数</th></tr></thead><tbody>"
+                $.each(data,function(index,item){
+                    str+="<tr><td>"+item.yp_name+"</td><td>"+item.yp_spec+"</td><td>"+item.yp_total_amount+"</td><td>"+item.yp_useage+"</td><td>"+item.yp_yc_amount+"</td><td>"+item.yp_pl_day+"</td><td>"+item.yp_speci_use_name+"</td><td>"+item.fs+"</td></tr>";
+                })
+                str+="</tbody></table>";
+            }
+            $(".content-right").html(str);
+        }
+    })
+})
+//处方信息查看中的处方类别选择
+$("#cfType").change(function(){
+    var cfType=$("#cfType").val();      //1中药处方？2西药处方
+    var xh=$("#lsjzxh").html();
+    var str='';
+    $.ajax({
+        url:"{:U('JianKangAjax/cfType')}",
+        type:'post',
+        data:{'cfType':cfType,'xh':xh},
+        dataType:'json',
+        success:function(data){
+            if(cfType=='1'){                //中药左侧
+                $.each(data,function(index,item){
+                    str+="<tr class='sty1' name='tableSty'><td><input type='checkbox' name='zyCheck' class='zyCheck'></td><td>"+item.presc_no+"</td><td>"+item.dose+"</td></tr>";
+                })
+            }else if(cfType=='2'){          //西药左侧
+                $.each(data,function(index,item){
+                    str+="<tr class='sty1' name='tableSty'><td><input type='checkbox' name='zyCheck' class='zyCheck'></td><td>"+item.cf_id+"</td><td>1</td></tr>";
+                })
+            }
+            $("#tbody1").html(str);
+            $("#tbody1").children("tr").eq(0).click();
+        }
+    })
+})
+//复制处方
+$("#fzcf").click(function(){
+    var chec=0;                         //判断是否选中0未选中1选中
+    var cfNums='';                      //存放处方号
+    var cfType=$("#cfType").val();      //1中药处方？2西药处方
+    $(".zyCheck").each(function(){
+        if($(this).is(":checked")){
+            cfNums+=$(this).parent("td").next().html()+',';   //组合处方号
+            chec=1;
+        }
+    })
+    if(chec=="0"){
+        layer.alert("请您选择处方号！",{icon:7});
+    }else{
+        $.ajax({
+            url:"{:U('JianKangAjax/copyCf')}",
+            type:'post',
+            data:{'cfType':cfType,'cfNums':cfNums},
+            dataType:'json',
+            success:function(data){
+                layer.alert(data,{icon:7});
+            }
+        })
+    }
+})
+//年龄与出生年月相互控制
+    // 得到年月日
+    var date=new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var today=year+"-"+month+"-"+strDate;
+    
+    //出生年月控制年龄
+    $(document).on('mouseover','body',function(){
+        var date=$("#birthday").val();//显示时间
+        var nian=date.substring(0,4);//显示的年
+        var newAge=year-nian;
+        $("#age").val(newAge);
+       
+    })
+    //完成就诊
+    $("#wcjz").click(function(){
+            //未审核
+            var wshenhezt= 0;
+            //已驳回
+            var bohuizt = 0;
+        $.ajax({
+            url:"{:U('JianKangAjax/huoquzhuangtai')}",
+            type:'post',
+            dataType:'json',
+            success:function(dd){
+                //便利获取有几个状态
+                $.each(dd,function(idx,item){
+                    // 未审核
+                    if (item.indicate == 0) {
+                        wshenhezt = wshenhezt + 1;
+                       
+                    }
+                    // 驳回
+                    if (item.indicate == 4) {
+                        bohuizt = bohuizt + 1;
+                       
+                    }
+
+                })
+                //判断没有未审核的 并且没有被驳回的
+                if (wshenhezt ==0 && bohuizt==0 ) {
+                     layer.confirm('确认完成就诊',{
+                        icon: 7, title:'提示',
+                        btn:['确认','返回修改！']
+                    },function(index){                //confirm确认
+                        $.ajax({
+                            url:"{:U('JianKangAjax/wcjz')}",
+                            dataType:'json',
+                            success:function(data){
+                                if(data == 1){
+                                    $("#sblh",parent.document).html('');
+                                    $("#sxm",parent.document).html('');
+                                    $("#sbxb",parent.document).html('');
+                                    $("#sbnl",parent.document).html('');
+                                    $("#sbdate",parent.document).html('');
+                                     //当日明日等清空
+                                $("#hznatian",parent.document).html('');
+                                    location.href="{:U('Index/jiezhen')}";
+                                }
+                            }
+                        })
+                     
+                    });
+                }else{
+                     layer.confirm('有'+bohuizt+'条处方被驳回！ 有'+wshenhezt+'条处方未审核',{
+                        icon: 7, title:'提示',
+                        btn:['完成就诊','返回修改！']
+                    },function(index){                //confirm确认
+                        $.ajax({
+                            url:"{:U('JianKangAjax/wcjz')}",
+                            dataType:'json',
+                            success:function(data){
+                                if(data == 1){
+                                    $("#sblh",parent.document).html('');
+                                    $("#sxm",parent.document).html('');
+                                    $("#sbxb",parent.document).html('');
+                                    $("#sbnl",parent.document).html('');
+                                    $("#sbdate",parent.document).html('');
+                                     //当日明日等清空
+                                $("#hznatian",parent.document).html('');
+                                    location.href="{:U('Index/jiezhen')}";
+                                }
+                            }
+                        })
+                     
+                    });
+                }
+                 // alert(bohuizt);
+                   
+            }
+        })
+    })
+//    本次病例点击
+    $("#bcbl").click(function(){
+        location.href="{:U('Index/jiankang')}";
+    })
+//关闭查看处方界面
+$("#close").click(function(){
+    $(".ckcfdiv").hide(function(){});
+})
+//防止拖拽
+$("td").on("copy cut paste dragstart dragenter",function(e){
+                    return false;
+                });
+//防止拖拽
+$("th").on("copy cut paste dragstart dragenter",function(e){
+                    return false;
+                });
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

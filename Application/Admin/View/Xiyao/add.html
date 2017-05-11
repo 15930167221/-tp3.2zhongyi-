@@ -1,0 +1,111 @@
+<include file="Layout/header"/>
+</head>
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-admin-add" action="{:U('Admin/Xiyao/add')}" method="post">
+        
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>药品代码</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input readonly="readonly"  type="text" class="input-text" value="{$data}" placeholder="药品代码" name="drug_code">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>药品名称</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="mingchengtj" placeholder="必填" name="drug_name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>输入码</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="输入码" name="input_code">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->销售规格</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="销售规格" name="package_units">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->剂型</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <!-- <input type="text" class="input-text"  placeholder="剂型" name="drug_form"> -->
+                <select name="drug_form">
+                    <volist name="jixingdata" id="jixingvo">
+                        <option value="{$jixingvo.jxdm}">{$jixingvo.jxmc}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>类别</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <!-- <input type="text" class="input-text"  placeholder="类别" name="drug_indicator"> -->
+                <select name="drug_indicator">
+                    <option value="1">西药</option>
+                    <option value="3">中成药</option>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->含量</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="含量" name="hl">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->含量单位</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <!-- <input type="text" class="input-text"  placeholder="含量单位" name="hl_unit"> -->
+                <select name="hl_unit">
+                    <volist name="hanliangdata" id="hanliangvo">
+                        <option value="{$hanliangvo.dwdm}">{$hanliangvo.dw}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->包装单位</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <!-- <input type="text" class="input-text"  placeholder="包装单位" name="bzdw1"> -->
+                <select name="bzdw1">
+                    <volist name="baozhuangdata" id="baozhuangvo">
+                        <option value="{$baozhuangvo.dwdm}">{$baozhuangvo.dw}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>零售价</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="零售价" name="price">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->备注</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="备注" name="memos">
+            </div>
+        </div>
+        
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <button  class="btn btn-primary radius" id="jstijiao" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+                <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</article>
+<include file="Layout/footer"/>
+<script type="text/javascript">
+    $(document).on('click','#jstijiao',function(){
+        var mingchengtj = $('#mingchengtj').val();
+        if (mingchengtj == '') {
+            alert('请填写药品名称');
+        }else{
+            $('form').attr('action',"{:U('Admin/Xiyao/add')}").submit();
+        }
+    });
+</script>

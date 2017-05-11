@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中药诊治统计查询_中医健康管理系统</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/easyui.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/font.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/chaxun.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/mypage.css">
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.easyui.min.js"></script>
+	<script src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+</head>
+<script>
+function att(){
+	var nld=$("input[name='zyzz_nld']").is(':checked');
+	var sex=$("input[name='zyzz_sex']").is(':checked');
+	if(nld && sex){
+		var str='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab").html(str);
+	}else if(sex){
+		var str='<tr><th width="15%">性别</th><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab").html(str);
+	}else if(nld){
+		var str='<tr><th width="20%">年龄段</th><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab").html(str);
+	}else{
+		var str='<tr><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+		$("#tab").html(str);
+	}
+}
+function tjsubmit(){
+	$.ajax({
+		url:"__CONTROLLER__/xyselect",
+		type:"post",
+		cache:false,
+		data:new FormData($('form')[0]),
+		processData: false,
+		contentType: false,
+		success:function(e){
+			var str1='<tr><th width="20%">年龄段</th><th width="15%">性别</th><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var str2='<tr><th width="15%">性别</th><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var str3='<tr><th width="20%">年龄段</th><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var str4='<tr><th width="45%">西医病名</th><th width="10%">人数</th><th width="10%">例数</th></tr>';
+			var res=e['res'];
+			var nld=e['nld'];
+			var xb=e['sex'];
+			for(var i=0;i<res.length;i++){
+				if(res[i]['nl']<=7){
+					res[i]['nl']='0-7';
+				}else if(res[i]['nl']<=14){
+					res[i]['nl']='8-14';
+				}else if(res[i]['nl']<=20){
+					res[i]['nl']='15--20';
+				}else if(res[i]['nl']<=30){
+					res[i]['nl']='21--30';
+				}else if(res[i]['nl']<=40){
+					res[i]['nl']='31--40';
+				}else if(res[i]['nl']<=50){
+					res[i]['nl']='41--50';
+				}else if(res[i]['nl']<=60){
+					res[i]['nl']='51--60';
+				}else{
+					res[i]['nl']='60以上';
+				}
+				str1+='<tr><td>'+res[i]['nl']+'</td><td>'+res[i]['xb']+'</td><td>'+res[i][""]+'</td><td>'+res[i]['rs']+'</td><td>'+res[i]['ls']+'</td></tr>';
+				str2+='<tr><td>'+res[i]['xb']+'</td><td>'+res[i][""]+'</td><td>'+res[i]['rs']+'</td><td>'+res[i]['ls']+'</td></tr>';
+				str3+='<tr><td>'+res[i]['nl']+'</td><td>'+res[i][""]+'</td><td>'+res[i]['rs']+'</td><td>'+res[i]['ls']+'</td></tr>';
+				str4+='<tr><td>'+res[i][""]+'</td><td>'+res[i]['rs']+'</td><td>'+res[i]['ls']+'</td></tr>';
+			}
+			if(nld=='zyzz_nld' && xb=='zyzz_sex'){
+				$("#tab").html(str1);
+			}else if(xb=='zyzz_sex'){
+				$("#tab").html(str2);
+			}else if(nld=='zyzz_nld'){
+				$("#tab").html(str3);
+			}else{
+				$("#tab").html(str4);
+			}
+		}
+	});
+}
+function onprint(){
+	bdhtml=window.document.body.innerHTML;
+	sprnstr="<!--startprint-->";
+	eprnstr="<!--endprint-->";
+	prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17);
+	prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));
+	window.document.body.innerHTML=prnhtml;
+	window.print();
+	window.document.body.innerHTML=bdhtml;
+}
+</script>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<div class="top">
+		<div class="title">
+			<span class="glyphicon glyphicon-search" style="font-size:16px;"></span>
+			<span>西医诊治查询统计</span>
+		</div>
+		<div class="tool">
+			<span class="sm">说明：本统计只针对已完成就诊的病人</span>
+			<span>
+				<button name="query" class="btn btn-success" type="button" onClick="tjsubmit()">✔ 统计</button>
+				<button name="print" class="btn btn-success" type="button" onClick="onprint()" style="background-color: #ff6501!important;">℗ 打印</button>
+			</span>
+			<p id="demo"></p>
+		</div>
+	</div>
+	<div class="zyzz_cxtj">
+		<form>
+			<span>日期范围:</span>
+			<input id="start" name="zyzz_start" type="text" readonly > <b>至</b>
+			<input id="end" name="zyzz_end" type="text" readonly onClick="jeDate({dateCell:'#end',format:'YYYY-MM-DD',isinitVal:true,initAddVal:[0]})">
+			<!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#start',{isinitVal:true,initAddVal:[-30],format: 'YYYY-MM-DD'});
+                </script>
+			&nbsp;&nbsp;
+			<label><input type="checkbox" name="zyzz_nld" value="zyzz_nld" onClick="att()">&nbsp;按年龄段</label>
+			&nbsp;&nbsp;
+			<label><input type="checkbox" name="zyzz_sex" value="zyzz_sex" onClick="att()">&nbsp;按性别</label>
+			<br><br>
+			<!-- <span class="sm">提示信息：双击列标题可进行排序</span> -->
+		</form>
+	</div>
+	<div class="zyzz_center">
+	<!--startprint-->
+		<div id="myTabContent" class="tab-content" style="height:100%;">
+			<table class="table table-striped" id="tab">
+				<thead>
+					<tr>
+						<th width="45%">西医病名</th>
+						<th width="10%">人数</th>
+						<th width="10%">例数</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	<!--endprint-->
+	</div>
+	<script type="text/javascript">
+		$.jeDate("#start",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+		$.jeDate("#end",{
+			isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+		});
+	</script>
+	<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</body>
+</html>

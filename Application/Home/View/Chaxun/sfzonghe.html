@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>收费综合查询_中医健康管理系统</title>
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/easyui.css">
+	<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/chaxun.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/font.css">
+	<!-- 分页 -->
+    <link rel="stylesheet" href="__PUBLIC__/css/fystyle.css">
+    <style>
+       .yemianfenyequxiao div a,span{
+            text-decoration:none;float:left;
+            line-height:25px;margin-right:8px;
+        }
+    </style>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.easyui.min.js"></script>
+	<script src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<form action="{:U('Chaxun/sfzonghe')}" method="get">
+	<input type="hidden" name="typeName" value="1">
+		<div class="top">
+			<div class="title">
+				<span class="glyphicon glyphicon-search" style="font-size:16px;"></span>
+				<span>收费综合查询</span>
+			</div>
+			<div class="tool">
+				<button name="query" class="btn btn-success" id="jstijiaoform" type="button">✔ 查询</button>
+				<button name="print" class="btn btn-success" type="button" onClick="onprint()" style="background-color: #ff6501!important;">℗ 打印</button>
+				<p id="demo"></p>
+			</div>
+		</div>
+		<div class="cxtj">
+			<table>
+				<tr>
+					<td width="45%">
+						<span>日期范围:</span>
+						<!-- 隐藏开始日期 -->
+            			<input type="hidden" class="tjkaishiriqi" value="<?php echo $cxtjdata['p_datekai'];?>">
+						<input type="text" name="p_datekai" class="ghrq" id="datebut1" > <b>至</b>
+						<!-- 隐藏结束日期 -->
+        				<input type="hidden" class="tjzhongzhiriqi" value="{$cxtjdata.p_datezhong}">
+						<input type="text" name="p_datezhong" class="ghrq" id="datebut2" onClick="jeDate({dateCell:'#datebut2',format:'YYYY-MM-DD',isinitVal:true,initAddVal:[0]})" onfocus="new Calendar().show(this)" readonly="readonly">
+					</td>
+					<!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#datebut1',{isinitVal:true,initAddVal:[-30],format: 'YYYY-MM-DD'});
+                </script>
+					<td width="20%">
+						<span>操 作 员:</span>
+						<select name="operator_code">
+							<option value="">全部</option>
+							<volist name="data" id="vo">
+								<if condition="$vo.id eq $cxtjdata.operator_code ">
+									<option  value="{$vo.id}" selected="selected">{$vo.username}</option>
+								<else /> 
+									<option  value="{$vo.id}">{$vo.username}</option>
+								</if>
+							
+							</volist>
+						</select>
+					</td>
+					<td width="25%">
+						<span>发票号:</span>
+						<input autocomplete="off" type="text" name="invoice_no" value="{$cxtjdata.invoice_no}">
+					</td>
+				</tr>
+				<tr height="10"></tr>
+				<tr>
+					<td>
+						<span>病人姓名:</span>
+						<input autocomplete="off" type="text" name="br_name" value="{$cxtjdata.br_name}">
+					</td>
+					<td>
+						<span>收费类型:</span>
+						<select name="bill_status">
+							<if condition="$cxtjdata.bill_status eq 1">
+								<option value="">全部</option>
+								<option value="1" selected="selected">收费</option>
+								<option value="2">退费</option>
+							<elseif condition="$cxtjdata.bill_status eq 2" />
+								<option value="">全部</option>
+								<option value="1">收费</option>
+								<option value="2" selected="selected">退费</option>
+							<else />
+								<option value="">全部</option>
+								<option value="1">收费</option>
+								<option value="2">退费</option>
+							</if>
+						</select>
+					</td>
+					<td>
+						<span>病历号:</span>
+						<input autocomplete="off" type="text" name="blqsh" value="{$cxtjdata.blqsh}">
+					</td>
+					<if condition="$cxtjdata.sf_bfghf eq yes">
+						<td>
+							<span class="checkbox pull-left"><label><input type="checkbox" name="sf_bfghf" value="yes" checked="checked">不含挂号费</label></span>
+						</td>
+					<else />
+						<td>
+							<span class="checkbox pull-left"><label><input type="checkbox" name="sf_bfghf" value="yes">不含挂号费</label></span>
+						</td>
+					</if>
+				</tr>
+			</table>
+		</div>
+	</form>
+	<div class="sfzh_center">
+			<!--startprint-->
+		<table class="table table-striped">
+			<thead>
+				<tr >
+					<th>操作日期</th>
+					<th>发票号</th>
+					<th>病历号</th>
+					<th>病人姓名</th>
+					<th>收费项目</th>
+					<th>单价</th>
+					<th>数量</th>
+					<th>金额</th>
+					<th>操作员</th>
+					<th>退费日期</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="dodata" id="dovo">
+				<tr>
+					<td>{$dovo.charge_date}</td>
+					<td>{$dovo.invoice_no}</td>
+					<td>{$dovo.blqsh}</td>
+					<td>{$dovo.br_name}</td>
+					<if condition ="$dovo.item_code eq '挂号费'"><td>{$dovo.item_code}</td>
+					<else /><td>{$dovo.item_code|getOperatorNameByCode=###}</td></if>
+					<td>{$dovo.unit_price|sprintf='%.2f',###}</td>
+					<td>{$dovo.amount|sprintf='%.2f',###}</td>
+					<td>{$dovo.total|sprintf='%.2f',###}</td>
+					<td>{$dovo.operator_code|getNameByCode=###}</td>
+					<td>{$dovo.return_date}</td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+			<!--endprint-->
+	</div>
+	<div style="width:100%;background-color:#fff;margin-bottom:0px;">
+            <div class="result page">
+                <div class="pages">
+                    <div class="yemianfenyequxiao">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+           
+	<!-- js提交form表单 -->
+	<script type="text/javascript">
+		$("#jstijiaoform").click(function(){
+			$("form").submit();
+		});
+	</script>
+	
+</body>
+</html>
+<script type="text/javascript">
+        //功能：将回车键转tab键
+        jQuery(function () {
+            jQuery('input:text:first').focus();
+            var $inp = jQuery('input:text');
+            $inp.bind('keydown', function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    e.preventDefault();
+                    var nxtIdx = $inp.index(this) + 1;
+                    jQuery(":input:text:eq(" + nxtIdx + ")").focus();
+                }
+            });
+        });    
+    </script>
+<!-- js改变日期条件带到下个页面 -->
+<script type="text/javascript">
+    $(function(){
+        // 获取隐藏的开始日期
+        var tjkaishi =$(".tjkaishiriqi").val();
+		if(tjkaishi){
+			// 赋值
+			$("#datebut1").val(tjkaishi);
+		}
+        var tjzhong=$(".tjzhongzhiriqi").val();
+		if(tjzhong){
+			$("#datebut2").val(tjzhong);
+		}
+    });
+</script>
+<!-- 打印 -->
+<script type="text/javascript">
+	function onprint(){
+	bdhtml=window.document.body.innerHTML;
+	sprnstr="<!--startprint-->";//开始位置
+	eprnstr="<!--endprint-->";//结束位置
+	prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+18);
+	prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));
+	window.document.body.innerHTML=prnhtml;
+	window.print();
+	window.document.body.innerHTML=bdhtml;
+}
+
+// <!--startprint-->需要打印的区域<!--endprint-->
+	$.jeDate("#datebut1",{
+		isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+	});
+	$.jeDate("#datebut2",{
+		isinitVal:true,initAddVal:[0],format:'YYYY-MM-DD'
+	});
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

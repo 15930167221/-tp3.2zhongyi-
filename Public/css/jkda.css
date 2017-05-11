@@ -1,0 +1,99 @@
+*{font-size:16px;margin:0px;padding:0px;}
+html,body{width:100%;}
+a{text-decoration:none;}
+img{border:0px;}
+.center{margin:0px auto;}
+.jkda-table input[type="text"]{border:0px;min-width:30px;border-bottom:1px solid #ccc;outline:none!important;}
+textarea{outline:none!important;}
+/*.jkda-table input[type="text"]{min-width:30px;border:1px solid #ccc;}*/
+.jkda-table{background-color:#000;width:100%;table-layout:fixed;}
+.jkda-table tbody{width:100%;}
+.jkda-table tr{background-color:#fff;height:30px;width:100%;}
+.jkda-table tr th{text-align:center!important;word-wrap:break-word;height:38px;}
+.jkda-table tr td{word-wrap:break-word;}
+/*中医健康档案标题*/
+.title{width:100%;text-align:center;font-weight:bold;font-size:24px;margin-bottom:20px;}
+/*急诊日期和病历号*/
+#date,#name,#age,#birthday,#tzbs,#zybz,#zyzz,#jzrq{color:blue;}
+.title2{width:100%;height:16px;margin-bottom:10px;}
+.title2 div:first-child{float:left;}
+.title2 div:last-child{float:right;}
+.title2 div span{font-weight:bold;}
+.jkda-table textarea{
+	border:0px;border-bottom:1px solid #ccc;width:100%;resize: none;vertical-align:top;height:100%;line-height:20px;
+}
+/*过敏史*/
+.gm,.jts11,.jts22,.jts33,.jts44{
+	position:absolute;background-color:#D3D5DA;width:260px;height:210px;display:none;z-index:10;border:1px solid #ccc;
+}
+.gm label,.jts11 label,.jts22 label,.jts33 label,.jts44 label{display:block;}
+.jkda-table .year{width:35px;}
+.jkda-table .month{width:16px;}
+.jkda-table .day{width:16px;}
+/*家庭史and心悸(有无)*/
+.jtsFar,.jtsMother,.jts3,.jts4,.xj1{
+	position:absolute;background-color:#D3D5DA;width:235px;height:80px;
+	display:none;border:1px solid #ccc;
+}
+
+.jtsFar label,.jtsMother label,.jts3 label,.jts4 label,.xj1 label{display:block;}
+.jkda-table .chufang>div{padding-bottom:10px;width:100%;float:left;}
+.jkda-table .chufang ul li{float:left;width:25%;text-align:center;margin-top:5px;}
+/*西药处方*/
+.xiyao .xyInf tr td{text-align: center;line-height:30px;}
+/*整体状况*/
+.zt1,.zt2,.zt3,.zt4{
+	position:absolute;background-color:#D3D5DA;width:260px;height:150px;
+	overflow:auto;display:none;border:1px solid #ccc;
+}
+/*滚动条*/
+*::-webkit-scrollbar{
+	width:6px;
+}
+/*#374554*/
+*::-webkit-scrollbar-track{
+	background-color: #c3c3c3;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+*::-webkit-scrollbar-thumb{
+	background-color: #f9f2f9;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+.zt1 label,.zt2 label,.zt3 label,.zt4 label{display: block;}
+/*现在状况*/
+.xz1,.xz2,.xz3,.xz4,.xz5,.xz6,.xz7,.xz8{
+	position:absolute;background-color:#D3D5DA;width:260px;height:210px;overflow:auto;display:none;z-index:10;border:1px solid #ccc;
+}
+.xz1 label,.xz2 label,.xz3 label,.xz4 label,.xz5 label,.xz6 label,.xz7 label,.xz8 label{display: block;}
+/*情致*/
+.qz1,.qz2{
+	position:absolute;background-color:#D3D5DA;width:260px;height:210px;overflow:auto;display:none;z-index:10;border:1px solid #ccc;
+}
+.qz1 label,.qz2 label{display: block;}
+/*舌诊and脉诊*/
+.sz1,.sz2,.sz3,.sz4,.sz5,.mz1{
+	position:absolute;background-color:#D3D5DA;width:260px;height:210px;overflow:auto;display:none;z-index:10;border:1px solid #ccc;
+}
+.sz1 label,.sz2 label,.sz3 label,.sz4 label,.sz5 label,.mz1 label{display: block;}
+/*既往史*/
+.jws1,.jws2{
+	position:absolute;background-color:#D3D5DA;width:260px;height:210px;overflow:auto;display:none;z-index:10;border:1px solid #ccc;
+}
+.jws1 label,.jws2 label{display: block;}
+/*中医诊断和西医诊断*/
+.zyzd1,.xyzd1{
+	position:absolute;background-color:#D3D5DA;width:260px;height:210px;overflow:auto;display:none;z-index:10;border:1px solid #ccc;
+}
+.zyzd1 label,.xyzd1 label{display: block;}
+/*弹出框下的两个div*/
+.div1{height:25px;}
+.div2{height:auto;max-height:170px;overflow: auto;}
+/*设置西药处置药房input宽度*/
+.xychinf{border:0px!important;width:98%;text-align:center;background-color:rgba(255,255,255,0);}
+/*设置中药处置药房input宽度*/
+/*.zychinf3{width:16px!important;text-align:center;}*/
+.zychinf1,.zychinf2,.zychinf3,.zychinf4{border:0px!important;min-width:10px!important;background-color:rgba(255,255,255,0);}

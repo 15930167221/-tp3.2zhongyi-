@@ -1,0 +1,83 @@
+<include file="Layout/header"/>
+</head>
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-admin-add" action="{:U('Admin/Shoufei/edit')}" method="post">
+        
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>项目编码</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="必填" value="{$data.0.item_code}" name="item_code">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>项目名称</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="必填" value="{$data.0.item_name}" name="item_name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->拼音码</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="拼音码" value="{$data.0.input_code}" name="input_code">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->规格</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="规格" value="{$data.0.item_spec}" name="item_spec">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单价</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="必填" value="{$data.0.price}" name="price">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->单位</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <!-- <input type="text" class="input-text"  placeholder="剂型名称" name="jxmc"> -->
+                <select name="units_code">
+                    <option>次</option>
+                    <option>次/项</option>
+                    <option>人</option>
+                    <option>人次</option>
+                    <option>人次/瓶</option>
+                    <option>日</option>
+                    <option>项</option>
+                    <option>天</option>
+                    <option>小时</option>
+                    <option>半小时</option>
+                    <option>单侧</option>
+                    <option>个</option>
+                    <option>公里</option>
+                    <option>克</option>
+                    <option>例</option>
+                    <option>每部位</option>
+                    <option>每创面</option>
+                    <option>每穴位</option>
+                    <option>每照柱</option>
+                    <option>页</option>
+                    <option>张</option>
+                    <option>组</option>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->启用表示</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="radio"  name="enabl_sign" value="1">  启用
+                <input type="radio"  name="enabl_sign" value="0">  停用
+            </div>
+        </div>
+       <input type="hidden" value="{$data.0.id}" name='id'>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 修改</button>
+                <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</article>
+<include file="Layout/footer"/>

@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+	<head>
+	<link rel="stylesheet" href="__PUBLIC__/css/xykf.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/bootstrap.css">
+	<script type="text/javascript" src="__PUBLIC__/jq/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/xykf.js"></script>
+	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/day.js"></script>
+	<link href="__PUBLIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<style type="text/css">
+		html,body{
+			height:100%;
+			width:100%;
+			background-color:rgba(1,1,1,0);
+		}
+		.sspan{
+			text-align:center;
+		}
+	</style>
+	</head>
+	<body  oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<!-- 最外围大div -->
+	<div id="big">
+		<div id="title">
+		&nbsp;&nbsp;
+			<span class="glyphicon glyphicon-list-alt" ></span><span id="ayx" style="display:none">1</span>
+			<span style="font-size:16px;font-weight:bold;margin-left:8px;">处方信息录入</span>
+			<button id="qdxg" style="display:none; width:103px;height:32px;line-height:29px;border:0px;background-color:#2FBEB1;font-weight:normal;color:#FFF;margin-top:5px;float:right;margin-left:13px; border-radius:3px;width:90px;">保存处方</button>
+			<button  name='' id="ys" data-toggle='modal' data-target='#myModal2'  style=" width:103px;height:32px;line-height:29px;border:0px;background-color:#2FBEB1;font-weight:normal;color:#FFF;margin-top:5px;float:right;margin-left:13px; border-radius:3px;width:90px;">保存处方</button>
+			<button  name='' id="drcfbtn" style=" width:103px;height:32px;line-height:29px;border:0px;background-color:#2FBEB1;font-weight:normal;color:#FFF;margin-top:5px;float:right; border-radius:3px;width:90px;">当日处方</button>
+			<button style="margin-left:15px; background-color:#ED3E3F; width:103px;height:32px;line-height:29px;border:0px;font-weight:normal;color:#FFF;margin-top:5px;float:right; border-radius:3px;width:90px;" id="deleteyp">删除药品</button>
+			<button  id="westBi" data-toggle='modal' data-target='#myModal' name='' style="float:right; width:103px;height:32px;line-height:29px;border:0px;background-color:#2FBEB1;font-weight:normal;color:#FFF;margin-top:5px; border-radius:3px;width:90px;" >西医病名</button>
+			<span id="drcfhid"><php>echo $newId;</php></span>
+			
+			<div id="xybm1">
+			<div id="a123" style="line-height:30px;height:30px;"></div>
+				
+			</div>
+		</div>
+
+                            <!-- 模态框 --><div>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#B2EAE6;">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="exit">&times;</button>
+                
+                <input type="text" id="xybmtext" placeholder="请输入拼音码" style="width:150px;height:25px;">
+            </div>
+            <div class="modal-body" id="fangk">
+           		<!-- <table>
+           		<tr style="font-weight:bold;"><td>名称</td><td>拼音码</td></tr><php>$a=0;</php>
+           		 <foreach name='xyname' item='xo'>
+           		 	<php>$qwe = $xo['code'];$a++;</php>
+           			<tr class="xyntr"><td><input type="checkbox" value="<?php echo $qwe; ?>" class="xyche">{$xo.name}</td><td class="pym">{$xo.spell}</td></tr>
+           		 </foreach>
+           		</table> -->
+                <!-- <h2><php>echo $a;</php></h2> -->
+            </div>
+
+
+
+            <div class="modal-footer" id="footmt">
+               <button id="qdwestn" style="width:100px;height:35px;background-color:#EE9E0C;color:#FFF;border:0px;">确定</button>
+            </div>
+           
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div></div>
+<!-- 模态结束 -->
+<!-- 模态框预审 --><div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#d7dce0;padding:10px!important;border-radius:5px 5px 0px 0px;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2" style="font-size:17px;color:#333333;">处方预审</h4>
+            </div>
+            <form action="{:U('User/uploadinfo')}" method="post">
+            <div class="modal-body" id="yscon">
+				<div class="body-left">
+					<div class="left-title">预审处方</div>
+					<div class="left-content">
+						<table width="100%" border="0" id="table1">
+							<!--循环tr-->
+							<foreach name="xycfId" item="vo" key="k">
+							<tr height="30px" class="sty1" name="tableSty">
+								<!--存放序号-->
+								<td width="10%" align="center">{$k+1}</td>
+								<!--存放处方号-->
+								<td width="90%" align="center">{$vo.cf_id}</td>
+							</tr>
+							</foreach>
+							<tr height="30px" class="sty2" name="tableSty"  id="lastTr">
+								<!--存放序号-->
+								<td width="10%" align="center">{$xytms}</td>
+								<!--存放处方号-->
+								<td width="90%" align="center">{$maxId}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="body-right">
+					<div class="right-title">处方明细</div>
+					<div class="right-content">
+						<table width="100%" border="0">
+							<thead>
+								<tr>
+									<th id="xh">序号</th>
+									<th id="ypmc">药品名称</th>
+									<th>数量</th>
+									<th>单位</th>
+									<th>剂数</th>
+									<th>零售价</th>
+									<th id="je">金额</th>
+								</tr>
+							</thead>
+							<!--循环tr-->
+							<tbody id="tbody">
+
+							</tbody>
+							<!--循环tr结束-->
+							<!--<tfoot>-->
+							<!--<tr class="tj">-->
+								<!--<td></td>-->
+								<!--<td>共计<span id="ypNum">0</span>个药品</td>-->
+								<!--<td></td>-->
+								<!--<td></td>-->
+								<!--<td></td>-->
+								<!--<td></td>-->
+								<!--<td id="all">0.00</td>-->
+							<!--</tr>-->
+							<!--</tfoot>-->
+						</table>
+					</div>
+					<!--<div class="body-right-foot">-->
+						<!--<div class="div1">共计<span  id="ypNum">0</span>个药品</div>-->
+						<!--<div class="div2"><span id="all">0.00</span></div>-->
+					<!--</div>-->
+					<div class="body-right-foot">
+						<div class="div1">共计<span  id="ypNum" style="color:#30BDB5;">0</span>个药品</div>
+						<div class="div2" style="color:#30BDB5;">合计金额：￥<span id="all">0.00</span></div>
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success but1" data-dismiss="modal" id="exit2">关闭</button>
+                <button type="button" class="btn btn-success but1" id="tgysa">通过预审</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div></div>
+<!-- 预审模态结束 -->
+<!-- 当天小框框 -->
+	<div id="dtxkk">
+		<table width="100%">
+		<php>
+			for($i=0;$i<count($name);$i++){
+				echo '<tr class="dttr"><td>'.$name[$i]['xy_name'].'</td><td style="display:none;">'.$name[$i]['cf_id'].'</td></tr>';
+			}
+		</php>
+		</table>
+	</div>
+<!-- 当天框框结束 -->
+
+		<div id="content">
+			<div id="inter">
+			<form name="form1"  enctype="multipart/form-data" method="post" onkeydown="if(event.keyCode==13)return false;" onSubmit="return checkSubmit();"> 
+				<table id="ttab">
+					<tr class="tr1">
+						<th class="th1">
+							减药
+						</th>
+						<th class="th1">
+							药品编码
+						</th>
+						<th class="th1">
+							药品名称
+						</th>
+						<th class="th1">
+							药品规格
+						</th>
+						<th class="th1">
+							药品含量
+						</th>
+						<th class="th1">
+							最小包装
+						</th>
+						<th class="th1">
+							数量
+						</th>
+						<th class="th1">
+							总量
+						</th>
+						<th class="th1">
+							给药途径
+						</th>
+						<th class="th1">
+							次用量
+						</th>
+						<th class="th1">
+							频率
+						</th>
+						<th class="th1">
+							特殊用法
+						</th>
+						<th class="th1">
+							用药天数
+						</th>
+					</tr>
+					
+					<tr class="tr2">
+						<td class="td1">
+							X
+						</td>
+						<td class="td1">
+							<input type="text" class="textlon" value="" name="bianma" id="bianma" autocomplete="off">
+						</td>
+						<td class="td1">
+							<input type="text"  class="ypname" value="" name="mingcheng" autocomplete="off">
+						</td>
+						<td class="td1">
+							<input type="text" class="sspan" readonly="readonly" name="guige" autocomplete="off">
+						</td>
+						<td class="td1">
+							<input type="text" class="sspan" readonly="readonly" name="hanliang" autocomplete="off">
+						</td>
+						<td class="td1">
+							<input type="text" class="sspan" readonly="readonly" name="baozhuang" autocomplete="off">
+						</td>
+						<td class="td1">
+							<input type="text" class="textlonsl ypnum" value="1.00" name="shuliang" autocomplete="off">
+							<span class="sldw"></span>
+						</td>
+						<td class="td1">
+							<input type="text" class="sspan" readonly="readonly" name="zongliang" autocomplete="off">
+						</td>
+						<td class="td1">
+							<select class="textlon tuj" name="tujing">
+								<foreach name='useage' item='do'>
+                            	<php>$powerid = $do['useage_code'];</php>
+                                <option value=<php>echo '"'.$powerid.'"';</php>>{$do.useage_name}</option>
+                            </foreach>
+							</select>
+						</td>
+						<td class="td1">
+							<input type="text" class="textlonsl ypcyl" value="1" name="yongliang" autocomplete="off">
+							<span class="ylxdw"></span>
+						</td>
+						<td class="td1">
+							<select class="textlon pinl" name="cishu">
+                               <foreach name='usepl' item='ao'>
+                            	<php>$plid = $ao['nm'];</php>
+                                <option value=<php>echo '"'.$plid.'"';</php>>{$ao.usep_name}</option>
+                            </foreach>  
+                            </foreach>  
+							</select>
+						</td>
+						<td class="td1">
+							<select name="tsyf" class="textlon yongf">
+								<option value="0">无</option>
+								<option value="1">皮试</option>
+								<option value="2">小壶</option>
+							</select>
+						</td>
+						<td class="td1">
+							<input type="text" class="textlon ypdays sspan" readonly="readonly" name="tianshu" autocomplete="off">
+						</td>
+					</tr>
+
+				</table>
+				<div id="aja">
+					
+				</div>
+				<button class="btn btn-success" id="jia" type="button">加一味药</button><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+			</div>
+		</div>
+			
+			<div id="bzy">
+				<textarea id="bztext" placeholder="请输入备注"></textarea>
+				
+			</div>
+			<button class="btn btn-info" id="qdcf">确定此方</button>
+			
+			<!-- <button class="btn btn-danger" id="ys" data-toggle='modal' data-target='#myModal2' name=''  type="button">预审</button> -->
+			</form>
+	</body>
+	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		//禁止拖拽
+     $(document).on("copy cut paste dragstart dragenter","input[type='text']",function(e){
+                    return false;
+                });
+
+		//计算处方天数
+		$(document).on('change','.pinl',function(){
+			days();
+		});
+		$(document).on('input','.ypcyl',function(){
+			days();
+		});
+		$(document).on('input','.ypnum',function(){
+			days();
+		});
+
+
+		var plstr = $('.tr2:last .textlon:nth(2)').html();
+        var nstr =  $('.tr2:last .textlon:nth(1)').html();
+		
+		$(document).on('focus','.tuj',function(){
+			$(this).html(nstr);
+		});
+		$(document).on('focus','.pinl',function(){
+			$(this).html(plstr);
+		});
+		$(document).on('focus','.yongf',function(){
+			$(this).html('<option value="0">无</option><option value="1">皮试</option><option value="2">小壶</option>');
+		});
+		// $(document).on('focus','.ypname',function(){
+		// 		var code = $(this).parent().prev().find('input').val();
+				
+		// 		// $(this).parent().parent().attr('id',id);
+		// 	});
+		// $(document).on('focus','.ypcyl',function(){
+		// 		$(this).parent().parent().attr('id','a1');
+		// 	});
+		// $(document).on('focus','.ypnum',function(){
+		// 		$(this).parent().parent().attr('id','a1');
+		// 	});
+		// // $(document).on('blur','.ypname',function(){
+		// // 		$(this).parent().parent().attr('id','');
+		// // 	});
+		// // $(document).on('blur','.ypcyl',function(){
+		// // 		$(this).parent().parent().attr('id','');
+		// // 	});
+		// // $(document).on('blur','.ypnum',function(){
+		// // 		$(this).parent().parent().attr('id','');
+		// // 	});
+		// $('#deleteyp').click(function(){
+		// 	$('.tr2').find('td').eq(1).find('input').each(function(){
+		// 		alert($(this).val());
+		// 	});
+		// });
+		$(document).on('focus','.ypname',function(){
+			$(this).parent().parent().attr('class','tr2 del');
+			$('.tr2').not($(this).parent().parent()).attr('class','tr2');
+		});
+		$(document).on('click','.tr2',function(){
+			$(this).attr('class','tr2 del');
+			$('.tr2').not($(this)).attr('class','tr2');
+		});
+		$('#deleteyp').click(function(){
+			var len = $('.tr2').length;
+			if(len<2){
+				layer.alert('处方不可为空！',{icon:7});
+				
+			}else{
+				$('.del').detach();
+			}
+		});
+		// 自动选中
+		$(document).on('focus','body input',function(){
+			$(this).select();
+		});
+		// 加载页面完成获取焦点
+		$('.tr2:first').find('td').eq(2).find('input').focus();
+
+	});
+			//加药按键盘
+			$(document).keydown(function(env){
+				// alert(env.keyCode);
+		
+		if(env.keyCode==107){
+			$('#jia').click();
+			$("input[name='mingcheng']:last").focus();
+		}
+	});
+
+			//鼠标移入tr2
+	// 		$(document).on('click','.tr2',function(){
+	// 			$(this).css('border','2px solid blue');
+	// 			$('.tr2').not(this).css('border','1px solid #000');
+	// 			var nu = $(this).index();
+	// 			$(document).keydown(function(env){
+	// 			// alert(env.keyCode);
+	
+		
+	// });
+
+			// });
+
+		
+
+			// 右击删除
+			// $(document).on('mousedown','.tr2',function(e){
+			// 	    if(3 == e.which){ 
+   //            			if(confirm('确定要删除药品"'+$(this).find('td').eq(2).find('input').val()+'"吗？'))$(this).detach();else ;
+           
+   //        		};
+
+			// });
+			
+			//西医病名键盘操作
+			$('#xybmtext').focus(function(){
+				bingnm = 0;
+			});
+			$('#xybmtext').keydown(function(env){
+
+				$('.westtr').eq(bingnm).mouseover();
+						if(env.keyCode == 40&&bingnm<$('.westtr').length){
+
+
+							$('.westtr').eq(bingnm).mouseover();
+								$('.westtr').not($('.westtr').eq(bingnm)).mouseout();
+								var hei = $('#fangk').height();
+								var nu = $('.westtr').length;
+								var bl = bingnm/nu;
+								var neh = $('.westtr').height()*bingnm;
+								$('#fangk').scrollTop(neh);
+								$(document).keydown(function(e){
+								if(e.keyCode == 32){
+								$('.westtr').eq(bingnm-1).mouseover();
+								$('.westtr').not($('.westtr').eq(bingnm-1)).mouseout();
+									$('.westtr').eq(bingnm-1).find('td').eq(1).find('input').attr('checked',true);
+									return false;
+								}
+							});
+							bingnm =bingnm*1+1;
+						}else if(env.keyCode == 38&&bingnm>0){
+
+							bingnm =bingnm-1;
+							$('.westtr').eq(bingnm-1).mouseover();
+							$('.westtr').not($('.westtr').eq(bingnm-1)).mouseout();
+							var hei = $('#fangk').height();
+								var nu = $('.westtr').length;
+								var bl = bingnm/nu;
+								var neh = $('.westtr').height()*bingnm;
+								$('#fangk').scrollTop(neh);
+							if(e.keyCode == 32){
+								$('.westtr').eq(bingnm-1).mouseover();
+								$('.westtr').not($('.westtr').eq(bingnm-1)).mouseout();
+									$('.westtr').eq(bingnm).find('td').eq(1).find('input').attr('checked',true);
+									return false;
+								}
+
+						}else if(env.keyCode == 13){
+							$('#qdwestn').click();
+
+						}
+			});
+
+
+			$('#myModal').on('shown.bs.modal', function (e) {
+				$('#xybmtext').focus();
+			});
+			
+			//当天处方按钮
+			$('#drcfbtn').click(function(){
+				$('.dttr:first').mouseover();
+				// $('.dttr:first').click();
+				$('#dtxkk').toggle();
+			});
+			$(document).on('mouseover','.dttr',function(){
+				$(this).css('backgroundColor','#6C9FE0').css('color','#FFF');
+			}).on('mouseout','.dttr',function(){
+				$(this).css('backgroundColor','').css('color','');
+			});
+			//点击显示处方详情
+			$(document).on('click','.dttr',function(){
+				var cfh = $(this).find('td').eq(1).html();
+				$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/xyXiug')}",
+            data:{cfh:cfh},
+            dataType:'json',
+            success:function(dd)
+            {
+            	//console.log(dd);
+            	var plstr = $('.tr2:last .textlon:nth(2)').html();
+            	var nstr =  $('.tr2:last .textlon:nth(1)').html();
+            	var str='';
+                $.each(dd,function(idx,item){
+                	var nea = item.yp_yc_amount.split('+');
+               		str += '<tr class="tr2"><td class="td1">X</td><td class="td1"><input type="text" name="bianma" class="textlon" value="'+item.yp_code+'"></td><td class="td1"><input type="text"  class="ypname" name="mingcheng" value="'+item.yp_name+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="guige" value="'+item.yp_spec+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="hanliang" value="'+item.rl+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="baozhuang" value="'+item.bzsl2+'"></td><td class="td1"><input type="text" class="textlonsl ypnum" value="'+item.yp_total_amount+'" name="shuliang"><span class="sldw">'+item.yp_rldw+'</span></td><td class="td1"><input type="text" class="sspan" value = "'+item.bzsl2+'"readonly="readonly" name="zongliang"></td><td class="td1"><select class="textlon tuj" name="tujing"><option>'+item.yp_useage+'</option></select></td><td class="td1"><input type="text" class="textlonsl ypcyl" value="'+nea[0]+'" name="yongliang"><span class="ylxdw">'+nea[1]+'</span></td><td class="td1"><select class="textlon pinl" name="cishu"><option value="1">'+item.yp_pl_day+'</option></select></td><td class="td1"><select name="tsyf" class="textlon yongf"><option value="0">'+item.yp_speci_use_name+'</option></select></td><td class="td1"><input type="text"  class="textlon ypdays sspan" readonly="readonly" name="tianshu" value="'+item.fs+'"></td></tr>';
+               		$('#drcfhid').html(item.cf_id);
+               		$('#a123').html(item.xy_name);
+               		$('#bztext').val(item.yp_mem);
+                });
+                $('.tr2').detach();
+                $('#ttab').append(str);
+                // $('#qdxg').show();
+                // $('#ys').hide();
+                $('#drcfbtn').click();
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+       	 });
+			});
+			//修改按钮按下
+			$('#qdxg').click(function(){
+
+				var cfh = $('#drcfhid').html();
+				$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/upDateCf')}",
+            data:{cfh:cfh},
+            dataType:'json',
+            success:function(dd)
+            {
+
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+
+
+        });
+			$('#qdcf').click();	
+			});
+			
+		
+			// $(document).on('change','select[name="cishu"]',function(){
+			// 	Days();
+			// });
+			//西药病名
+			$(document).on('input','#xybmtext',function(){
+				// 前台实现查询，效率太低，pass
+				//隐藏所有行
+				// $('.xyntr').hide();
+				// //选择匹配到的显示
+				// var va = $(this).val();
+				// $('.pym').filter(":contains('"+$('#xybmtext').val()+"')").parent().show();
+				var val = $(this).val();
+				if(val.length<1){
+					$('#fangk').html('');
+				}else{
+					$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/westBing')}",
+            data:{val:val},
+            dataType:'json',
+            success:function(dd)
+            {
+                var str = '<table style="width:100%;">';
+                $.each(dd,function(idx,item){
+                //输出
+                // alert(item.id+"号："+item.name);
+              		str += '<tr class="westtr" style="border-bottom:1px solid #000;height:30px;"><td class="ttd1">'+item.name+'</td><td><input type="checkbox" style="width:16px;height:16px;" class="che"></td></tr>';
+                });
+                str += '</table>';
+               $('#fangk').html(str);
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+        });
+				}
+
+			});
+
+			$(document).on("input",".ypname",function(){
+				$('.del:last .textlon:nth(0)').val('');
+				if($(this).val().length<1){
+					$('#aja').hide();
+					return false;
+				}
+				var htm = $(this).val();
+				var top = $(this).offset().top 
+				var left = $(this).offset().left
+				top = top+40;
+				left = left+40;
+				$('#aja').css('top',top+'px');
+				$('#aja').css('left',left+'px');
+				 $.ajax({
+            type:'POST',
+            url:"{:U('Ajax/drugWest')}",
+            data:{htm:htm},
+            dataType:'json',
+            success:function(dd)
+            {
+            	//console.log(dd);
+            	var pri = 0;
+            	var hl = 0;
+                var str = '<table border="1"width="100%"><tr style="background-color:#EAEAEA;"><td>拼音码</td><td>药品名称</td><td>规格</td><td>含量</td><td>单位</td><td>单价</td><td stye="display:none;"></td></tr>';
+                $.each(dd,function(idx,item){
+                if(item.price){
+                	pri = item.price;
+                }else{
+                	pri = 0;
+                }
+                if(item.hl){
+                	hl = item.hl;
+                }else{
+                	hl = 0;
+                }
+                //输出
+                if(item)
+                // alert(item.id+"号："+item.name);
+              		str += '<tr class="drugli"><td>'+item.input_code+'</td><td>'+item.drug_name+'</td><td>'+item.drug_spec+'</td><td>'+hl+'</td><td>'+item.units+'</td><td>'+pri+'</td><td style="display:none;">'+item.drug_code+'</td></tr>';
+              		
+                });
+                str += '</table>';
+               $('#aja').html(str);
+               $('.drugli:first').css('backgroundColor','#80B0E2').css('color','#fff');
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+        });
+				
+				$('#aja').fadeIn(function(){
+					numb = 0;
+					$('.drugli').eq(numb).mouseover();
+				});
+				$(this).blur(function(){
+				$('#aja').fadeOut();
+			});
+			});
+
+			
+			$(document).on('keydown','.ypname',function(env){
+				if(numb<1){
+					numb=1;
+				}
+				
+						if(env.keyCode == 40&&numb<$('.drugli').length){
+							// alert(numb);123456
+							$('.drugli').eq(numb).mouseover();
+								$('.drugli').not($('.drugli').eq(numb)).mouseout();
+								var hei = $('#aja').height();
+								var nu = $('.drugli').length;
+								var bl = numb/nu;
+								var neh = $('.drugli').height()*numb;
+								$('#aja').scrollTop(neh);
+							numb =numb*1+1;
+						}else if(env.keyCode == 38&&numb>1){
+							numb =numb-1;
+							$('.drugli').eq(numb-1).mouseover();
+							$('.drugli').not($('.drugli').eq(numb-1)).mouseout();
+							var hei = $('#aja').height();
+								var nu = $('.drugli').length;
+								var bl = numb/nu;
+								var neh = $('.drugli').height()*numb;
+								$('#aja').scrollTop(neh);
+						}else if(env.keyCode == 13){
+							$('.drugli').eq(numb-1).click();
+										$('#ayx').click();
+										$('#aja').fadeOut();
+							$(this).parent().next().next().next().next().find('input').focus();
+						}
+			});
+			$(document).on('keydown','.ypnum',function(env){
+				
+					if(env.keyCode == 13){
+							$(this).parent().next().next().find('select').focus();
+						}
+			});
+			$(document).on('keydown','.ypcyl',function(env){
+				
+					if(env.keyCode == 13){
+							// alert('计算处方天数');
+							var cyl = $(this).val();
+							var hl = $(this).parent().prev().prev().prev().prev().prev().find('input').val();
+							var rcs = $(this).parent().next().find('select').val();
+							var sl = $(this).parent().prev().prev().prev().find('input').val();
+							var bzxs = $(this).parent().prev().prev().find('input').val();
+							// var nu1 = cyl/hl/rcs;
+							var n1 = sl*bzxs;
+							var n2 = cyl/hl;
+							var days = Math.round(n1/n2*rcs);
+							
+							// var days = Math.round(sl*bzxs/nu1);
+							if(isNaN(days)){
+								days = '数据有误';
+							}
+							$(this).parent().next().next().next().find('input').val(days);
+							// var len = $(this).parent().parent().next().length;
+							// if(len>0){
+
+							// }else{
+							// 	$('#jia').click();
+							// }
+					
+							$(this).parent().next().find('select').focus();
+
+
+						}
+			});
+			$(document).on('input','.ypcyl',function(env){
+				
+					if(env.keyCode == 13){
+							// alert('计算处方天数');
+							var cyl = $(this).val();
+							var hl = $(this).parent().prev().prev().prev().prev().prev().find('input').val();
+							var rcs = $(this).parent().next().find('select').val();
+							var sl = $(this).parent().prev().prev().prev().find('input').val();
+							var bzxs = $(this).parent().prev().prev().find('input').val();
+							// var nu1 = cyl/hl/rcs;
+							var n1 = sl*bzxs;
+							var n2 = cyl/hl;
+							var days = Math.round(n1/n2*rcs);
+							
+							// var days = Math.round(sl*bzxs/nu1);
+							$(this).parent().next().next().next().find('input').val(days);
+							var len = $(this).parent().parent().next().length;
+							// if(len>0){
+
+							// }else{
+							// 	$('#jia').click();
+							// }
+					
+						
+
+
+						}
+			});
+			$(document).on('keydown','.ypdays',function(env){
+				
+					if(env.keyCode == 13){
+							$('#ayx').click();
+							$('#jia').click();
+							$('.ypname:last').focus().select();
+						}
+			});
+			$(document).on('keydown','.tuj',function(env){
+				
+					if(env.keyCode == 13){
+							$(this).parent().next().find('input').select();
+						}
+			});
+
+			$(document).on('keydown','.pinl',function(env){
+				
+					if(env.keyCode == 13){
+							$(this).parent().next().find('select').focus();
+						}
+			});
+			$(document).on('keydown','.yongf',function(env){
+				
+					if(env.keyCode == 13){
+							var len = $(this).parent().parent().next().length;
+							if(len>0){
+
+							}else{
+								$('#jia').click();
+							}
+						}
+			});
+
+			$(document).on('click','.drugli',function(){
+				$('.del:last .textlon:nth(0)').val('');
+				var hht = $(this).find('td').eq(6).html();
+					 $.ajax({
+            type:'POST',
+            url:"{:U('Ajax/sele')}",
+            data:{'list':hht},
+            dataType:'json',
+            success:function(aa)
+            {
+            	var bian = [];
+            	var num = 0;
+            	$("input[name='bianma']").each(function(){
+         			bian[num] = $(this).val();
+         			num=num*1+1;
+			});
+            	if($.inArray(aa['drug_code'],bian)>-1){
+            		layer.alert('不能添加相同药品！',{icon:7});
+            		$('.ypname:last').select();
+            		return false;
+
+            	}
+            	//待完善，应改成this
+                // alert(aa['drug_spec']);
+                $('.del:last .sspan:nth(0)').val(aa['drug_spec']);
+                $('.del:last .sspan:nth(1)').val(aa['hl']);
+                $('.del:last .sspan:nth(2)').val(aa['bzsl2']);
+                $('.del:last .sspan:nth(3)').val(aa['bzsl1']);
+                $('.del:last .sspan:nth(4)').val('');
+                $('.del:last .textlon:nth(0)').val(aa['drug_code']);
+                $('.del:last .ypname:nth(0)').val(aa['drug_name']);
+                $('.del:last .sldw').html(aa['sldw']);
+                $('.del:last .ylxdw').html(aa['xdw']);
+                // $('.tr:last').find('td').eq(7).find('input').val(aa['bzsl1']);
+                $('#aja').html('');
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+        });
+			});				
+
+			$(document).on('mouseover','.drugli',function(){
+				$(this).css('backgroundColor','#A8CBF1');
+				$(this).css('color','#FFF');
+				$(this).click(function(){
+				});
+			}).on('mouseout','.drugli',function(){
+				$(this).css('backgroundColor','');
+				$(this).css('color','');
+			});
+		//处方预审
+		$('#ys').click(function(){
+			$('.tr2').each(function(){
+					if($(this).find('td').eq(1).find('input').val().length<1){
+						$(this).detach();
+					}
+				});
+			if($('.tr2').length<1){
+				$('#jia').click();
+			}
+			var num = $('#a123').html().length;
+			var len = $('.textlon:first').val().length;
+			if(len<1){
+					layer.alert('请选择药品',{icon:7});
+					return false;
+				}
+			if(num < 1){
+				layer.alert('请选择西医病名',{icon:7});
+				return false;
+			}else{
+				var mingcheng = '';
+				$("input[name='mingcheng']").each(function(){
+						mingcheng += ','+$(this).val();
+				});
+				var xy = $('#a123').html();
+//				$('#yscon').html('<h3>病名:'+xy+'</h3><p><h4>药品:</h4>&nbsp;'+mingcheng+'</p>');
+			}
+		});
+		//通过预审
+		$('#tgysa').click(function(){
+			$('#qdcf').click();
+			$('#exit2').click();
+		});
+
+		//处方保存
+		$('#qdcf').click(function(){
+				var hidcf = $('#drcfhid').html();
+				if(hidcf.length>0){
+					cfid = hidcf;
+				}else{
+					cfid = '';
+				}
+				// alert(cfid);
+			    var bz = $('#bztext').val();
+			    // alert(bz);
+				var bianma = '';
+				var mingcheng = '';
+				var guige = '';
+				var hanliang = '';
+				var baozhuang = '';
+				var shuliang = '';
+				var zongliang = '';
+				var tujing = '';
+				var yongliang = '';
+				var cishu = '';
+				var tsyf = '';
+				var tianshu = '';
+				var zdw = '';
+				$("input[name='bianma']").each(function(){
+         			bianma += ','+$(this).val();
+			});
+				$("input[name='mingcheng']").each(function(){
+         			mingcheng += ','+$(this).val();
+			});
+
+				$("input[name='guige']").each(function(){
+         			guige += ','+$(this).val();
+			});
+				$("input[name='hanliang']").each(function(){
+         			hanliang += ','+$(this).val();
+			});
+				$("input[name='baozhuang']").each(function(){
+         			baozhuang += ','+$(this).val();
+			});
+				$("input[name='shuliang']").each(function(){
+         			shuliang += ','+$(this).val();
+			});
+				$("input[name='zongliang']").each(function(){
+         			zongliang += ','+$(this).val();
+			});
+				$("select[name='tujing']").each(function(){
+         			tujing += ','+$(this).find("option:selected").text();
+			});
+				$("input[name='yongliang']").each(function(){
+         			yongliang += ','+$(this).val()+$(this).next().html();
+			});
+				$("select[name='cishu']").each(function(){
+         			cishu += ','+$(this).find("option:selected").text();
+			});
+				$("select[name='tsyf']").each(function(){
+         			tsyf += ','+$(this).find("option:selected").text();
+			});
+				$("input[name='tianshu']").each(function(){
+         			tianshu += ','+$(this).val();
+			});
+				$('.sldw').each(function(){
+					zdw += ','+$(this).html();
+				});
+				// alert(tianshu);
+			var xy = $('#a123').html();
+				$.ajax({
+            type:'POST',
+            url:"{:U('Ajax/Chufang')}",
+            data:{bianma:bianma,mingcheng:mingcheng,guige:guige,hanliang:hanliang,baozhuang:baozhuang,shuliang:shuliang,zongliang:zongliang,tujing:tujing,yongliang:yongliang,cishu:cishu,bz:bz,tsyf:tsyf,xybm:xy,tianshu:tianshu,cfid:hidcf,zdw:zdw},
+            dataType:'json',
+            success:function(dd)
+            {
+               layer.alert('处方保存成功',{icon:1});
+            },
+            error:function()
+            {
+                // alert('Ajax请求失败');
+            }
+        });
+				
+		});
+
+//		点击换色
+$(document).on("click",".sty1",function(){
+	var tsty1=document.getElementsByName("tableSty");
+	for(var i=0;i<tsty1.length;i++){
+		tsty1[i].className="sty1";
+	}
+	$(this).attr("class","sty2");
+});
+$(document).on("click",".sty11",function(){
+	var tsty1=document.getElementsByName("tableSty11");
+	for(var i=0;i<tsty1.length;i++){
+		tsty1[i].className="sty11";
+	}
+	$(this).attr("class","sty22");
+});
+		//点击确定，看西医病名多选内容
+		$('#qdwestn').click(function(){
+			var abc = '';
+			$('#fangk input:checked').each(function(){
+	 				abc += $(this).parent().prev().html()+'　';
+	 				
+	 			});
+			$('#a123').html(abc);
+			$('#exit').click();
+		});
+	//判断是否需要去掉预审中的最后一个tr
+	//点击“预审”执行
+	var str111="";
+//	$("#ys").click(function(){
+	$(document).on("click","#ys",function(){
+		var sum=0;
+		var bianma="";
+		var shuliang="";
+		var str="";
+		if($("#qdxg").css("display")=="none"){
+
+		}else{
+			$("#lastTr").remove();
+			$(".sty1").each(function(){
+				if($(this).children("td").eq(1).html()==$("#drcfhid").html()){
+					$(this).attr("class","sty2");
+					$(".sty2").not(this).attr("class","sty1");
+				}
+			})
+		}
+		$("input[name='bianma']").each(function(){
+			bianma += $(this).val()+',';
+		});
+		$("input[name='shuliang']").each(function(){
+			shuliang += $(this).val()+',';
+		});
+		$.ajax({
+			type:'POST',
+			url:"{:U('Ajax/ys2')}",
+			data:{'cfids':bianma,'shuliang':shuliang},
+			dataType:'json',
+			success:function(data){
+				$.each(data,function(index,item){
+					str += "<tr class='sty11' name='tableSty11'><td>"+(index+1)+"</td><td>"+item.yp_name+"</td><td>"+item.num+"</td><td>"+item.dw+"</td><td>"+item.js+"</td><td>"+item.price.toFixed(3)+"</td><td  class='allPrice'>"+item.allPrice.toFixed(2)+"</td></tr>";
+				})
+				str111=str;   //传递给全局变量
+				$("#tbody").html(str);
+				//给药品总量赋值
+				var ypnum=$("tr[name='tableSty11']").length;
+				$("#ypNum").html(ypnum);
+				//获取总金额
+				$(".allPrice").each(function(){
+					sum += $(this).html()*1;
+				});
+				sum=sum.toFixed(2);
+				$("#all").html(sum);
+				setTimeout("tongji()",300);
+			}
+		})
+	})
+	//点击查询对应处方号的药品信息
+	$(document).on("click",".sty1",function(){
+		var cfid=$(this).children("td").eq(1).html();
+		var sum=0;
+		var str="";
+		var bianma="";
+		$.ajax({
+			type:'POST',
+			url:"{:U('Ajax/ys')}",
+			data:{'cfid':cfid},
+			dataType:'json',
+			success:function(data){
+				if(data){
+					$.each(data,function(index,item){
+						str += "<tr class='sty11' name='tableSty11'><td>"+(index+1)+"</td><td>"+item.yp_name+"</td><td>"+item.num+"</td><td>"+item.dw+"</td><td>"+item.js+"</td><td>"+item.price.toFixed(3)+"</td><td class='allPrice'>"+item.allPrice.toFixed(2)+"</td></tr>";
+					})
+					$("#tbody").html(str);
+					//给药品总量赋值
+					var ypnum=$("tr[name='tableSty11']").length;
+					$("#ypNum").html(ypnum);
+					//获取总金额
+					$(".allPrice").each(function(){
+						sum += $(this).html()*1;
+					});
+					sum=sum.toFixed(2);//加小数位数
+					$("#all").html(sum);
+					tongji();
+				}else{
+					$("#tbody").html(str111);
+					//给药品总量赋值
+					var ypnum=$("tr[name='tableSty11']").length;
+					$("#ypNum").html(ypnum);
+					//获取总金额
+					$(".allPrice").each(function(){
+						sum += $(this).html()*1;
+					});
+					sum=sum.toFixed(2);//加小数位数
+					$("#all").html(sum);
+					tongji();
+				}
+			}
+		})
+	})
+		function tongji(){
+			//最后一行位置设定
+			var xhWidth=$("#xh").width();       //表头序号的宽度
+			var ypmcWidth=$("#ypmc").width();	//表头药品名称宽度
+			var jeWidth=$("#je").width();		//表头金额宽度
+			if(xhWidth!=0){
+				$(".div1").css({"margin-left":xhWidth,"width":ypmcWidth});
+//				$(".div2").css("width",jeWidth);
+			}
+		}
+	</script>
+	<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

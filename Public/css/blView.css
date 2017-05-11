@@ -1,0 +1,110 @@
+body,html{
+	width:100%;
+	height:100%;
+	font-family:楷体;
+}
+#outBig{
+	width:100%;
+	height:100%;
+}
+.y-div{
+	width:31%;
+	height:100%;
+	float:left;
+	margin-left:12px;
+}
+#leftX{
+	margin-left:3em;
+}
+.top{
+	width:100%;
+	height:44%;
+	border:2px solid #CCC;
+}
+.bot{
+	width:100%;
+	height:40%;
+	border:2px solid #CCC;
+	font-size:18px;
+	font-family:楷体;
+	margin-top:5px;
+}
+.mid{
+	width:100%;
+	height:13%;
+	margin-top:6px;
+}
+.buton{
+	width:100%;
+	height:100%;
+	font-size:23px;
+	/*font-weight:bold;*/
+	font-family:楷体;
+	color:#061111;
+	border-radius:5px;
+	background-image:url('../img/btnbg.jpg');
+	filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+   	-moz-background-size:100% 100%;
+   	background-size:100% 100%;
+}
+.samed{
+	width:100%;
+	height:20%;
+	background-color:#F5F5F5;
+	font-family:楷体;
+	font-size:20px;
+	line-height:2em;
+}
+#czcf{
+	width:31%;
+	height:100%;
+	background-color:#FFF;
+	position:absolute;
+	z-index:2;
+	top:0;
+	left:3em;
+	border:1px solid #CCC;
+	display:none;
+}
+#czt{
+	width:100%;
+	height:6%;
+	border-bottom:1px solid #000;
+	line-height:2em;
+}
+#exit{
+	float:right;
+	width:25px;
+	height:25px;
+	font-size:16px;
+	color:#FFF;
+	line-height:25px;
+	text-align:center;
+	background-color:red;
+	cursor:pointer;
+}
+#czdiv2{
+	width:100%;
+	height:9%;
+	border-bottom:1px solid #DDD;
+}
+#czinput{
+	width:80%;
+	height:60%;
+	margin-top:0.6em;
+	margin-left:2px;
+}
+#czcot{
+	width:100%;
+	height:85%;
+	overflow:auto;
+}
+.smdif{
+	width:100%;
+	height:100%;
+	font-family:楷体;
+	font-size:18px;
+}
+.qjdftr{
+	cursor:pointer;
+}

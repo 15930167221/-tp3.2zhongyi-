@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0"/>
+    <title>IM-DEMO</title>
+    <!-- HTML5 element  -->
+    <script src="__PUBLIC__/webim/demo/javascript/dist/browser-polyfill.min.js"></script>
+</head>
+<body>
+<section id='main' class='w100'>
+    <article id='demo'></article>
+    <article id='components'></article>
+</section>
+<!--config-->
+<script src="__PUBLIC__/webim/demo/javascript/dist/webim.config.js"></script>
+<script>
+    <!--A JavaScript library for XMPP over Websocket-->
+    document.write("<script src='__PUBLIC__/webim/sdk/dist/strophe-1.2.8.min.js'><\/script>");
+</script>
+<!--sdk-->
+<script src='__PUBLIC__/webim/sdk/dist/websdk-1.4.10.js'></script>
+<!--webrtc-->
+<script>
+    if (WebIM.config.isWebRTC) {
+        document.write("<script src='__PUBLIC__/webim/webrtc/dist/adapter.js'><\/script>");
+        document.write("<script src='__PUBLIC__/webim/webrtc/dist/webrtc-1.4.10.js'><\/script>");
+    }
+</script>
+<!--[if lte IE 9]>
+<script src="__PUBLIC__/webim/demo/javascript/dist/swfupload/swfupload.min.js"></script>
+<![endif]-->
+<!--demo javascript-->
+<script src="__PUBLIC__/webim/demo/javascript/dist/demo-1.4.10.js"></script>
+</body>
+</html>

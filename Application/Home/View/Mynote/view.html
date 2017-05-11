@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/note.css"/>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/editor/styles/simditor.css"/>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/module.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/hotkeys.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/editor/scripts/simditor.js"></script>
+</head>
+<script>
+$(document).ready(function(){
+	var editor = new Simditor({
+		textarea:$('#editor'),
+		toolbar:['title','bold','italic','underline','table','color','ol','ul','hr'],
+	});
+});
+function vtan(){
+	var id={$cons[0]['id']};
+	$.ajax({
+		type:"post",
+		url:"__CONTROLLER__/vdel",
+		dataType:"json",
+		data:{"id":id},
+		success:function(e){
+			parent.location.reload();
+		}
+	});
+}
+</script>
+<body>
+<script>
+	document.oncontextmenu=new Function("event.returnValue=false;");
+</script>
+	<br><br>
+	<form action="__CONTROLLER__/vsave/id/{$cons[0]['id']}" method="post" id="fr">
+		文章标题：<input type="text" name="list" value="{$cons[0]['list']}" class="vml">
+		<input type="submit" value="保存修改" class="vsub">&emsp;
+		<input type="button" value="删除文档" class="del" onclick="vtan()">&emsp;
+		<a href="__CONTROLLER__/rpro">
+			<input type="button" value="关闭" class="sub">
+		</a><br>
+		<br><hr style="width:100%;height:3px;background:#000;"/><br>
+		<div class="outsidetxt" id="mldiv">
+			<textarea id="editor" name="contents">{$cons[0]['contents']}</textarea>
+		</div>
+	</form>
+</body>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

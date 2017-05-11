@@ -1,0 +1,94 @@
+/*统配样式*/
+*{font-size:14px;}
+html,body{width:100%;height:100%;}
+/*body{padding-top:20px!important;}*/
+a{text-decoration:none;}
+ul{list-style:none;list-style-position:inside;}
+img{border:0px;}
+.center{margin:0px auto;}
+
+.bg{height:100%;width:100%;}
+.xxk{
+    margin-left:40px;height:100%;width:93%;
+}
+/*选项卡内容部分*/
+#myTabContent{height:100%;width:100%;}
+.tab-pane{height:100%;width:100%;}
+#home{height:80%;width:100%;border:1px solid #CCCCCC;border-top:0px;border-radius:0px 5px 5px 5px;}
+/*题目部分*/
+.ti{height:60%;}
+.ti .ti-title{height:15%;font-size:20px;padding:10px 0px;background-color:#edf0df;}
+.ti .ti-content{height:60%;}
+.ti .ti-content label{display:block;font-weight: 400!important;height:17%;margin-left:40px;}
+.ti .ti-content label span{font-size:16px;color:#333!important;cursor:pointer;}
+    /*提示*/
+.ti .prompt{height:25%;background-color:#edf0df;}
+.ti .prompt .pro-title{height:40%;font-size:20px;margin-left:5px;}
+.ti .prompt .pro-inf{height:50%;margin-left:40px;line-height:35px;}
+.ti .prompt .pro-inf span{font-size:16px;color:#800000;}
+/*上一题下一题*/
+.updown{height:8%;width:100%;}
+.updown button{margin-top:8px;margin-left:20px;}
+/*题号部分*/
+.tiNum{height:29%;width:100%;margin-top:5px;}
+.tiNum table{height:90%;width:90%;text-align: center;margin-left:20px;}
+.tiNum table tr td{border:1px solid #CCCCCC;}
+.tiNum table tr td a{display: block;height:100%;width:100%;line-height:40px;color:#333333;}
+.tiNum .sty1{background-color:#30b69e!important;}
+.tiNum .sty1 a{color:#ffffff;}
+#res{position:relative;}
+/*鉴定报告*/
+.report{height:490px;width:100%;background-color:#d9d9d9;overflow: auto;}
+.report .reportinf{width:75%;background-color:#ffffff;margin-top:35px;padding:10px 0px;margin-bottom:35px;
+    min-height:100%;}
+/*鉴定报告大标题*/
+.report .reportinf .rep-title{
+    text-align:center;padding-top:40px;font-size:28px;font-weight: bold;padding-bottom:25px;
+}
+.report .reportinf *{color:#333333;}
+.report .reportinf table tr{height:30px;text-align: center;}
+/*内容部分标题*/
+.report .reportinf .rep-title1{font-size:16px;font-weight: bold;width:90%;margin:10px auto;}
+.report .reportinf .rep-inf{width:90%;margin:0px auto;text-indent:2em;}
+.report .reportinf .rep-inf img{text-align: center;}
+/*隐藏框*/
+/*.tztitle{*/
+    /*position:absolute;width:40px;top:0px;left:-40px;font-size:25px;text-align:center;border-bottom:1px solid #CCCCCC;*/
+    /*cursor: pointer;*/
+/*}*/
+/*.tztitle1{*/
+    /*position:absolute;cursor: pointer;background-color:#30bdb5!important;color:#ffffff!important;*/
+    /*top:-38px;right:340px;border:0px;*/
+/*}*/
+.tztitle1{
+    cursor: pointer;background-color:#30bdb5!important;color:#ffffff!important;
+    border:0px;
+}
+.tzstyle{
+    background-color:#FFFFFF;position:absolute;top:0px;left:-500px;width:30%;height:60%;border:1px solid #CCCCCC;
+    border-radius:5px;
+}
+.tzstyle table{text-align: center;width:100%;}
+.tzstyle table tr{height:20px;}
+.tzstyle table tr:first-child{background-color:#e2ecf8;color:#ffff00;}
+/*按钮*/
+#myTabContent{position: relative;}
+.anniu{position:absolute;right:10px;top:-38px;}
+.anniu button{margin-bottom:10px;padding:6px 15px!important;}
+#sub,#save,#saveas{background-color:#30bdb5!important;border:0px;width:75px!important;}
+#dayin{background-color:#ff6501!important;border:0px;width:75px!important;}
+*::-webkit-scrollbar{
+    width:10px;height:10px;
+}
+*::-webkit-scrollbar-track{
+    background-color: #c3c3c3;;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+*::-webkit-scrollbar-thumb{
+    background-color: #f9f2f9;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}

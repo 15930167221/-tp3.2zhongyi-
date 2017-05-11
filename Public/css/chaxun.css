@@ -1,0 +1,56 @@
+/*统配样式*/
+*{font-size:14px;}
+html,body{width:100%;height:100%;}
+a{text-decoration:none;}
+img{border:0px;}
+.center{margin:0px auto;}
+
+.bg{height:100%;width:100%;}
+
+/*查询窗口标题*/
+.title{
+    height:55px;text-align:center;font-size:30px;line-height:55px;letter-spacing:20px;
+    font-family:仿宋;font-weight:bolder;color:#050093;
+}
+/*查询条件*/
+.chaxun{height:43px;line-height:43px;margin-left:43px;background-color: #e1e1e1;}
+.chaxun div{float:left;}
+.chaxun img{height:36px;width:30px;}
+.chaxun .cxfont{font-size:16px;font-weight:bold;color:#333;margin-top: -2px;}
+.chaxun .nb{margin-top:4%;margin-left:20px;}
+#userName,#blh,.ghrq{width:100px;height:30px;font-size:14px;}
+label{font-weight: 400!important;}
+.chaxun span,label{font-size:18px;}
+.chaxun .but button{padding:5px 10px!important;margin-left:50%;}
+/*表格区*/
+.cxtable{
+    margin-top:5%;width:98%;height:65%;border:1px solid #ccc;
+    background-color:#fcfbf8;
+    /*background-image:url(http://localhost/TP3.2.3pykj/Public/img/zybg.jpg);background-size:50% 100%;*/
+    /*background-repeat:no-repeat;background-position: right;*/
+}
+.cxtr1{cursor:pointer;}
+.cxtr1:hover {font-weight: bold;}
+.cxtable div{height:95%;}
+.cxtable table{border-collapse: collapse!important;}
+.cxtable tr{text-align:center;height:35px;line-height:20px;}
+/*.cxtable tr td{border:1px solid #ffffff;}*/
+.cxtable .table1 tr td{border-top:1px solid #CCCCCC;font-size:16px;}
+.cxtable .table1 tr:last-child{border-bottom:1px solid #CCCCCC;}
+.cxtable table .cxtr1{color:#000000;}
+.cxtable table .cxtr2{background-color:rgba(0,96,197,0.5)!important;color:#333333;}
+.cxtable table tr td span{color:#0338d9;text-decoration: underline;cursor: pointer;font-size:16px;}
+/*统计栏*/
+/*.fenye{height:30px;width:98%;background-color:#027ec4;margin-bottom:0px;line-height:30px;}*/
+/*.fenye>span{color:#ffffff;margin-left:10px;}*/
+.fenye{height:30px;width:98%;background-color:#ffee99;margin-bottom:0px;line-height:30px;}
+.fenye>span{color:#000000;margin-left:10px;}
+.fenye span span{margin:0px 5px;}
+/*.fenlei span {margin-bottom:15px;}*/
+/*患者详细信息模态框*/
+.modal-header{background-color:#edf0df;}
+.modal-body{background-color:#f5f5f5;}
+.modal-footer{background-color:#edf0df;margin-top:0px;}
+.modal-body .mbt{width:100%;}
+.modal-body .mbt tr{height:30px;}
+.modal-body .mbt tr .lontext{width:90%;}

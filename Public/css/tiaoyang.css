@@ -1,0 +1,47 @@
+/*统配样式*/
+*{font-size:14px;font-family:宋体;}
+html,body{width:100%;height:100%;}
+a{text-decoration:none;}
+ul{list-style:none;list-style-position:inside;}
+img{border:0px;}
+.W{width:1366px;}
+.center{margin:0px auto;}
+.bg{height:100%;width:100%;}
+
+.xxk{height:100%;width:100%;position:relative;}
+.xxk ul{margin-left:40px;}
+#myTabContent{height:93%;width:100%;background-color:#30bdb5;clear: both;border:1px solid #cccccc;overflow:auto;
+    padding-top:60px;padding-bottom:60px;}
+/*滚动条优化*/
+#myTabContent::-webkit-scrollbar{
+    width:6px;
+}
+/*#374554*/
+#myTabContent::-webkit-scrollbar-track{
+    background-color: #c3c3c3;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#myTabContent::-webkit-scrollbar-thumb{
+    background-color: #f9f2f9;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+/*表格内部内容*/
+.tab-content .healthGui{height:100%;width:70%;margin:0px auto;}
+/*白色背景*/
+.tab-content .healthGui form{padding:40px 80px;background-color:#ffffff;}
+.tab-content .healthGui form .title{text-align:center;font-weight:bold;font-size:28px;padding:15px 0px;}
+.tab-content .healthGui form .title2{line-height:30px;}
+.tab-content .healthGui form .content{line-height:30px;text-indent:2em;}
+.tab-content .healthGui form .title3{line-height:30px;font-weight:bold;}
+.tab-content .healthGui form .careTitle{line-height:30px;color:#0033cc;text-indent:2em;}
+.tab-content .healthGui form .careInf{line-height:30px;color:#0033cc;text-indent:5em;}
+.tab-content .healthGui form img{width:100%;}
+/*按钮*/
+.button{position:absolute;right:38px;top:5px;}
+.button button{padding:6px 20px!important;}
+#dayin{background-color:#ff6501!important;border:0px;width:82px!important;}
+#saveAs{background-color:#30bdb5!important;border:0px;width:82px!important;}

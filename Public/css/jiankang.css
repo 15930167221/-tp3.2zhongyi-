@@ -1,0 +1,213 @@
+/*统配样式*/
+*{font-size:14px;}
+html,body{width:100%;height:100%;}
+a{text-decoration:none;}
+ul{list-style:none;list-style-position:inside;}
+img{border:0px;}
+.W{width:1366px;}
+.center{margin:0px auto;}
+.bg{height:100%;width:100%;position:relative;}
+/*顶部按钮区*/
+.top-button{height:43px;background-color:#e1e1e1;margin-left:40px;}
+.top-button div{float:left;margin-left:8px;line-height:43px;}
+.top-button div span{color:#333333;font-size:16px;font-weight: bold;line-height:43px;}
+.top-button>span{margin-right:20px;float: right;}
+.top-button>span button{padding:5px 20px!important;margin-top:5px;}
+/*右部分*/
+/*健康档案*/
+.right{width:100%;height:100%;}
+/*蓝色背景*/
+.right .right-center{
+    background-color:#30bdb5;height:94%;width:100%;padding-top:40px;overflow:auto;margin:0px auto;
+}
+/*滚动条*/
+.right .right-center::-webkit-scrollbar{
+    width:6px;
+}
+/*#374554*/
+.right .right-center::-webkit-scrollbar-track{
+    background-color: #c3c3c3;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+.right .right-center::-webkit-scrollbar-thumb{
+    background-color: #f9f2f9;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+.right .right-center .health-file{width:95%;height:100%;margin:0px auto;}
+/*表格外的白色背景*/
+.right .right-center .health-file form{width:80%;padding:30px 80px;background-color:#FFFFFF;margin:0px auto;}
+.right .right-bottom{height:12%;width:100%;background-color:#f6e3d5;}
+/*病人基本信息*/
+.baseInf{
+    position: absolute;background-color:#f5f5f5;top:45px;left:0px;width:43px;font-size:25px;padding:5px 2px;
+    border-bottom:2px solid #ccc;cursor: pointer;color:#333333;font-weight: bold;text-align: center;
+}
+/*隐藏的内容*/
+.baseContent{
+    position:absolute;height:420px;width:280px;top:45px;left:-280px;background-color:#f5f5f5;z-index:10;
+    border:1px solid #ccc;border-radius:5px;
+}
+/*标题*/
+.baseContent .baseTitle{color:#8e852d;font-size:16px;height:25px;line-height:25px;font-weight: bold;}
+/*关闭按钮*/
+.baseContent .baseTitle button{
+    float:right;border:0px;background-color:#ffffff;color:#000000!important;padding:0px 6px;
+}
+/*内容表格*/
+.baseContent .baseTable table tr{height:30px;}
+.baseContent .baseTable table tr td:first-child{text-align: right;}
+/*历史完成的就诊记录*/
+.hisInf{
+    position: absolute;background-color:#f5f5f5;top:270px;left:0px;width:43px;font-size:25px;padding:5px 2px;
+    cursor: pointer;color:#333333;font-weight: bold;text-align: center;
+}
+/*隐藏的内容*/
+.hisContent{
+    position: absolute;height:300px;width:300px;top:43px;right:-300px;background-color:#ffffff;border-radius:5px;
+    border:1px solid #ccc;
+}
+/*内容标题*/
+.hisTitle{color:#333333;height:35px;line-height:35px;text-align: center;}
+/*关闭按钮*/
+.hisTitle button{
+    float:right;color:#000000!important;padding:0px 6px;border:0px;background-color:#ffffff;
+}
+/*内容表格*/
+.hisTable{
+    height:88%;width:100%;border-top:1px solid #cccccc;background-color:#FFFFFF;overflow: auto;
+    margin-bottom:10px;
+}
+/*滚动条优化*/
+.hisTable::-webkit-scrollbar{
+    width:6px;
+}
+/*#374554*/
+.hisTable::-webkit-scrollbar-track{
+    background-color: #c3c3c3;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+.hisTable::-webkit-scrollbar-thumb{
+    background-color: #f9f2f9;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+.hisTable table{width:100%;}
+.hisTable table tr{height:25px;}
+.hisTable table tr td{text-align:left;}
+.hisTable .first-tr{background-color:#e2ecf8;width:100%;color:#888c8f;text-align:left;}
+.hisTable .first-tr td{color:#888c8f;font-size:130%;text-align:left;}
+.hisTable table .other-tr{height:35px;}
+.hisTable table .other-tr td:first-child{color:#333333;}
+.hisTable table .other-tr .butt{padding:0px 5px!important;}
+.hisTable table .other-tr .butt a{color:#fd6802;}
+/*按钮*/
+.but1{background-color:#ff6501!important;border:0px;}
+.but2{background-color:#30bdb5!important;border:0px;}
+/*历史完成就诊记录中的查看处方*/
+.ckcfdiv{
+    position: absolute;height:90%;width:90%;background-color: #ffffff;
+    top:5%;left:5%;border-radius:5px;display:none;
+}
+/*查看处方顶部*/
+.ckcfdiv .ckcfdiv-top{
+    height:40px;border-bottom:1px solid #dddddd;
+}
+.ckcfdiv .ckcfdiv-top #title{
+    float: left;margin-left:25px;
+    line-height: 40px;color: #333333;
+}
+.ckcfdiv .ckcfdiv-top #close{
+    float: right;line-height:40px;color:#CECECE;height:30px;width:30px;font-size:30px;
+    cursor: pointer;margin-right:5px;
+}
+.ckcfdiv .ckcfdiv-top #close:hover{
+    float: right;line-height:40px;color:#333333;height:30px;width:30px;font-size:30px;
+    cursor: pointer;margin-right:5px;
+}
+/*中部*/
+.ckcfdiv-center{
+    border-bottom:1px solid #dddddd;height:32px;line-height:32px;padding-left:20px;
+}
+.ckcfdiv-center button{
+    background-color: #30bdb5!important;border:0px;padding:4px 15px!important;width:96px;
+    float:right;margin-right:5px;margin-top:2px;
+}
+/*内容部分*/
+.ckcfdiv-content{
+    height:84%;width:100%;border-radius:0px 0px 5px 5px;
+}
+/*内容左部分*/
+.ckcfdiv-content .content-left{
+    float:left;height:98%;width:24%;margin-top:0.5%;margin-left:0.5%;
+    border:1px solid #dddddd;border-radius:5px;overflow: auto;
+}
+.ckcfdiv-content .content-left table tr{
+    height:30px;line-height:30px;border:1px solid #dddddd;background-color:#E2ECF8;
+}
+.ckcfdiv-content .content-left table tr th{
+    font-weight: bold;border:1px solid #dddddd;
+}
+.ckcfdiv-content .content-left .sty1 td{
+    background-color: #ffffff;border:1px solid #dddddd;
+    color: #333333;cursor: pointer;
+}
+.ckcfdiv-content .content-left .sty2 td{
+    background-color: #80B0E1;
+    color: #ffffff;cursor: pointer;
+}
+.ckcfdiv-content .content-left .sty1:hover{
+    font-weight: bold;
+}
+.content-left table th,.content-left table td{
+    text-align: center;
+}
+/*内容右部分*/
+.ckcfdiv-content .content-right{
+    float:right;height:98%;width:74%;margin-top:0.5%;margin-right:0.5%;
+    border:1px solid #dddddd;border-radius:5px;overflow: auto;
+}
+/*中药详细信息框*/
+.yongLaiKaZhude .zykuang{
+    width:22%;height:110px;border:2px solid #B7C0C8;
+    margin:5px;float:left;color:#000;cursor:pointer;border-radius:2px;
+    background-color:#f5f5f5;margin-right:2%;
+}
+/*中药详细信息序号*/
+.yongLaiKaZhude .zykuang .xuhao{
+    display:inline-block;width: 20px;height: 30px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;background-color: #30BEB2;
+    text-align:center;color:#FFF;margin-left:5px;font-weight:normal;
+}
+/*中药详细信息用法*/
+.yongLaiKaZhude .zykuang .yf{
+    border:1px #000 solid;width:40px;
+    border-width:0 0 1px 0;position:relative;
+    left:100px;top:-10px;height:20px;
+}
+/*中药详细信息名称*/
+.yongLaiKaZhude .zykuang .drugName{
+    border:1px #f1f1f1 solid;width:80px;border-width:0 0 1px 0;
+    position:relative;left:10px;top:-5px;font-family:楷体;font-size:25px
+}
+/*中药详细信息用量*/
+.yongLaiKaZhude .zykuang .yongliang{
+    width:70px;position:relative;left:80px;top:0;text-align:right
+}
+/*西药表格区*/
+.content-right table tr{
+    height:30px;line-height:30px;
+}
+.content-right table tr th,.content-right table tr td{
+    border:1px solid #dddddd;text-align: center;
+}
+.content-right table tr th{
+    background-color:#E2ECF8;
+}

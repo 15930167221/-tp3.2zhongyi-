@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>体质辨识保存界面</title>
+</head>
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+<body>
+<div style="display: none;">
+    <?php
+	class word{
+		function start(){
+			ob_start();
+			print'<html xmlns:o="urn:schemas-microsoft-com:office:office"
+			xmlns:w="urn:schemas-microsoft-com:office:word"
+			xmlns="http://www.w3.org/TR/REC-html40">';
+    }
+    function save($path){
+        print "</html>";
+        $data = ob_get_contents();
+        ob_end_clean();
+        $this->wirtefile ($path,$data);
+        }
+        function wirtefile ($fn,$data){
+            $fp=fopen($fn,"wb");
+            fwrite($fp,$data);
+            fclose($fp);
+        }
+    }
+    $word = new word;
+    $word->start();
+    ?>
+<style>
+    /*鉴定报告大标题*/
+     .rep-title{
+        text-align:center;padding-top:40px;font-size:28px;font-weight: bold;padding-bottom:25px;
+    }
+    table tr{height:30px;text-align: center;border:1px solid #000000;}
+    .rep-title1{font-size:16px;font-weight: bold;width:90%;margin:10px auto;}
+    .rep-inf{width:90%;margin:0px auto;text-indent:2em;}
+    .rep-inf img{text-align: center;}
+</style>
+<div class="rep-title">中医体制辨识鉴定报告</div>
+<div>
+    <table border="1" width="100%" class="center" cellpadding="0" style="border-collapse:collapse;">
+        <tr>
+            <td width="8%">姓名</td>
+            <td colspan="2" width="10%">{$res1.br_name}</td>
+            <td width="5%">性别</td>
+            <td width="5%">{$res1.xb}</td>
+            <td width="5%">年龄</td>
+            <td width="5%">{$res1.nl}</td>
+            <td width="10%">日期</td>
+            <td colspan="3" width="10%">{$res1.jz_date}</td>
+        </tr>
+        <tr>
+            <td>身份证号</td>
+            <td colspan="6">{$res1.pass}</td>
+            <td>联系方式</td>
+            <td colspan="3">{$res1.tel}</td>
+        </tr>
+        <tr>
+            <td>工作单位</td>
+            <td colspan="10">{$res1.dw}</td>
+        </tr>
+        <tr>
+            <td rowspan="2">体制类型</td>
+            <td colspan="2">{$res1.tzname8}-{$res1.tzjg8}</td>
+            <td colspan="2">{$res1.tzname}-{$res1.tzjg}</td>
+            <td colspan="2">{$res1.tzname1}-{$res1.tzjg1}</td>
+            <td colspan="2">{$res1.tzname2}-{$res1.tzjg2}</td>
+            <td colspan="2">{$res1.tzname3}-{$res1.tzjg3}</td>
+        </tr>
+        <tr>
+            <td colspan="2">{$res1.tzname4}-{$res1.tzjg4}</td>
+            <td colspan="2">{$res1.tzname5}-{$res1.tzjg5}</td>
+            <td colspan="2">{$res1.tzname6}-{$res1.tzjg6}</td>
+            <td colspan="2">{$res1.tzname7}-{$res1.tzjg7}</td>
+            <td colspan="2"></td>
+        </tr>
+    </table>
+</div>
+<volist name="baoj" id="vo">
+    <?php
+            $bj = M('tz_baojian');
+            $name = substr($vo,0,9);
+            $res2 = $bj -> where("tzname = '$name'") -> select();
+    ?>
+    <div class="rep-title1">{$vo}</div>
+    <div class="rep-title1">{$res2[0][title]}</div>
+    <div class="rep-inf">
+        <p>{$res2[0][content]}</p>
+    </div>
+    <div class="rep-title1">{$res2[0][title1]}</div>
+    <div class="rep-inf">
+        <p>{$res2[0][content1]}</p>
+    </div>
+    <div class="rep-title1">{$res2[0][title2]}</div>
+    <div class="rep-inf">
+        <p>{$res2[0][content2]}</p>
+    </div>
+    <div class="rep-title1">{$res2[0][title3]}</div>
+    <div class="rep-inf">
+        <p>{$res2[0][content3]}</p>
+    </div>
+    <div class="rep-title1">{$res2[0][title4]}</div>
+    <div class="rep-inf">
+        <p>{$res2[0][content4]}</p>
+    </div>
+</volist>
+<?php
+        function randStr($m = 5) {
+                $new_str = '';
+                $str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwsyz0123456789';
+                $max=strlen($str)-1;
+                for ($i = 1; $i <= $m; ++$i) {
+                    $new_str .=$str[mt_rand(0, $max)];
+                }
+                return $new_str;
+            }
+
+            $str = randStr(6);
+            $str1 = time();
+            $name = $str1.$str;
+            $p=dirname($_SERVER['SCRIPT_FILENAME']);
+            $path=$p."/Public/doc/tizhi/".$name.".doc";
+            $src="__PUBLIC__/doc/tizhi/".$name.".doc";
+            $word->save($path);
+?>
+
+<a href="<?php echo $src;?>" id="tzSaveAs" download="体质辨识">另存为</a>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+        setTimeout("document.getElementById('tzSaveAs').click()",500);
+        layer.msg('加载中', {
+            icon: 16
+            ,time: 2000
+            ,shade: 0.5
+        },function(index){
+            history.back();
+            layer.close(index);
+        });
+    })
+</script>

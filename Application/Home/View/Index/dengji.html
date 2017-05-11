@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>患者登记</title>
+<link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+<!-- 日历新css -->
+<link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+<!-- 字体 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+<link rel="stylesheet" href="__PUBLIC__/css/dengji.css">
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+<!-- 日历js -->
+<script type="text/javascript" src="__PUBLIC__/js/jedate/jquery.jedate.js"></script>
+</head>
+<body oncontextmenu="self.event.returnValue=false" onselectstart="return false">
+<div class="bg">
+    <!-- <div class="title">患者登记
+</div>
+ -->
+<div class="content center" style="">
+    <div style=" margin-left:42px;height:42px;background-color:#e1e1e1;">
+        <div class="title2 center">
+            <div class="djfont">
+                <span style="font-size:16px;color: #333;" class="glyphicon glyphicon-list-alt"></span>
+                    患者登记
+            </div>
+            <span>
+            <b style="margin-left:40px;color: red; ">{$cwxinxi}</b>
+            </span>
+        </div>
+    </div>
+    <form action="{:U('Index/jiankang')}" method="post" onkeydown="if(event.keyCode==13){return false;}">
+        <div class="inf center" style="position: relative;z-index:1;background:#fff;border:1px #DADADA solid;width: 95%;margin-top: 20px;">
+            <table class="mbt center">
+            <volist name="data" id="vo">
+            <tr>
+                <td width="10%" style="text-align: right;">
+                    病 历 号：&nbsp;
+                </td>
+                <td width="30%">
+                    <input type="text" value="{$vo.br_id}" onkeydown="fnKeyDown(event);" onfocus="this.select()" onpaste="return false" ondrop="return false" ondragenter="return false;" ondragstart="return false" name="br_id" readonly="readonly" id="blNum">
+                </td>
+                <input type="hidden" value="{$vo.br_id}" name="blqsh"/>
+                <td style="text-align: right;">
+                    身份证号：&nbsp;
+                </td>
+                <td>
+                    <input type="text" name="pass" value="{$vo.pass}" id="idNum1">
+                </td>
+                <input type="hidden" name="p_date" value="{$data.time|default=time()|date='Y-m-d H:i:s',###}" class="yyrq1" readonly="readonly">
+            </tr>
+            <tr>
+                <td style="text-align: right;">
+                    姓　　名：&nbsp;
+                </td>
+                <td>
+                    <input type="text" name="br_name" value="{$vo.br_name}" id="userName1">
+                    <span style="color: red;">*</span>
+                </td>
+                <td style="text-align: right;">
+                    性　　别：&nbsp;
+                    <td class="jzhcsj" style="padding-left: 40px;padding-top: 2px;">
+                        <php>
+                            if($data[0]['xb']=="女"){
+                        </php>
+                        <label><input type="radio" name="xb" class="xbsjnan" value="男"><span>男 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></label>
+                        <label><input type="radio" name="xb"  class="xbsjnv" value="女"  checked="checked"><span>女</span></label>
+                        <php>    
+                            }else{
+                        </php>
+                        <label><input type="radio" name="xb" class="xbsjnan" value="男"  checked="checked"><span>男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></label>
+                        <label><input type="radio" name="xb" class="xbsjnv" value="女"><span>女</span></label>
+                        <php>    
+                            }
+                        </php>
+                    </td>
+                    <input autocomplete="off" type="hidden" name="ghf" id="ghf" onfocus="this.select()" value="0">
+                </tr>
+                <tr>
+                    <td style="text-align: right;">
+                        年　　龄：&nbsp;
+                    </td>
+                    <td>
+                        <input type="text" name="nl" value="{$vo.nl}" id="age1"><span style="color: red;"> *</span>
+                    </td>
+                    <td style="text-align: right;">
+                        出生年月：&nbsp;
+                    </td>
+                    <td>
+                        <input type="text" name="cs_date" value="{$vo.cs_date}" placeholder="请选择时间！" id="datebut">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">
+                        电　　话：&nbsp;
+                    </td>
+                    <td>
+                        <input class="aaaa" autocomplete="off" type="text" name="tel" value="{$vo.tel}" id="phone1">
+                    </td>
+                    <td style="text-align: right;">
+                        单　　位：&nbsp;
+                    </td>
+                    <td rowspan="3">
+                        <textarea style="resize:none;" autocomplete="off" onfocus="this.select()" align="align" name="dw" id="comp1"class="lontext">{$vo.dw}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">
+                        传　　真：&nbsp;
+                    </td>
+                    <td>
+                        <input autocomplete="off" type="text" name="fax" onfocus="this.select()" value="{$vo.fax}" id="chuanzhen1">
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td width="20%" style="text-align: right;">
+                        E -Mail：&nbsp;
+                    </td>
+                    <td>
+                        <input autocomplete="off" type="text" onfocus="this.select()" name="e_mail" value="{$vo.e_mail}" id="mail1">
+                    </td>
+                </tr>
+                <!-- 就诊时间 -->
+                <input type="hidden" name="jz_date" value="{$data.time|default=time()|date='Y-m-d H:i:s',###}" class="yyrq">
+                </volist>
+                </table>
+            </div>
+            <!-- 隐藏层 -->
+            <div id="tb2" style="border: 1px #ADADAD solid;border-radius:5px;width:100%;height:220px;position: absolute; margin-top: -223px;z-index:2;background:#fff;overflow: auto;" class="xiaoshiyincang">
+                <table id="ajaxzhifubiaog" style="table-layout: fixed;width: 100%;" class="table table-bordered">
+                <thead>
+                <tr style="background-color: #E2ECF8; height: 15px;">
+                    <th style="text-align: center;">
+                        病例号
+                    </th>
+                    <th style="text-align: center;">
+                        姓名
+                    </th>
+                    <th style="text-align: center;">
+                        年龄
+                    </th>
+                    <th style="text-align: center;">
+                        出生年月
+                    </th>
+                    <th style="text-align: center;">
+                        身份证号
+                    </th>
+                    <th style="text-align: center;">
+                        电话
+                    </th>
+                    <th style="text-align: center;">
+                        传真
+                    </th>
+                    <th style="text-align: center;">
+                        e-mail
+                    </th>
+                    <th style="text-align: center;">
+                        单位
+                    </th>
+                </tr>
+                </thead>
+                </table>
+            </div>
+            <div class="yxy">
+                <div class="butt">
+                    <!-- 通过js使form地址改变 -->
+                    <input type="button" id="jsPreservation" value="保存" style="margin-top: 2%; float:right;margin-right:130px;border-radius:3px; border:0px;height:30px;width:90px;background-color: #FF6501;color: #fff;">
+                </div>
+                <div class="butt1">
+                    <input type="button" id="jsPdjz" value="就诊" style="margin-top: 2%; float:right; margin-right:30px;border-radius:3px; border:0px;height:30px;width:90px;background-color: #30bdb5;color: #fff;">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 敲击回车事件 -->
+<script type="text/javascript">
+    //页面一进来就隐藏
+    $(".xiaoshiyincang").hide();
+    //点击esc隐藏
+    $(document).keydown(function(e){
+        var key = e.which;
+        //敲击esc 事件=27
+        if (key == 27) {
+            $(".xiaoshiyincang").hide(1000);
+        }
+    });
+    
+</script>
+<script type="text/javascript">
+        //指定e-mail回车键 到单位
+        $("#mail1").keydown(function(event){
+            if(event.keyCode == 13){  
+                $("#comp1").focus();   
+            }  
+        });    
+        //指定   单位 回车键  到 保存
+        $("#comp1").keydown(function(event){
+            if(event.keyCode == 13){  
+                $("#jsPreservation").click();   
+            }  
+        }); 
+        //功能：将回车键转tab键
+        jQuery(function () {
+            jQuery('input:text:first').focus();
+            var $inp = jQuery('input:text');
+            $inp.bind('keydown', function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    e.preventDefault();
+                    var nxtIdx = $inp.index(this) + 1;
+                    jQuery(":input:text:eq(" + nxtIdx + ")").focus();
+                }
+            });
+        }); 
+    </script>
+<!-- 日期的点击事件 -->
+<script>
+                   $.jeDate('#datebut',{isTime:true,maxDate:$.nowDate(0),startMax:$.nowDate(0),format: 'YYYY-MM-DD',choosefun:function(){
+                         // 获取出生年月日
+                            var csny = $("#datebut").val();
+                            //判断是否为空
+                            if (!csny == '') {
+                                var mydate = new Date();
+                                var year = mydate.getFullYear();//获取当前年
+                                //获取当前出生年月的年
+                                var dqnian = csny.substr(0,4);
+                                var nianling = year-dqnian;
+                                // alert(nianling);
+                                if (!isNaN(nianling)) {
+                                    if (nianling <0) {
+                                        layer.alert("年龄过小",{icon:6});
+                                    } else{
+                                        $("#age1").val(nianling);
+                                    }
+                                }
+                            }
+                   }});
+                </script>
+<!-- 点击变色 -->
+<script type="text/javascript">
+    // 双击信息赋值
+    $(document).on("dblclick",".sty1",function(){
+        // 获取数值
+        var br_id = $(this).find("td :eq(0)").html();
+        var br_name = $(this).find("td :eq(1)").html();
+        var xb = $(this).find("td :eq(2)").html();
+        var nl = $(this).find("td :eq(3)").html();
+        var cs_date = $(this).find("td :eq(4)").html();
+        var pass = $(this).find("td :eq(5)").html();
+        var tel = $(this).find("td :eq(6)").html();
+        var fax = $(this).find("td :eq(7)").html();
+        var e_mail = $(this).find("td :eq(8)").text();
+        var dw = $(this).find("td :eq(9)").html();
+        // 赋值
+        $("#blNum").val(br_id);
+        $("#userName1").val(br_name);
+        $("#age1").val(nl);
+        $("#datebut").val(cs_date);
+        $("#idNum1").val(pass);
+        $("#phone1").val(tel);
+        $("#chuanzhen1").val(fax);
+        $("#mail1").val(e_mail);
+        $("#comp1").html(dw);
+        if (xb == '男') {
+            $('.xbsjnan').click();
+        }else if(xb =='女'){
+            $('.xbsjnv').click();
+        }
+        // //隐藏重名的
+        $(".xiaoshiyincang").hide();
+    });
+</script>
+<script type="text/javascript">
+    jeDate.skin('gray');
+</script>
+<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+<script type="text/javascript">
+    //判断信息是否填写
+    $(document).on("click","#jsPdjz",function(){
+        //获取数据
+        var br_name = $("#userName1").val();
+        var xb = $("input:radio[name='xb']:checked").val();
+        var age = $("#age1").val();
+        var ghf = $("#ghf").val();
+        $("#jkSave",parent.document).html(0);    //清空jkSave标记
+        // alert(xb);
+        //判断姓名
+        if (br_name == '') {
+            layer.alert('请填写姓名', {icon: 6});
+        }else{
+            if (xb == undefined) {
+                layer.alert('请填写性别', {icon: 6});
+            }else{
+                if (age == '') {
+                    layer.alert('请填写年龄', {icon: 6});
+                }else{
+                    if (ghf == '') {
+                        layer.alert('请填写挂号费', {icon: 6});
+                    }else{
+                        if (age > 150) {
+                            layer.alert("请输入正常年龄",{icon:6});
+                        }else{
+                            //给home元素赋病人信息
+                            $("#sblh", parent.document).html('');
+                            $("#sxm", parent.document).html('');
+                            $("#sbxb", parent.document).html('');
+                            $("#sbnl", parent.document).html('');
+                            $("form").attr("action", "{:U('Index/jiankang')}" ).submit();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    $(document).on("click","#jsPreservation",function(){
+        //获取数据
+        var br_name = $("#userName1").val();
+        var xb = $("input:radio[name='xb']:checked").val();
+        var age = $("#age1").val();
+        var ghf = $("#ghf").val();
+        //判断姓名
+        if (br_name == '') {
+            layer.alert("请填写姓名", {icon: 6});
+        }else{
+            if (xb == undefined) {
+                layer.alert("请填写性别", {icon: 6});
+            }else{
+                if (age == '') {
+                    layer.alert("请填写年龄", {icon: 6});
+                }else{
+                    if (ghf == '') {
+                        layer.alert("请填写挂号费", {icon: 6});
+                    }else{
+                        if (age > 150) {
+                            layer.alert("请输入正常年龄",{icon:6});
+                        }else{
+                            $("form").attr("action", "{:U('Index/hzbc')}" ).submit();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    //判断姓名是否是正确格式
+    $(document).on("blur","#userName1",function(){
+        var pattern =  /^[\u4e00-\u9fa5]+$/;
+        if(!pattern.test($(this).val())){
+            layer.alert("请输入汉字格式姓名",{icon:6});
+            // $(this).focus();
+        }else{
+            //先将对象隐藏
+            $(".xiaoshiyincang").hide(1000);
+             var name = $("#userName1").val();
+                var panduanxmcunz = '';
+                    $.ajax({
+                        type:"post",
+                        url:"{:U('Index/ajaxtongming')}",
+                        data:{"name":name},
+                        dataType:'json',
+                        success:function(dd){
+                            var str = '<thead><tr  style="background-color:#E2ECF8;height:15px"><th style="text-align:center">病例号</th><th style="text-align:center">姓名</th><th style="text-align:center">性别</th><th style="text-align:center">年龄</th><th style="text-align:center">出生年月</th><th style="text-align:center">身份证号</th><th style="text-align:center">电话</th><th style="text-align:center">传真</th><th style="text-align:center">e-mail</th><th style="text-align:center">单位</th></tr></thead>';
+                            $.each(dd,function(idx,item){
+                                panduanxmcunz += item.br_name;
+                                str += '<tr class="sty1" name="biansetj"><td>'+item.br_id+'</td><td>'+item.br_name+'</td><td>'+item.xb+'</td><td>'+item.nl+'</td><td>'+item.cs_date+'</td><td>'+item.pass+'</td><td>'+item.tel+'</td><td>'+item.fax+'</td><td>'+item.e_mail+'</td><td>'+item.dw+'</td></tr>';
+                            });
+                            // console.log(str);
+                                $("#ajaxzhifubiaog").html(str);
+                                //判断是否有同名
+                                if (!panduanxmcunz == '') {
+                                    // 将隐藏的显示
+                                    $(".xiaoshiyincang").toggle(1000);
+                                }
+                        }
+                    });  
+        };
+    });
+</script>
+</body>
+<!-- 年龄框改变出生年月改变 -->
+<script type="text/javascript">
+    // 出生年月改变年龄
+    $(document).on("input","#datebut",function(){
+        // 获取出生年月日
+        var csny = $("#datebut").val();
+        //判断是否为空
+        if (!csny == '') {
+            var mydate = new Date();
+            var year = mydate.getFullYear();//获取当前年
+            //获取当前出生年月的年
+            var dqnian = csny.substr(0,4);
+            var nianling = year-dqnian;
+            // alert(nianling);
+            if (!isNaN(nianling)) {
+                if (nianling <0) {
+                    layer.alert("年龄过小",{icon:6});
+                } else{
+                    $("#age1").val(nianling);
+                }
+            }
+        }
+    });
+    // 年龄框改变出生年月改变
+    $(document).on("input","#age1",function(){
+        var shuruzhi = $(this).val();//输入的值
+        var lianweis =  /^[1-9]*[1-9][0-9]*$/;
+         if(lianweis.test(shuruzhi)){
+           //判断年龄不能超过150
+            if (shuruzhi < 150) {
+                if (shuruzhi >0) {
+                    //改变年龄
+                    var mydate = new Date();
+                    var year = mydate.getFullYear();//获取当前年
+                    var month = mydate.getMonth()+1;//获取当前月
+                    var date = mydate.getDate();//获取当前日
+                    var hzyear = year-shuruzhi;//患者出生的年 
+                    var hzdate = hzyear+'-'+month+'-'+date;
+                    $("#datebut").val(hzdate);
+                }else{
+                    layer.alert("年龄过小",{icon:6});
+                }
+            }else{
+                layer.alert("年龄过大",{icon:6});
+            }
+        }else{
+            if(shuruzhi !== ''){
+                 layer.alert("输入正确格式的年龄",{icon:7});
+            }
+        }
+    });
+    ////判断电话输入的是否是数字
+    $(document).on("input","#phone1",function(){
+        var slnianl = $(this).val();
+        if(isNaN(slnianl)){
+            if(slnianl !== ''){
+                layer.alert("请输入数字格式",{icon:6});
+            }
+        }
+        // alert(slnianl);
+    })
+    ////判断身份证输入的是否是数字
+    $(document).on("input","#idNum1",function(){
+        var slnianl = $(this).val();
+        if(isNaN(slnianl)){
+            if(slnianl !== ''){
+                layer.alert("请输入数字格式",{icon:6});
+            }
+        }
+        // alert(slnianl);
+    })
+</script>
+<!-- 防止拖拽 -->
+<script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

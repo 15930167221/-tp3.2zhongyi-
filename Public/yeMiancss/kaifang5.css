@@ -1,0 +1,290 @@
+html{width:100%;height:100%;}
+body{width:100%; height: 98%; background-color:rgba(0,0,0,0)!important;}
+/*body input[type=text]{color:#000!important;border:1px #DFD7D7 solid!important}*/
+.ka1dadekuang1{width:94%;margin-top:5px;margin-left:60px;float:left}
+.ka1{padding-left:90px;width:100%;height:80px;border-radius:5px;font-weight:normal;}
+.ka11{border:0;width:auto;color:#000;font-weight:normal;}
+.kawenzi{margin-left:-70px;margin-top:-40px}
+.kuangneianniu{margin-left:70px;margin-top:-30px}
+.xiaZuo{
+	float:left;border:1px #DFD7D7 solid;
+	border-radius:5px;height:100%;width:27%;
+}
+.xiaZuosousuo{
+	width:100%;height:50px;background-color:#e2ecf8;
+	border-radius:3px;
+}
+#impid{
+	width:90%;height:35px;margin-left:5%;
+	margin-top:8px;margin-bottom:7px;
+	border-radius:5px;background-color:#fff;
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+	outline:none;
+}
+.xiaZuoshang{text-align:center}
+.xiaZuoshang3{margin-top:5px}
+.xiaZuochufang{
+	border:none;height:70%;width:100%;overflow:auto;
+}
+/* #fjmtab{
+	table-layout:fixed;width:100%;height:100%;
+} */
+#fjmtab tr{
+	width:100%;height:35px;cursor:pointer;border:1px solid #ccc;
+}
+#fjmtab tr:hover{
+	font-weight:bold;
+}
+#fjmtab tr td{
+	overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+	border-left:1px solid #ccc;height:35px;
+}
+.rtd{
+	border-left:1px solid #ccc;height:35px;
+	overflow:hidden;text-overflow:ellipsis;
+}
+.title{
+	width:100%;height:45px;background:#e1e1e1;line-height:45px;
+	margin-left:42px;
+}
+.trdebingming{
+	background-color:#e2ecf8;text-align:center;width:100px;height:35px;
+	overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.trdebingming1{
+	background-color:#e2ecf8;text-align:center;/* border-left:1px solid #ccc; */
+	width:185px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.youchufang{border-radius:5px;border:1px #DFD7D7 solid;float:left;width:70%;height:100%;margin-left:3%;}
+.xiaYou1{border-width:0 0 2px 0;height:50px;background-color:#e2ecf8;}
+.xiaYou2{
+	text-align:center;line-height:40px;width:200px;height:50px;
+	font-size:16px;font-weight:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.xiaYouchuFang{margin-left:0;width:100%;height:80%;position: relative;}
+.xiaYouchuFang1{height:100%;width:99.5%;margin-left:2px;overflow:auto;border:1px #DFD7D7 solid;}
+.chufangyaopinjianfa{
+	width:60px;border-width:0;background:none;outline:none;
+}
+.chufangyaopinjianfa option{
+	color:#000;
+}
+.chufangyaopinmingcheng{
+	width:80px;border-width:0;background:none;line-height:10px;
+	outline:none;font-family:楷体;
+}
+.chufangyaopinshuliang{
+	width:50px;border-width:0;background:none;line-height:5px;
+	outline:none;text-align:right;
+}
+.zhongyouanniu{
+	float:left;margin-left:30px;margin-top:300px;
+}
+.qingchuzhongyouanniu{clear:both;}
+
+/*药解*/
+.yaojiemodal{
+	margin-left:-125px;
+	height:90%;
+	width:800px;
+	/*overflow:auto;*/
+	border:1px #333 solid;
+	border-radius:5px;
+	background-color:#ffffff;
+}
+.yaojiemodal-top{
+	width:100%;
+	height:40px;
+	border-bottom:1px solid #ccc;
+}
+.yaojiemodal-top button{
+	line-height:30px;height:30px;width:30px;font-size:30px;margin-top:5px;font-weight: 200;
+}
+.yaojiemodal-top img{
+	width:20px; height:20px;
+}
+.yaojiemodal-top span{
+	line-height:30px;
+}
+.yaojiemodal-top button{
+	line-height:30px;
+}
+input{
+	outline:none;
+}
+a{
+	text-decoration:none;list-style:none;
+}
+.text{
+	width:100%;border:none;outline:none;
+	height:200px;resize:none;
+}
+.trsty{
+	border-bottom:1px solid #ccc;height:35px;
+	line-height:35px;
+}
+#deltab{
+	width:80%;margin:auto;border:1px solid #ccc;
+}
+#deltab tr{
+	width:100%;height:35px;border:1px solid #ccc;line-height:35px;
+}
+#deltab tr td{
+	text-align:center;border:1px solid #ccc;
+}
+#deltab tr th{
+	text-align:center;border:1px solid #ccc;
+}
+.cfypslunits{
+	text-align:right;
+	width:20px;
+	border:none;
+	background:none;
+	height:20px;
+}
+.yaopinshidijige{
+	width: 20px;
+	height: 28px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background-color: #2FBBB5;
+	text-align:center;
+	color:#FFF;
+	margin-left:5px;
+	font-weight:normal;
+}
+.sty{
+	float:left;margin:15px;background-color:#F5F5F5;
+	width:150px;height:100px;border:1px #E1E1E1 solid;
+}
+.sty1{
+	float:left;margin:15px;width:150px;height:100px;border:1px #E1E1E1 solid;
+	background:#56718e;color:#fff;
+}
+input[name='drug_no']{
+	width:15px;
+	height:20px;
+	border:none;
+}
+.d1{
+	float:left;margin:15px;background-color:#F5F5F5;
+	width:150px;height:100px;border:1px #E1E1E1 solid;
+}
+.d2{
+	width:20px;height:28px;border-bottom-left-radius: 10px;
+	border-bottom-right-radius:10px;background-color:#2FBBB5;
+	text-align:center;color:#FFF;margin-left:5px;
+}
+.d3{
+	border:1px #ccc solid;width:60px;height:20px;
+	border-width:0 0 1px 0;position:relative;left:80px;top:-15px;
+}
+.d4{
+	border:0px;width:80px;border-width:0 0 1px 0;position:relative;
+	left:10px;top:-5px;font-size:20px;font-family:楷体;
+}
+.d5{
+	border:0px;width:70px;border-width:0 0 1px 0;
+	position:relative;left:60px;top:-5px;text-align:right;
+}
+#xdcf{
+	float:right;margin-right:4em;
+}
+#inpname{
+	border-radius:5px;box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+}
+/***滚动条***/
+#jy1scroll::-webkit-scrollbar {
+    width:10px;
+}
+#jy1scroll::-webkit-scrollbar-track {
+    background-color:gray;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#jy1scroll::-webkit-scrollbar-thumb {
+    background-color:#EEE;
+    -webkit-border-radius:2em;
+    -moz-border-radius:2em;
+    border-radius:2em;
+}
+#jy2scroll::-webkit-scrollbar {
+    width:10px;
+}
+#jy2scroll::-webkit-scrollbar-track {
+    background-color:gray;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+#jy2scroll::-webkit-scrollbar-thumb {
+    background-color:#EEE;
+    -webkit-border-radius:2em;
+    -moz-border-radius:2em;
+    border-radius:2em;
+}
+.zyyp_list{
+	float:left;
+	display:none;
+	width:330px;
+	height:220px;
+	border:1px solid #eee;
+	position:absolute;
+    bottom:0px;  
+    left:0px;
+    background-color:#FFF;
+}
+.tab{
+	width:100%;
+	text-align: center;
+	margin: 1px 1px;
+}
+.tab th{
+	background-color:#e2ecf8;
+	text-align: center;
+	height:25px;
+}
+.tab tr{
+	height: 25px;
+}
+.tab td{
+	border:1px solid #CCCCFF;
+}
+.tab1{
+	width:100%;
+	text-align:left;
+}
+.tab1 tr{
+	height: 25px;
+}
+.tab1 td{
+	border:1px solid #CCCCFF;
+}
+.tishi{
+	width:100%;
+	text-align:center;
+	margin-top:1%;
+	font-weight:bold;
+}
+#tb2{height:75%;overflow: auto; background-color:#FFF;}
+/*滚动条美化*/
+#tb2::-webkit-scrollbar,.xiacechufangyaopin::-webkit-scrollbar{
+	width:8px;
+}
+/*#374554*/
+#tb2::-webkit-scrollbar-track,.xiacechufangyaopin::-webkit-scrollbar-track{
+	background-color: #c1c1c1;;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+#tb2::-webkit-scrollbar-thumb,.xiacechufangyaopin::-webkit-scrollbar-thumb{
+	background-color: #f1f2ec;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+
+
+

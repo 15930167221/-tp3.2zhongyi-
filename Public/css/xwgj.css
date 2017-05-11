@@ -1,0 +1,46 @@
+/*[type=checkbox] {display:none;}   
+[type=checkbox]~input {display:none;}   */
+[type=checkbox]:checked~input {display:inline-block;}   
+[type=checkbox]~span {cursor:pointer;margin-right:10px;}   
+/*[type=checkbox]~span:before {content:'点我显示文本框';}  */ 
+[type=checkbox]~span:hover {color:#C30;}   
+/*[type=checkbox]:checked~span:before {content:'点我隐藏文本框';}*/
+#xwgj{
+	overflow-y:scroll;
+}
+.xwgjp{
+	height:40px;width:100%;background-color:#2DBCB3;color:#FFF;
+	text-align:center;line-height:40px;
+	font-size:16px;font-weight:normal;
+}
+.titp{
+	height:25px;width:80%;cursor:pointer;line-height:25px;color:#3D4449; letter-spacing: 13px;
+	background:#98B4D2;color:#FFF;margin-bottom:3px;font-weight:normal;
+}
+.xwgjdl{
+	width:90%;padding:0px;margin:0px;display:none;font-weight:normal;
+}
+.xwgjdl dt{
+	width:70%;height:25px;line-height:25px;
+	margin-bottom:3px;cursor:pointer;background-color:;
+	font-weight:normal;
+}
+.xwgjul{
+	list-style-type:none;padding:0px;margin:0px;display:none;;font-weight:normal;
+}
+.xwgjul li{
+	height:30px;line-height:30px;margin-left:2em;font-weight:normal;
+}
+.gjul{
+	list-style-type:none;padding:0px;margin:0px;display:none;;font-weight:normal;
+}
+.gjul li{
+	height:30px;line-height:30px;cursor:pointer;;font-weight:normal;
+}
+.lastul{
+	list-style-type:none;padding:0px;margin:0px;display:none;font-weight:normal;
+}
+.lastul li{
+	height:30px;line-height:30px;margin-left:1em;
+	background-color:#EEEED1;margin-bottom:3px;font-weight:normal;
+}

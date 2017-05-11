@@ -1,0 +1,72 @@
+/*统配样式*/
+*{font-size:14px;}
+html,body{width:100%;height:100%;margin:0px!important;}
+a{text-decoration:none;}
+ul{list-style:none;list-style-position:inside;}
+img{border:0px;}
+.W{width:1366px;}
+.center{margin:0px auto;}
+.bg{height:100%;width:100%;position:relative;}
+/*右部分*/
+/*健康档案*/
+.right{width:100%;height:110%;margin-top:-20px;}
+/*蓝色背景*/
+.right .right-center{
+    background-color:#87aad8;height:100%;width:92%;padding-top:40px;overflow:auto;margin:0px auto;
+}
+.right .right-center .health-file{width:95%;height:100%;margin:0px auto;}
+/*表格外的白色背景*/
+.right .right-center .health-file form{width:80%;padding:30px 80px;background-color:#FFFFFF;margin:0px auto;}
+.right .right-bottom{height:12%;width:100%;background-color:#f6e3d5;}
+/*病人基本信息*/
+.baseInf{
+    position: absolute;background-color:#f5f5f5;top:45px;left:0px;width:43px;font-size:25px;padding:5px 2px;
+    border-bottom:2px solid #ccc;cursor: pointer;color:#333333;font-weight: bold;text-align: center;
+}
+/*隐藏的内容*/
+.baseContent{
+    position:absolute;height:420px;width:280px;top:45px;left:-280px;background-color:#f5f5f5;z-index:10;
+    border:1px solid #ccc;border-radius:5px;
+}
+/*标题*/
+.baseContent .baseTitle{color:#8e852d;font-size:16px;height:25px;line-height:25px;font-weight: bold;}
+/*关闭按钮*/
+.baseContent .baseTitle button{
+    float:right;border:0px;background-color:#fffbf0;color:#000000!important;padding:0px 6px;
+}
+/*内容表格*/
+.baseContent .baseTable table tr{height:30px;}
+.baseContent .baseTable table tr td:first-child{text-align: right;}
+/*历史完成的就诊记录*/
+.hisInf{
+    position: absolute;background-color:#f5f5f5;top:270px;left:0px;width:43px;font-size:25px;padding:5px 2px;
+    cursor: pointer;color:#333333;font-weight: bold;text-align: center;
+}
+/*隐藏的内容*/
+.hisContent{
+    position: absolute;height:260px;width:280px;top:270px;left:-280px;background-color:#f5f5f5;border-radius:5px;
+    border:1px solid #ccc;
+}
+/*内容标题*/
+.hisTitle{color:#8e852d;font-size:16px;height:25px;line-height:25px;font-weight: bold;}
+/*关闭按钮*/
+.hisTitle button{
+    float:right;color:#000000!important;padding:0px 6px;border:0px;background-color:#fffbf0;
+}
+/*内容表格*/
+.hisTable{
+    height:88%;width:95%;margin-left:5px;border:1px solid #cccccc;background-color:#FFFFFF;overflow: auto;
+    margin-bottom:10px;
+}
+.hisTable table{width:100%;}
+.hisTable table tr{height:25px;}
+.hisTable table tr td{text-align:center;}
+.hisTable .first-tr{background-color:#0078d7;width:100%;color:#ffffff;text-align:center;}
+.hisTable .first-tr td{color:#ffffff;font-size:130%;}
+.hisTable table .other-tr{height:35px;}
+.hisTable table .other-tr td:first-child{color:#9600ff;}
+.hisTable table .other-tr .butt{padding:0px 5px!important;}
+/*按钮*/
+.but1{position: absolute;top:0px;right:2px;}
+.but2{position: absolute;top:60px;right:2px;}
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的文档</title>
+	<style>
+		html,body{
+			width:100%;height:100%;overflow:auto;
+		}
+	</style>
+</head>
+<script>
+	document.oncontextmenu=new Function("event.returnValue=false;");
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+<frameset rows="7.5%,*" frameborder="0" bordercolor="#fff" framespacing="7">
+	<frameset cols="4%,*">
+		<frame src="__CONTROLLER__/white">
+		<frame src="__CONTROLLER__/top">
+	</frameset>
+	<frameset cols="22%,*">
+		<frame src="__CONTROLLER__/mllist" scrolling="No" noresize="noresize" id="leftTree">
+		<frame src="__CONTROLLER__/rpro" scrolling="No" noresize="noresize" id="rightTree" name="right">
+	</frameset>
+</frameset>
+</html>

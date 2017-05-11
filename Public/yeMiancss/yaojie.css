@@ -1,0 +1,77 @@
+/*药解modal*/
+/* body{
+	height: auto;
+} */
+.yaojiemodal-tcon{
+	width:95%;
+	margin-left:2.5%;
+	margin-top:1%;
+	border:1px solid #30bdb5;
+	border-radius:5px;
+}
+.yaojiemodal-tcon-tab{
+	width:95%;
+	margin-left:2.5%;
+	margin-top:1%;
+	margin-bottom:1%;
+}
+.yaojiemodal-tcon-tab tr{
+	height:30px;
+}
+.yaojiemodal-tcon-tab tr:first-child th{
+	width:80px;
+}
+.yaojiemodal-tcon-tab tr td{white-space:nowrap;}
+.yaojiemodal-tcon-tab tr td input{border:0px;width:100px;}
+.changg{
+	border:none;
+	background:none;
+	outline:none;
+	border-bottom:1px solid #333;
+}
+.nchangg{
+	border:1px solid #333;
+	height:50px;
+	background:none;
+	outline:none;
+}
+.yaojiemodal-con{
+	margin-top:1%;
+	width:95%;
+	margin-left:2.5%;
+	position:relative;
+}
+.b{
+	font-size:15px;
+	font-weight:bold;
+	color:#30bdb5;
+}
+/*滚动条*/
+::-webkit-scrollbar{
+	width:10px;height:10px;
+}
+::-webkit-scrollbar-track{
+	background-color: #c3c3c3;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+::-webkit-scrollbar-thumb{
+	background-color: #f1f2ec;
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+.yaojiemodal-tcon-tab tr th span:first-child{
+	text-align:justify;text-justify:distribute-all-lines;text-align-last:justify;
+	display: inline-block;width:90%;text-align:right;
+}
+.yaojiemodal-tcon-tab tr th span:last-child{
+	display: inline-block;width:10%;
+}
+#photo{
+	width:100px;height:90px;
+}
+#photo img{
+	width:100px; height:90px; border:none;
+}

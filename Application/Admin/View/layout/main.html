@@ -1,0 +1,45 @@
+<include file="Layout/header"/>
+</head>
+<body>
+<nav class="breadcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i>
+    <?php
+        array_pop($location);
+        foreach ($location as $value) {
+        echo $value['name'];
+    ?>
+    <span class="c-gray en">&gt;</span>
+    <?php } ?>
+    {$active.name}
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont">&#xe68f;</i>
+    </a>
+</nav>
+
+<block name="main"></block>
+
+<include file="Layout/footer"/>
+<script type="text/javascript">
+    $(function () {
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+        $.Huitab("#tab-system .tabBar span", "#tab-system .tabCon", "current", "click", "0");
+    });
+
+    /*增加*/
+    function admin_add(title, url, w, h) {
+        layer_show(title, url, w, h);
+    }
+
+    function product_add(title,url){
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
+        });
+        layer.full(index);
+    }
+</script>

@@ -1,0 +1,92 @@
+/*Creat by szh   2017-03-27*/
+.chufmx{
+	width:70%;
+	height:80%;
+	overflow:scroll;
+	background:#fff;
+	margin-top:5%;
+	margin-left:15%;
+}
+.modal-dialog1{
+	width:90%;
+	border:1px solid #333;
+	background-color:#87aad8;
+	height:550px;
+	overflow:scroll;
+	margin-left:5%;
+	margin-top:5%;
+}
+.box{
+	height:550px;
+}
+.two{
+	margin-top:-2%;
+	margin-left:76%;
+}
+.health-file{
+	width:90%;
+	background-color:#FFF;
+	height:auto;
+	border:1px solid #ccc;
+	margin-top:5%;
+}
+.title1{
+	margin-top:5%;
+	font-size:25px;
+	color:#000;
+	text-align:center;
+	font-weight:100;
+}
+.title2{
+	width:90%;
+	float:left;
+	margin-left:5%;
+}
+.panel-default{
+	height:550px;
+	background-color:none;
+}
+.jkda-table{
+	width:90%;
+	border-collapse:collapse;
+	border-spacing:0;
+	margin-left:5%;
+}
+.jkda-table td{
+	border:1px solid #333;
+}
+.jkda-table td{
+	border:1px solid #333;
+}
+.jkda-table th{
+	border:1px solid #333;
+}
+.jkda-table tr{
+	height:35px;
+}
+textarea{
+	background:none;
+	resize:none;
+	border:none;
+}
+.chahao{
+	width:40px;
+	position:absolute;
+	top:60px;
+	right:80px;
+}
+.jkda-table .chufang ul{
+	list-style:none;
+}
+.jkda-table .chufang ul li{
+	float:left;
+	width:25%;
+	margin-top:5px;
+}
+.xytab{
+	width:100%;
+	border:none;
+}
+.xytab td{
+	border:none;
+}

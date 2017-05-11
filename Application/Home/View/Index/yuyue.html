@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>患者预约</title>
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <!-- 字体 -->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/font.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/yuyue.css">
+    <!-- 日历新css -->
+    <link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <!-- 日历js -->
+    <script type="text/javascript" src="__PUBLIC__/js/jedate/jquery.jedate1.js"></script>
+    <script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+<div class="bg">
+    <!-- <div class="title">患者预约</div> -->
+    <div class="content center">
+        <div style=" margin-left:42px;height:42px;background-color:#E1E1E1;">
+            <div class="title2 center">
+                <div class="titLeft">
+                    
+                    <div class="modfont">
+                    <span style="font-size:16px;color: #333;" class="glyphicon glyphicon-list-alt"></span>
+                        患者预约
+                    </div>
+                    <span>
+                        <b style="margin-left:40px;color: red; ">{$cwxinxi}</b>
+                    </span>
+                </div>
+                <div class="titRight">
+                    
+                    <div class="modfont">
+                        &nbsp;当天已预约情况
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form action="{:U('Yuyue/yuyue')}" method="post">
+        <div class="inf center">
+            <div class="bodyLeft">
+            <volist name="datazuo" id="vozuo">
+                <table border="0" class="mbt">
+                    <tr>
+                        <td width="18%" style="text-align: center;">病 历 号：</td>
+                        <td colspan="3">
+                            <input  type="text" value="{$vozuo.br_id}" name="br_id" readonly="readonly">
+                            <input type="hidden" value="{$vozuo.br_id}" name="blqsh" />
+                        </td>
+                    </tr>
+                    <tr>
+                    <td style="text-align: center;">姓　　名：</td>
+                        <td width="35%"><input autocomplete="off" id="userName1" type="text" name="br_name" value="{$vozuo.br_name}" id="userName2"> <span style="color: red;">*</span></td>
+                        <td style="text-align: center;" width="10%">性&nbsp;别：</td>
+                        <td>
+                        <php>
+                            if($datazuo[0]['xb']=="女"){
+                        </php>
+                            <label><input type="radio" name="xb" value="男" ><span>男</span></label>
+                                <label><input type="radio" name="xb" value="女" checked="checked"><span>女</span></label>
+                        <php>    
+                            }else{
+                        </php>
+                            <label><input type="radio" name="xb" value="男" checked="checked"><span>男</span></label>
+                                <label><input type="radio" name="xb" value="女" ><span>女</span></label>
+                        <php>    
+                            }
+                        </php>
+
+                        </td>
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;">年　　龄：</td>
+                        <td><input autocomplete="off" type="text" name="nl" value="{$vozuo.nl}" id="age1"> <span style="color: red;">*</span></td>
+                        
+                       
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">出生年月：</td>
+                        <td>
+                        <input id="datebut" name="cs_date" value="{$vozuo.cs_date}" placeholder="请选择日期！" type="text" ></td>
+                    </tr>
+                     <!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#datebut',{isTime:true,maxDate:$.nowDate(0),startMax:$.nowDate(0),format: 'YYYY-MM-DD',choosefun:function(){
+                         // 获取出生年月日
+                            var csny = $("#datebut").val();
+                            //判断是否为空
+                            if (!csny == '') {
+                                var mydate = new Date();
+                                var year = mydate.getFullYear();//获取当前年
+                                //获取当前出生年月的年
+                                var dqnian = csny.substr(0,4);
+                                var nianling = year-dqnian; 
+                                if (!isNaN(nianling)) {
+                                    if (nianling <0) {
+                                        layer.alert("年龄过小",{icon:6});
+                                    } else{
+                                         $("#age1").val(nianling);
+                                    }
+                                }
+                            }
+                    }});
+                </script>
+                    <tr>
+                         <td style="text-align: center;">电　　话：</td>
+                        <td><input autocomplete="off" id="phone1" type="text" name="tel" value="{$vozuo.tel}"></td>
+                      
+                       
+                    </tr>
+                    <tr >
+                         <td style="text-align: center;">身份证号：</td>
+                        <td colspan="3"><input autocomplete="off" type="text" name="pass" value="{$vozuo.pass}" id="idNum1"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">单　　位：</td>
+                        <td colspan="3">
+                            <input autocomplete="off" type="text" name="dw"  id="comp" class="lontext">
+                        </td>
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;">E - Mail：</td>
+                        <td><input autocomplete="off" type="text" name="e_mail" value="{$vozuo.e_mail}"></td>
+                    </tr>
+                    <!-- <tr>
+                         <td>挂 号 费：</td>
+                        <td><input autocomplete="off" type="text" id="ghf" name="ghf" value="{$vozuo.ghf}"> <span style="color: red;">*</span></td>
+                        
+                    </tr> -->
+                    <input autocomplete="off" type="hidden" id="ghf" name="ghf" value="0">
+                    <tr>
+                        <td style="text-align: center;">传　　真：</td>
+                        <td><input autocomplete="off" type="text" name="fax" value="{$vozuo.fax}"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">预约日期：</td>
+                        <td colspan="3">
+                         <input  type="text" placeholder="请选择日期！" name="p_date" value="{$vozuo.p_date}" id="datebut1"  readonly="readonly">
+                        </td>
+                        
+                    </tr>
+                    <!-- 日期的点击事件 -->
+                <script>
+                    $.jeDate('#datebut1',{isTime:true,minDate:$.nowDate(1),startMin:$.nowDate(1),format: 'YYYY-MM-DD hh:mm:ss',choosefun:function(){
+                         var yuyueshijzhenshi = $("#datebut1").val();
+        if(!yuyueshijzhenshi == ''){
+            $.ajax({
+                type:'get',
+                url:'{:U("Yuyue/ajaxrsyy")}',
+                data:{"date":yuyueshijzhenshi},
+                dataType:'json',
+                success:function(dd)
+                {
+                    // console.log(dd);
+                    var str = '<tr style="text-align:center"><td width="40%" style="background-color:#E2ECF8">预约人姓名</td><td width="60%" style="background-color:#E2ECF8">预约时间</td></tr>';
+                    $.each(dd,function(idx,item){
+                            // console.log(item.n);
+                            if (item.qufyyrq == 1) {
+                                str += '<tr class="sty" style="text-align:center;background-color:#80B0E1;"><td width="40%">'+item.br_name+'</td><td width="60%">'+item.p_date+'</td></tr>';
+                            }else if(item.qufyyrq == 2){
+                                str += '<tr class="sty" style="text-align:center"><td width="40%">'+item.br_name+'</td><td width="60%">'+item.p_date+'</td></tr>';
+                            }else{
+                                str += '';
+                            }
+                        
+                        });
+                    $("#fuzhiyuyueqik").html(str);//当前预约人数
+                    
+                    $date = dd['0']['0'];//当前预约人个数
+                    $(".dqyuyuexianshiren").html($date);
+                }
+            });
+        }else{
+            layer.alert('预约日期不为空',{icon:1});
+        }
+                    }});
+                </script>
+                    <tr>
+                        <td colspan="3">
+                            <span style="color: #F07109;">&nbsp;注：本日期是一个时间段，前后15分钟</span>
+                        </td>
+                    </tr>
+                    <!-- 就诊时间 -->
+                    <input type="hidden"  name="jz_date" value="{$data.time|default=time()|date='Y-m-d H:i:s',###}" >
+                    <!-- 区分是否为就诊 -->
+                    <input type="hidden" name="reserve" value="2">
+                </table>
+            </volist>
+            </div>
+            <div class="bodyRight">
+                <div class="brtop" id="tb2">
+                    <table id="fuzhiyuyueqik" border="1" bordercolor="#ccc" class="table">
+                        <tr style="text-align: center;">
+                            <td width="40%" style="background-color: #E2ECF8;">预约人姓名</td>
+                            <td width="60%" style="background-color: #E2ECF8;">预约时间</td>
+                        </tr>
+                        <volist name="data" id="vo">
+                        <tr class="sty" style="text-align: center;">
+                            <td width="40%">
+                            	{$vo.br_name}
+                            </td>
+                            <td width="60%"> {$vo.p_date}</td>
+                        </tr>
+                        </volist>
+                    </table>
+                </div>
+                <div class="brbottom" style="text-align: center;" >
+                    <span style="color: #F07109;">该时间段内有：
+                    	<span style="color: #F07109;" type="text" class="dqyuyuexianshiren"></span>
+                    </span><span style="color: #F07109;">病人预约</span>
+                </div>
+            </div>
+        </div>
+        <div class="but">
+            <div class="butt">
+                <button type="button" id="japandyuy" style="border-radius:3px; border:0px;height:30px;width:90px;background-color: #FF6501;color: #fff;margin-right: 80px;">预约</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    //jeDate.skin('gray');
+</script>
+</body>
+</html>
+<!-- 年龄框改变出生年月改变 -->
+<script type="text/javascript">
+    //判断年龄是否是正确格式
+    $(document).on("change","#userName1",function(){
+        var pattern =  /^[\u4e00-\u9fa5]+$/;
+        if(!pattern.test($(this).val())){
+            layer.alert("请输入汉字格式姓名",{icon:6});
+        };
+        // var br_name = $("#userName1").val();
+    });
+    // 出生年月改变年龄
+    
+    $(document).on("input","#datebut",function(){
+        // 获取出生年月日
+        var csny = $("#datebut").val();
+        //判断是否为空
+        if (!csny == '') {
+            var mydate = new Date();
+            var year = mydate.getFullYear();//获取当前年
+            //获取当前出生年月的年
+            var dqnian = csny.substr(0,4);
+            var nianling = year-dqnian; 
+            if (!isNaN(nianling)) {
+                if (nianling <0) {
+                    layer.alert("年龄过小",{icon:6});
+                } else{
+                     $("#age1").val(nianling);
+                }
+            }
+        }
+    });
+    // <!-- 年龄框改变出生年月改变 -->
+    $(document).on("input","#age1",function(){
+        var shuruzhi = $(this).val();//输入的值
+        var lianweis =  /^[1-9]*[1-9][0-9]*$/;  
+        if(lianweis.test(shuruzhi)){
+           //判断年龄不能超过150
+            if (shuruzhi < 150) {
+                if (shuruzhi > 0) {
+                    //改变年龄
+                    var mydate = new Date();
+                    var year = mydate.getFullYear();//获取当前年
+                    var month = mydate.getMonth()+1;//获取当前月
+                    var date = mydate.getDate();//获取当前日
+                    var hzyear = year-shuruzhi;//患者出生的年 
+                    var hzdate = hzyear+'-'+month+'-'+date;
+                    $("#datebut").val(hzdate);
+                }else{
+                    layer.alert("年龄过小",{icon:6});
+                }
+                 
+            }else{
+                layer.alert("年龄过大",{icon:6});
+            }
+        }else{
+            if(shuruzhi !== ''){
+                layer.alert("输入正确格式的年龄",{icon:7});
+            }
+          
+        }
+    });
+     ////判断电话输入的是否是数字
+    $(document).on("input","#phone1",function(){
+        var slnianl = $(this).val();
+        if(isNaN(slnianl)){
+            if(slnianl !== ''){
+                layer.alert("请输入数字格式",{icon:6});
+            }
+            
+        }
+        // alert(slnianl);
+    })
+     ////判断身份证输入的是否是数字
+    $(document).on("input","#idNum1",function(){
+        var slnianl = $(this).val();
+        if(isNaN(slnianl)){
+            if(slnianl !== ''){
+                layer.alert("请输入数字格式",{icon:6});
+            }
+        }
+        // alert(slnianl);
+    })
+</script>
+<script type="text/javascript">
+        //功能：将回车键转tab键
+        jQuery(function () {
+            jQuery('input:text:first').focus();
+            var $inp = jQuery('input:text');
+            $inp.bind('keydown', function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    e.preventDefault();
+                    var nxtIdx = $inp.index(this) + 1;
+                    jQuery(":input:text:eq(" + nxtIdx + ")").focus();
+                }
+            });
+        });    
+    </script>
+<script type="text/javascript">
+    //判断信息是否填写
+    $(document).on("click","#japandyuy",function(){
+        //获取数据
+        var br_name = $("#userName1").val();
+        var xb = $("input:radio[name='xb']:checked").val();
+        var age = $("#age1").val();
+        var ghf = $("#ghf").val();
+        var datebut1 = $("#datebut1").val();
+        //判断姓名
+        if (br_name == '') {
+            layer.alert("请填写姓名",{icon:1});
+        }else{
+            if (xb == undefined) {
+                layer.alert("请填写性别",{icon:1});
+            }else{
+                if (age == '') {
+                    layer.alert("请填写年龄",{icon:1});
+                }else{
+                    if (age > 150) {
+                        layer.alert("请输入正常年龄",{icon:6});
+                    }else{
+                        if (datebut1 == '') {
+                            layer.alert("请输入预约日期",{icon:6});
+                        }else{
+                             $("form").attr("action", "{:U('Yuyue/yuyue')}" ).submit();
+
+                        }
+                       
+                    }
+                   
+                }
+            }
+        }
+    });
+	//框内改变事件 
+	$(document).on("input",".yuyueriqiyincang",function(){
+		// alert(123);
+	})
+</script>
+<!-- 预约日期改变右侧值 -->
+<script type="text/javascript">
+// <!-- 预约日期改变右侧值 -->
+    $(document).on("input","#datebut1",function(){
+        var yuyueshijzhenshi = $("#datebut1").val();
+        if(!yuyueshijzhenshi == ''){
+            $.ajax({
+                type:'get',
+                url:'{:U("Yuyue/ajaxrsyy")}',
+                data:{"date":yuyueshijzhenshi},
+                dataType:'json',
+                success:function(dd)
+                {
+                    // console.log(dd);
+                    var str = '<tr style="text-align:center"><td width="40%" style="background-color:#E2ECF8">预约人姓名</td><td width="60%" style="background-color:#E2ECF8">预约时间</td></tr>';
+                    $.each(dd,function(idx,item){
+                            // console.log(item.n);
+                            if (item.qufyyrq == 1) {
+                                str += '<tr class="sty" style="text-align:center;background-color:#80B0E1;"><td width="40%">'+item.br_name+'</td><td width="60%">'+item.p_date+'</td></tr>';
+                            }else if(item.qufyyrq == 2){
+                                str += '<tr class="sty" style="text-align:center"><td width="40%">'+item.br_name+'</td><td width="60%">'+item.p_date+'</td></tr>';
+                            }else{
+                                str += '';
+                            }
+                        
+                        });
+                    $("#fuzhiyuyueqik").html(str);//当前预约人数
+                    
+                    $date = dd['0']['0'];//当前预约人个数
+                    $(".dqyuyuexianshiren").html($date);
+                }
+            });
+        }else{
+            layer.alert('预约日期不为空',{icon:1});
+        }
+    });
+</script>
+<!-- 防止拖拽 -->
+    <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>

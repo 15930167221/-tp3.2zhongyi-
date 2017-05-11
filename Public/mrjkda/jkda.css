@@ -1,0 +1,36 @@
+*{font-size:16px;}
+html,body{width:100%;}
+a{text-decoration:none;}
+img{border:0px;}
+.center{margin:0px auto;}
+.jkda-table input[type="text"]{border:0px;min-width:30px;border-bottom:1px solid #ccc;color: #000!important; }
+/*.jkda-table input[type="text"]{min-width:30px;border:1px solid #ccc;}*/
+.jkda-table {background-color:#000;}
+.jkda-table tr{background-color:#fff;height:30px;}
+.jkda-table tr th{text-align:center!important;}
+/*中医健康档案标题*/
+.title{width:650px;text-align:center;font-weight:bold;font-size:24px;margin-bottom:20px;}
+/*急诊日期和病历号*/
+#date,#name,#age,#birthday,#tzbs,#zybz,#zyzz,#jzrq{color:blue;}
+.title2{width:100%;height:16px;margin-bottom:10px;}
+.title2 div:first-child{float:left;}
+.title2 div:last-child{float:right;}
+.title2 div span{font-weight:bold;}
+.jkda-table textarea{border:1px solid #ccc;}
+/*过敏史*/
+.gm{
+	position:absolute;background-color:#fff;width:275px;height:210px;top:350px;
+	left:315px;overflow:auto;display:none;z-index:10;border:1px solid #ccc;
+}
+.gm label{display:block;}
+.jkda-table .year{width:35px;}
+.jkda-table .month{width:16px;}
+.jkda-table .day{width:16px;}
+/*家庭史*/
+.jtsFar{
+	position:absolute;background-color:#fff;width:250px;height:80px;top:360px;
+	left:400px;overflow:auto;display:none;border:1px solid #ccc;
+}
+.jtsFar label{display:block;}
+.jkda-table .chufang>div{padding-bottom:10px;width:100%;float:left;}
+.jkda-table .chufang ul li{float:left;width:25%;text-align:center;margin-top:5px;}

@@ -1,0 +1,96 @@
+<extend name="Layout/main"/>
+
+<block name="main">
+    <!-- 分页效果 -->
+    <link href="__PUBLIC__/css/mypage.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+    <!-- 分页结束 -->
+    <div class="page-container">
+        <div class="text-c">
+            <form action="{:U('Admin/Shoufei/index')}" method="get">
+                <input placeholder="药品名称" name="item_name" value="{$param['item_name']}" style="width:250px" class="input-text" type="text">
+                <button class="btn btn-success" type="submit">
+                    <i class="Hui-iconfont">&#xe665;</i>搜索
+                </button>
+            </form>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+            <a href="javascript:;" onclick="admin_add('添加收费项目','{:U('Admin/Shoufei/add')}','800','500')"
+               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加收费项目</a></span>
+            <span class="r">共有数据：<strong>{$info.count}</strong> 条</span> </div>
+        <div class="mt-20">
+        <table class="table table-border table-bordered table-bg">
+            <thead>
+            <tr class="text-c">
+                <th><input type="checkbox" name="" value=""></th>
+                <th>项目编码</th>
+                <th>项目名称</th>
+                <th>拼音码</th>
+                <th>规格</th>
+                <th>单价</th>
+                <th>单位</th>
+                <th>启用表示</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="info.list" id="item">
+                    <tr class="text-c">
+                        <td><input type="checkbox" value="1" name=""></td>
+                        <td>{$item.item_code}</td>
+                        <td>{$item.item_name}</td>
+                        <td>{$item.input_code}</td>
+                        <td>{$item.item_spec}</td>
+                        <td>{$item.price}</td>
+                        <td>{$item.units_code}</td>
+                        <if condition="$item.enabled_sign eq '1'">
+                        <td>启用</td>
+                        <else />
+                        <td>停用</td>
+                        </if>
+                        <td class="td-manage">
+                            <a href="javascript:;"
+                               onclick="admin_add('编辑详情','{:U('Admin/Shoufei/edit', array('id' => $item['id']))}'
+                               ,'800','500')">
+                                <i class="Hui-iconfont">&#xe6df;</i>
+                            </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="h-text-sc" id="{$item.id}"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                        </td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <!-- 分页效果 -->
+    <div class="result page">
+        <div class="pages">
+            {$info.page}
+        </div>
+    </div>
+    <script type="text/javascript">
+        /*删除*/
+        $(document).on("click", '.h-text-sc', function () {
+            var op_obj = $(this).parents("tr");
+            var id = $(this).attr('id');
+            // alert(id);
+            layer.confirm('确认要删除吗？',function(){
+                $.ajax({
+                    type:'POST',
+                    dataType: 'json',
+                    url:'{:U("Admin/Shoufei/delete")}',
+                    data:{id:id},
+                    success: function (result) {
+                        if (result.status) {
+                            op_obj.remove();
+                            layer.msg(result.msg,{icon:1,time:1000});
+                        } else {
+                            layer.msg(result.msg,{icon:0,time:2000});
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+</block>
