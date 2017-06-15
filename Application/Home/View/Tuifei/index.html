@@ -123,6 +123,7 @@
 		$("#checked_id").val(this.children[3].innerHTML);
 		var id = $(this).attr("id");
 		$(this).toggleClass("trsty1");
+		// alert(id);
 		$(".trsty1").not(this).attr("class","trsty");
 		$.ajax({
 			type:"post",
@@ -130,11 +131,13 @@
 			dataType:"json",
 			data:{"invoice_no":id},
 			success:function(sflbarr){
+				console.log(sflbarr);
 				var str = "";
 				var ztotal = 0;
 				for(var i=0;i<sflbarr.length;i++){
-					str += "<tr class='sty2' name='tableSty' id='"+sflbarr[i]['id']+"'><td align='center' width='10%'>"+sflbarr[i]['serial_no']+"</td><td align='left' width='40%'>"+sflbarr[i]['item_name']+"</td><td align='left' width='12%'>"+sflbarr[i]['units']+"</td><td align='right' width='12%'>"+sflbarr[i]['unit_price']+"</td><td align='right' width='12%'>"+sflbarr[i]['amount']+"</td><td align='right' width='12%'>"+sflbarr[i]['total']+"</td></tr>";
-						ztotal += parseFloat(sflbarr[i]['total']);
+					str += "<tr class='sty2' name='tableSty' id='"+sflbarr[i]['id']+"'><td align='center' width='10%'>"+sflbarr[i]['serial_no']+"</td><td id='xmname' align='left' width='40%'>"+sflbarr[i]['item_name']+"</td><td align='left' width='12%'>"+sflbarr[i]['units']+"</td><td align='right' width='12%'>"+sflbarr[i]['unit_price']+"</td><td align='right' width='12%'>"+sflbarr[i]['amount']+"</td><td align='right' width='12%'>"+sflbarr[i]['total']+"<input type='hidden' class='qufenleibie' value="+sflbarr[i]['qufenleibie']+"></td></tr>";
+						sflbarr[i]['total'] = sflbarr[i]['total'].replace(/,/g, "");
+						ztotal += parseInt(sflbarr[i]['total']);
 				}
 				str += "<tr><td colspan='3' align='right'><b>合计金额：</b></td><td colspan='3' align='right'><font color='#30BEB2'><b>￥"+ztotal.toFixed(2)+"</b></font></td></tr>";
 				$(".tab6_1").html(str);
@@ -152,7 +155,7 @@
 			$(".zhezhao").css("filter","alpha(opacity:80)");
 			$(".zhezhao").css("opacity","0.8");
 			var id = $(this).attr("id");
-			var len = $(this).attr("id").length;
+			var len = $(this).find(".qufenleibie").val();
 			$.ajax({
 				type:"post",
 				url:"__CONTROLLER__/yplist",
@@ -166,6 +169,7 @@
 					for(var i=0;i<sfdetail.length;i++){
 						str += "<tr><td width='8%'>"+sfdetail[i]['id']+"</td><td align='left' width='25%'>"+sfdetail[i]['xmname']+"</td><td align='right' width='10%'>"+sfdetail[i]['amount']+"</td><td align='left' width='20%'>"+sfdetail[i]['units']+"</td><td align='right' width='10%'>"+sfdetail[i]['dose']+"</td><td align='right' width='12%'>"+sfdetail[i]['price']+"</td><td align='right' width='15%'>"+sfdetail[i]['costs']+"</td></tr>";
 						var count = i;
+						sfdetail[i]['costs'] = sfdetail[i]['costs'].replace(/,/g, "");
 						zcosts += parseFloat(sfdetail[i]['costs']);
 					}
 					str1 = "<tr><td colspan='4' align='left'>共<font color='#30BEB2'><b>"+i+"</b></font>味药</td><td colspan='3' align='right'><font color='#30BEB2'><b>合计金额：<font color='#30BEB2'>￥"+zcosts.toFixed(2)+"</font></b></td></tr>";

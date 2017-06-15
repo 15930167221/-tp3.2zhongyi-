@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="__PUBLIC__/css/chaxun.css">
     <!-- 日历新css -->
     <link rel="stylesheet" href="__PUBLIC__/js/jedate/skin/jedate.css">
+    <style>
+        a{ text-decoration:none}
+    </style>
 
     <!-- 分页效果 -->
     <link href="__PUBLIC__/css/mypage.css" rel="stylesheet" type="text/css"/>
@@ -111,18 +114,19 @@
         </div>
     </div>
     </form>
-    <div class="cxtable center" style="width: 97%; height: 72%;overflow: auto;">
+    <div class="cxtable center" style="width: 97%; height: 73%;overflow: auto;">
         <!-- 分页开始 -->
         <table style="table-layout: fixed;" border="1" bordercolor="#ccc" width="100%">
                     <thead>
                         <tr  style="background-color: #E2ECF8;">
-                            <th width="10%" height="40px" style="text-align: center;">病历号</th>
-                            <th width="10%" style="text-align: center;">姓名</th>
-                            <th width="10%" style="text-align: center;">性别</th>
-                            <th width="20%" style="text-align: center;">就诊日期</th>
-                            <th width="10%" style="text-align: center;">电话</th>
-                            <th width="20%" style="text-align: center;">预约日期</th>
-                            <th width="15%" style="text-align: center;">操作</th>
+                            <th  height="40px" style="text-align: center;">病历号</th>
+                            <th  style="text-align: center;">姓名</th>
+                            <th  style="text-align: center;width: 50px;">性别</th>
+                            <th  style="text-align: center;">就诊日期</th>
+                            <th  style="text-align: center;">电话</th>
+                            <th  style="text-align: center;">完成就诊状态</th>
+                            <th  style="text-align: center;">预约日期</th>
+                            <th  style="text-align: center;">操作</th>
                         </tr>
                     </thead>
                     <volist name="data" id="vo">   
@@ -130,14 +134,23 @@
                             <td>{$vo.br_id}</td>
                             <td>{$vo.br_name}</td>
                             <td>{$vo.xb}</td>
-                            <td>{$vo.p_date}</td>
+                            <td>{$vo.jz_date}</td>
                             <td>{$vo.tel}</td>
+                            <td>
+                                <if condition="$vo.jz_flag eq 1 ">
+                                未完成
+                                <else />
+                                完成
+                                </if>
+                            </td>
                             <td>{$vo.p_date}</td>
                             <!-- <td>{$vo.xh}</td> -->
                             <!--ajax 隐藏域用于主键（病历号）的操作 -->
                             <input type="hidden" class="ajaxChacanshu" value="{$vo.br_id}">
+                            <input type="hidden" class="xh" value="{$vo.xh}">
+                            <input type="hidden" class="dp" value="{$vo.department}">
                             <td>
-                                <span class="ajaxChaXiangxi" data-toggle="modal" data-target="#myModal">详细信息</span>
+                                <span class="ajaxChaXiangxi" data-toggle="modal" data-target="#myModal">详情</span>
                                 <span><a href='{:U("Index/dengji" ,array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' style="color: blue; font-size: 15px;">登记</a></span>
                                 <span><a href='{:U("Index/yuyue" ,array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' style="color: blue; font-size: 15px;">预约</a></span>
                             </td>
@@ -306,11 +319,12 @@
 <script type="text/javascript">
     $(".ajaxChaXiangxi").click(function(){
         $id = $(this).parent().parent().find(".ajaxChacanshu").val();
-        // alert($id);
+        $xh = $(this).parent().parent().find(".xh").val();
+        $dp = $(this).parent().parent().find(".dp").val();
         $.ajax({
             type:'get',
             url:'{:U("Index/chaxunxiangxi")}',
-            data:{"id":$id},
+            data:{"id":$id,"xh":$xh,"dp":$dp},
             dataType:'json',
             success:function(dd){
                 // alert(dd);
@@ -351,7 +365,7 @@
                 }
             },
             error:function(){
-                alert(Ajax请求失败);
+                // alert(Ajax请求失败);
             }
         });
     });

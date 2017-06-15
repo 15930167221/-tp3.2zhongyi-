@@ -46,6 +46,7 @@ function jisuan()
     liangbi = Math.round((liang / zong * 10000) / 100.00);
     dahanbi = Math.round((dahan / zong * 10000) / 100.00);
     darebi = Math.round((dare / zong * 10000) / 100.00);
+    console.log(wenbi);
     jieguo = [wenbi,rebi,pingbi,hanbi,weiwenbi,weihanbi,dahanbi,darebi,liangbi];
     return jieguo;
 }
@@ -253,7 +254,7 @@ function setHop(zywrph)
                     enabled: true,
                         formatter: function() {  
                    if (this.percentage > 0)  
-                       return '<b style="font-size:13px;font-weight:normal;">' + this.point.name + '</b>: <b style="font-size:13px;font-weight:normal;">' + Math.round(this.point.percentage) + ' %</b>'; //这里进行判断（看这里）  
+                       return '<b style="font-size:13px;font-weight:normal;">' + this.point.name + '</b>: <b style="font-size:13px;font-weight:normal;">' + parseFloat((this.point.percentage).toFixed(2)) + ' %</b>'; //这里进行判断（看这里）
                },  
                 },
                 showInLegend: true,
@@ -357,7 +358,7 @@ function setHop2(zywrph)
                     enabled: true,
                         formatter: function() {  
                    if (this.percentage > 0)  
-                       return '<b style="font-size:13px;font-weight:normal;">' + this.point.name + '</b>: <b style="font-size:13px;font-weight:normal;">' + Math.round(this.point.percentage) + ' %</b>'; //这里进行判断（看这里）  
+                       return '<b style="font-size:13px;font-weight:normal;">' + this.point.name + '</b>: <b style="font-size:13px;font-weight:normal;">' + parseFloat((this.point.percentage).toFixed(2)) + ' %</b>'; //这里进行判断（看这里）
                },  
                 },
                 showInLegend: true,

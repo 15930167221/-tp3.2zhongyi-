@@ -266,7 +266,7 @@
             <div class="anniu">
                 <button class="btn btn-success tztitle1" type="button" style="display:none;">测试结果表</button>
                 <button type="button" class="btn btn-success" id="sub">提交</button>
-                <button type="button" class="btn btn-success" id="save" disabled="disabled">保存</button>
+                <button type="button" class="btn btn-success tztitle2" style="display:none;" id="save">保存</button>
                 <button type="button" class="btn btn-success" id="saveas">另存为</button>
                 <button type="button" class="btn btn-warning" onclick="preview(1);" id="dayin">打印</button>
             </div>
@@ -287,6 +287,7 @@
     //测试结果表按钮显示
     $("#checkRes").click(function(){
         $(".tztitle1").show();
+        $(".tztitle2").show();
         $("#sub").hide();
     })
     $(".ti-content label input").click(function(){

@@ -5,17 +5,6 @@
 	<!-- 自己写的css -->
 	<link rel="stylesheet" type="text/css" href="__PUBLIC__/yeMiancss/binglicx.css">
     <link rel="stylesheet" href="__PUBLIC__/css/font.css">
-    <!-- 分页 -->
-    <link rel="stylesheet" href="__PUBLIC__/css/fystyle.css">
-    <style>
-       .yemianfenyequxiao div a,span{
-            text-decoration:none;float:left;
-            line-height:25px;margin-right:8px;
-        }
-        .yemianfenyequxiao{
-            float: right;margin-top: 10px;
-        }
-    </style>
 	<!-- 日历的js -->
 	<script type="text/javascript" src="__PUBLIC__/rili/jeDate/jedate.js"></script>
     <script src="__PUBLIC__/mrjkda/Birthday-Calendar.js"></script>
@@ -73,121 +62,140 @@
             <span class="glyphicon glyphicon-search" style="font-size:16px;"></span>
             <span>病例查询</span>
         </div>
-        <div style="float: right; margin-right: 20px;margin-top: 5px;">
-             <button id="cha" class="btn  btn-info btn-search"><b>查询</b></button>
-        </div>
     </div>
     <div class="left">
         <!-- 查询条件 -->
         <div class="zuokuaicxtj">
-            <form id="blcx" method="get">
-                <!-- 区分get还是post -->
-                <input type="hidden" name="typeName" value="1">
+            <div class="chaxtjxinxi">
                 <!-- 内容 -->
-                <table style="width: 90%; height: 100%;margin-left: 43px;border-collapse:separate; border-spacing:10px;">
-                    <tr>
-                        <td><span><b>病 历 号</b></span></td>
-                        <td>
-                            <input type="text" name="blh"  placeholder="请输入病历号" value="{$chaxuntiaojian.blh}" autocomplete="off">
-                        </td>
-                        <td>
-                            <span><b>姓　　名</b></span>
-                        </td>
-                        <td>
-                            <input type="text" name="name" placeholder="请输入姓名" value="{$chaxuntiaojian.name}" autocomplete="off">
-                        </td>
-                        <td>
-                            <span><b>性　　别</b></span>
-                        </td>
-                        <td>
-                            <if condition="($chaxuntiaojian.sex eq '女') ">
-                                <label style="width:78px;">男<input type="radio" name="sex"  value="男"></label>
-                                <label style="width:78px;">女<input type="radio" name="sex" checked="checked" value="女"></label>
-                            <else />
-                                <label style="width:78px;">男<input type="radio" name="sex" checked="checked" value="男"></label>
-                                <label style="width:78px;">女<input type="radio" name="sex" value="女"></label>
-                            </if>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span><b>身份证号</b></span>
-                        </td>
-                        <td>
-                            <input type="text" name="idcard" placeholder="请输入身份证号" value="{$chaxuntiaojian.idcard}" autocomplete="off">
-                        </td>
-                        <td>
-                            <span><b>开始日期</b></span>
-                        </td>
-                        <td>
-                            <input class="datainp"  id="start" value="{$chaxuntiaojian.starttime}" name="starttime" type="text" placeholder="请选择"  readonly>
-                        </td>
-                        <td>
-                            <span><b>结束日期</b></span>
-                        </td>
-                        <td>
-                            <input class="datainp" id="end"   name="endtime" value="{$chaxuntiaojian.endtime}" type="text" placeholder="请选择"  readonly>
-                        </td>
-                    </tr>
-                </table>
-               
-            </form>
-        </div>
-         <!-- 日期的点击事件 -->
+                <!-- 折叠 -->
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default" style="height:100%;">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"  href="#collapseOne">
+                                    <b>选择条件</b>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <form id="blcx" method="post">
+                                <!-- 内容 -->
+                                <div class="input-group">
+                                    <div>
+                                        <span>病历号</span><span>:</span>
+                                        <input type="text" name="blh"  placeholder="请输入病历号" value="{$chaxuntiaojian.blh}" autocomplete="off">
+                                    </div>
+                                    <div>
+                                        <span>姓名</span><span>:</span>
+                                        <input type="text" name="name" placeholder="请输入姓名" value="{$chaxuntiaojian.name}" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <div>
+                                        <span>身份证号</span><span>:</span>
+                                        <input type="text" name="idcard" placeholder="请输入身份证号" value="{$chaxuntiaojian.idcard}" autocomplete="off">
+                                    </div>
+                                    <div>
+                                        <span>性别</span><span>:</span>
+                                    <span>
+                                        <if condition="($chaxuntiaojian.sex eq '女') ">
+                                            <label style="width:78px;">男<input type="radio" name="sex"  value="男"></label>
+                                            <label style="width:78px;">女<input type="radio" name="sex" checked="checked" value="女"></label>
+                                        <else />
+                                            <label style="width:78px;">男<input type="radio" name="sex" checked="checked" value="男"></label>
+                                            <label style="width:78px;">女<input type="radio" name="sex" value="女"></label>
+                                        </if>
+                                       
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <div>
+                                        <span>开始日期</span><span>:</span>
+                                        <input class="datainp"  id="start" value="{$chaxuntiaojian.starttime}" name="starttime" type="text" placeholder="请选择"  readonly>
+                                    </div>
+                                    <div>
+                                        <span>结束日期</span><span>:</span>
+                                        <input class="datainp" id="end"   name="endtime" value="{$chaxuntiaojian.endtime}" type="text" placeholder="请选择"  readonly>
+                                    </div>
+                                </div>
+                                <!-- 日期的点击事件 -->
                 <script>
                     $.jeDate('#start',{isinitVal:true,initAddVal:[-30],format: 'YYYY-MM-DD'});
                     $.jeDate('#end',{isinitVal:true,initAddVal:[],format: 'YYYY-MM-DD'});
                 </script>
-        <!-- 病人信息 -->
-        <div class="bingrxinxi">
-            <!-- 表格 -->
-            <div class="chaochubufyc">
-                <table class="table table-striped" style="width: 99.9%; margin-bottom: 0px;">
-                    <tr >
-                        <th><b>病历号</b></th>
-                        <th><b>姓名</b></th>
-                        <th><b>性别</b></th>
-                        <th><b>出生年月</b></th>
-                        <th><b>身份证号</b></th>
-                        <th><b>单位</b></th>
-                        <th><b>电话</b></th>
-                        <th><b>EMail</b></th>
-                        <th><b>就诊日期</b></th>
-                    </tr>
-                    <volist name="jbxx" id="vo">
-                        <tr class="jbxxtr" data-toggle='modal' data-target='#myZhilModal'>
-                            <td><font>{$vo.br_id}</font></td>
-                            <td><font>{$vo.br_name}</font></td>
-                            <td>{$vo.xb}</td>
-                            <td><font>{$vo.cs_date}</font></td>
-                            <td><font>{$vo.pass}</font></td>
-                            <td>{$vo.dw}</td>
-                            <td>{$vo.tel}</td>
-                            <td>{$vo.emial}</td>
-                            <td>{$vo.jz_date}</td>
-                            <td style="display: none;">{$vo.department}</td>
-                        </tr>
-                    </volist>
-                </table>
-            </div>
-        </div>
-        <div style="width:100%;background-color:#fff;margin-bottom:0px;">
-            <div class="result page">
-                <div class="pages">
-                    <div class="yemianfenyequxiao" style="padding-right: 30px;">
-                        {$page}
+                            </from>
+                            <div class="chaxtjxinxianniu">
+                                <button id="cha" class="btn  btn-info btn-search"><b>查询</b></button>
+                                <button id="all" class="btn  btn-info btn-search" style="margin-left: 40px;"><b>全部</b></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- 病人信息 -->
+        <div class="bingrxinxi">
+            <div class="bingrxinxihz">
+                <img src="__PUBLIC__/img/014.png" style="width:35px; margin-right:8px;" alt="图片加载中。。。。">
+                <span>病人信息</span>
+            </div>
+            <!-- 表格 -->
+            <div  class="bingrxinxibaog" style="overflow:auto;">
+                <div class="chaochubufyc">
+                    <table class="table">
+                        <tr>
+                            <th width="10%"><b>病历号</b></th>
+                            <th width="6%"><b>姓名</b></th>
+                            <th width="5%"><b>性别</b></th>
+                            <th width="15%"><b>出生年月</b></th>
+                            <th width="10%"><b>身份证号</b></th>
+                            <th width="24%"><b>单位</b></th>
+                            <th width="10%"><b>电话</b></th>
+                            <th width="10%"><b>传真</b></th>
+                            <th width="10%"><b>EMail</b></th>
+                        </tr>
+                        <volist name="jbxx" id="vo">
+                            <tr class="jbxxtr">
+                                <td><font>{$vo.br_id}</font></td>
+                                <td><font>{$vo.br_name}</font></td>
+                                <td>{$vo.xb}</td>
+                                <td><font>{$vo.cs_date}</font></td>
+                                <td><font>{$vo.pass}</font></td>
+                                <td>{$vo.dw}</td>
+                                <td>{$vo.tel}</td>
+                                <td>{$vo.fax}</td>
+                                <td>{$vo.emial}</td>
+                            </tr>
+                        </volist>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- 模态框内容开始 -->
-        <div class="modal fade" id="myZhilModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow: hidden;">
-            <div class="modal-dialog" style=" width:100%;">
-                <!-- 滚动监听 -->
-                <div  style="height:550px; ">
-                    <!--健康档案-->
-                    <div class="right">
+	<!-- 信息 -->
+	<div class="youkuaixinx">
+		<!-- 内容 -->
+		<!-- 就诊记录 -->
+		<div class="jiuzhengjiru" style="height:85%; overflow:auto;">
+			<div class="jiuzhengjiruhz" style="border-bottom:1px solid #ccc;text-align: center;">
+				<!-- <img src="__PUBLIC__/img/iconpng.png " style="width:35px; margin-right:8px;"> -->
+				<span>就诊记录</span>
+			</div>
+			<div class="jiuzhengjirubiaog">
+				<table class="table table-striped" id="jiuzhenjl">
+					
+				</table>
+			</div>
+		</div>
+		<!-- 模态框内容开始 -->
+		<div class="modal fade" id="myZhilModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow: hidden;">
+	        <div class="modal-dialog" style=" width:100%;">
+	            <!-- 滚动监听 -->
+	            <div  style="height:550px; ">
+        			<!--健康档案-->
+			        <div class="right">
             <!--健康档案-->
             <div class="right-center">
                 <div class="health-file center" style="width:80%; background-color:#FFF; height:auto; border:1px solid #ccc;">
@@ -223,7 +231,7 @@
                             <tr>
                                 <th><label for="duo">工作单位</label></th>
                                 <td colspan="8">
-                                    <span style="width: 98%;height: 100%;">
+                                    <span>
                                         <textarea name="dw" id="duo" rows="1" disabled="disabled"></textarea>
                                     </span>
                                 </td>
@@ -253,7 +261,7 @@
                                 <td colspan="5">
                                     <span><label for="yw1">父亲：</label></span>
                                     <span>
-                                        <span class="wu">[</span>
+                                    	<span class="wu">[</span>
                                         <span id="yw1"></span>
                                         <span class="wu">]</span>
                                     </span>/
@@ -262,7 +270,7 @@
                                 <td colspan="3">
                                     <span><label for="yw2">母亲：</label></span>
                                     <span>
-                                        <span class="wu">[</span>
+                                    	<span class="wu">[</span>
                                         <span id="yw2"></span>
                                         <span class="wu">]</span>
                                     </span>/
@@ -273,7 +281,7 @@
                                 <td colspan="5">
                                     <span><label for="yw3">兄弟姐妹：</label></span>
                                     <span>
-                                        <span class="wu">[</span>
+                                    	<span class="wu">[</span>
                                         <span id="yw3"></span>
                                         <span class="wu">]</span>
                                     </span>/
@@ -282,9 +290,9 @@
                                 <td colspan="3">
                                     <span><label for="yw4">子女：</label></span>
                                     <span>
-                                        <span class="wu">[</span>
+                                    	<span class="wu">[</span>
                                         <span id="yw4"></span>
-                                        <span class="wu">]</span>
+                                      	<span class="wu">]</span>
                                     </span>/
                                     <span id="jtsZN"></span>
                                 </td>
@@ -385,7 +393,7 @@
                             <tr>
                                 <th><label for="xj">心悸</label></th>
                                 <td colspan="8">
-                                    <span class="wu">[</span>
+                                	<span class="wu">[</span>
                                     <span id="xj"></span>
                                     <span class="wu">]</span>
                                 </td>
@@ -466,15 +474,19 @@
             </div>
         </div>
     </div>
-    <div data-dismiss="modal" style=" width:40px; position:absolute; top:20px;right:80px;">
+	<div data-dismiss="modal" style=" width:40px; position:absolute; top:20px;right:80px;">
         <button  class="btn" >&times;</button>
     </div>
-    <div style=" width:40px; position:absolute; top:70px;right:80px;">
+	<div style=" width:40px; position:absolute; top:70px;right:80px;">
         <button  class="btn " onclick="preview();"><b>打<br>印<br>病<br>历</b></button>
     </div>
-                </div><!-- /.modal-dialog -->
-            </div>
-            <!-- 模态框内容结束 -->
+			    </div><!-- /.modal-dialog -->
+			</div>
+			<!-- 模态框内容结束 -->
+		</div>
+	</div>
+	<!-- 清除浮动 -->
+	<div class="qingchudakfd"></div>
     <script src="__PUBLIC__/mrjkda/bingshi.js"></script>
 	<script type="text/javascript">
     	jeDate.skin('gray');
@@ -489,71 +501,81 @@
 		$("#blcx").submit();
 	});
 	$(".jbxxtr").on('click',function(){
-        var jz_date = $(this).children('td').eq(8).html();
-        var dpment = $(this).children('td').eq(9).html();
-		// alert(dpment);
-        $.ajax({
-            type:"post",
-            url:"{:U('Chaxun/jiuzhenls')}",
-            dataType:"json",
-            data:{"jz_date":jz_date,"dpment":dpment},
-            success:function(jkres){
-                $("#jzrq").text(jkres[0]['jz_date']);
-                $("#blnum").text(jkres[0]['br_id']);
-                $("#name").text(jkres[0]['br_name']);
-                $("#sex").text(jkres[0]['xb']);
-                $("#age").text(jkres[0]['nl']);
-                $("#birthday").text(jkres[0]['cs_date'].substring(0,10));
-                $("#userID").text(jkres[0]['pass']);
-                $("#phone").text(jkres[0]['tel']);
-                $("#duo").text(jkres[0]['dw']);
-                $("#main").text(jkres[0]['zs']);
-                $("#jws11").text(jkres[0]['jws']);
-                $("#qrsj1").text(jkres[0]['jws_date']);
-                $("#crbs").text(jkres[0]['crbs']);
-                $("#qrsj2").text(jkres[0]['crbs_date']);
-                $("#yw1").text(jkres[0]['jts_fq1']);
-                $("#jtsFQ").text(jkres[0]['jts_fq2']);
-                $("#yw2").text(jkres[0]['jts_mq1']);
-                $("#jtsMQ").text(jkres[0]['jts_mq2']);
-                $("#yw3").text(jkres[0]['jts_xdjm1']);
-                $("#jtsXD").text(jkres[0]['jts_xdjm2']);
-                $("#yw4").text(jkres[0]['jts_zn1']);
-                $("#jtsZN").text(jkres[0]['jts_zn2']);
-                $("#gms").text(jkres[0]['gms']);
-                $("#weight").text(jkres[0]['weight']);
-                $("#tw").text(jkres[0]['temperature']);
-                $("#mb").text(jkres[0]['pulse']);
-                $("#hx").text(jkres[0]['breath']);
-                $("#xy").text(jkres[0]['blood_pre1']);
-                $("#xy1").text(jkres[0]['blood_pre2']);
-                $("#wshen").text(jkres[0]['zt_wshen']);
-                $("#wse").text(jkres[0]['zt_wse']);
-                $("#tt").text(jkres[0]['zt_tt']);
-                $("#tx").text(jkres[0]['zt_tx']);
-                $("#zl").text(jkres[0]['xz_smzl']);
-                $("#sj").text(jkres[0]['xz_smsj']);
-                $("#sy").text(jkres[0]['xz_sy']);
-                $("#kw").text(jkres[0]['xz_kw']);
-                $("#dbc").text(jkres[0]['xz_dbbc']);
-                $("#bz").text(jkres[0]['xz_dbbz']);
-                $("#xbc").text(jkres[0]['xz_xbbc']);
-                $("#bs").text(jkres[0]['xz_xbbs']);
-                $("#xq").text(jkres[0]['qz_xq']);
-                $("#xg").text(jkres[0]['qz_xg']);
-                $("#xj").text(jkres[0]['xj']);
-                $("#ss").text(jkres[0]['sz_ss']);
-                $("#st").text(jkres[0]['sz_st']);
-                $("#dt").text(jkres[0]['sz_dt']);
-                $("#tz").text(jkres[0]['sz_tz']);
-                $("#ts").text(jkres[0]['sz_ts']);
-                $("#mz").text(jkres[0]['mz']);
-                $("#tzbs").text(jkres[0]['tzzd']);
-                if(jkres[0]['jws_date'] == '1900-01-01'){
-                    $("#qrsj1").text('');
-                    $("#qrsj2").text('');
-                }
-               
+		$("#jiuzhenjl").html("");
+		var br_id = $(this).children('td').eq(0).text();
+		$.ajax({
+			type:"post",
+			url:"{:U('Chaxun/jiuzhenjl')}",
+			dataType:"json",
+			data:{"br_id":br_id},
+			success:function(res){
+				var str = '';
+				for(var i=0;i<res.length;i++){
+					str += "<tr class='jztr' data-toggle='modal' data-target='#myZhilModal' style='height:30px; border-bottom:1px solid #ccc;'><td width='50%'>&nbsp;&nbsp;&nbsp;&nbsp;就诊日期</td><td width='40%'><font>"+res[i]['jz_date']+"</font></td></tr>";
+				}
+				$("#jiuzhenjl").html(str);
+			}
+		});
+	});
+	$(document).on('click','.jztr',function(){
+		var jz_date = $(this).children('td').eq(1).find('font').html();
+		$.ajax({
+			type:"post",
+			url:"{:U('Chaxun/jiuzhenls')}",
+			dataType:"json",
+			data:{"jz_date":jz_date},
+			success:function(jkres){
+				$("#jzrq").text(jkres[0]['jz_date']);
+				$("#blnum").text(jkres[0]['br_id']);
+				$("#name").text(jkres[0]['br_name']);
+				$("#sex").text(jkres[0]['xb']);
+				$("#age").text(jkres[0]['nl']);
+				$("#birthday").text(jkres[0]['cs_date'].substring(0,10));
+				$("#userID").text(jkres[0]['pass']);
+				$("#phone").text(jkres[0]['tel']);
+				$("#duo").text(jkres[0]['dw']);
+				$("#main").text(jkres[0]['zs']);
+				$("#jws11").text(jkres[0]['jws']);
+				$("#qrsj1").text(jkres[0]['jws_date']);
+				$("#crbs").text(jkres[0]['crbs']);
+				$("#qrsj2").text(jkres[0]['crbs_date']);
+				$("#yw1").text(jkres[0]['jts_fq1']);
+				$("#jtsFQ").text(jkres[0]['jts_fq2']);
+				$("#yw2").text(jkres[0]['jts_mq1']);
+				$("#jtsMQ").text(jkres[0]['jts_mq2']);
+				$("#yw3").text(jkres[0]['jts_xdjm1']);
+				$("#jtsXD").text(jkres[0]['jts_xdjm2']);
+				$("#yw4").text(jkres[0]['jts_zn1']);
+				$("#jtsZN").text(jkres[0]['jts_zn2']);
+				$("#gms").text(jkres[0]['gms']);
+				$("#weight").text(jkres[0]['weight']);
+				$("#tw").text(jkres[0]['temperature']);
+				$("#mb").text(jkres[0]['pulse']);
+				$("#hx").text(jkres[0]['breath']);
+				$("#xy").text(jkres[0]['blood_pre1']);
+				$("#xy1").text(jkres[0]['blood_pre2']);
+				$("#wshen").text(jkres[0]['zt_wshen']);
+				$("#wse").text(jkres[0]['zt_wse']);
+				$("#tt").text(jkres[0]['zt_tt']);
+				$("#tx").text(jkres[0]['zt_tx']);
+				$("#zl").text(jkres[0]['xz_smzl']);
+				$("#sj").text(jkres[0]['xz_smsj']);
+				$("#sy").text(jkres[0]['xz_sy']);
+				$("#kw").text(jkres[0]['xz_kw']);
+				$("#dbc").text(jkres[0]['xz_dbbc']);
+				$("#bz").text(jkres[0]['xz_dbbz']);
+				$("#xbc").text(jkres[0]['xz_xbbc']);
+				$("#bs").text(jkres[0]['xz_xbbs']);
+				$("#xq").text(jkres[0]['qz_xq']);
+				$("#xg").text(jkres[0]['qz_xg']);
+				$("#xj").text(jkres[0]['xj']);
+				$("#ss").text(jkres[0]['sz_ss']);
+				$("#st").text(jkres[0]['sz_st']);
+				$("#dt").text(jkres[0]['sz_dt']);
+				$("#tz").text(jkres[0]['sz_tz']);
+				$("#ts").text(jkres[0]['sz_ts']);
+				$("#mz").text(jkres[0]['mz']);
+				$("#tzbs").text(jkres[0]['tzzd']);
                 //中医诊断
                 if(jkres[0]['zyzd'] == null){
                     jkres[0]['zyzd'] = '';
@@ -567,38 +589,35 @@
                 if(jkres[0]['zyzz'] == null){
                     jkres[0]['zyzz'] = '';
                 };
-                if(jkres[0]['tzzd'] == null){
-                    $('#tzbs').text('');
-                };
-                $("#zyzd").text(jkres[0]['zyzd']);
-                $("#xyzd").text(jkres[0]['xyzd']);
-                $("#zybz").text(jkres[0]['zybz']);
-                $("#zyzz").text(jkres[0]['zyzz']);
-                $("#qtjh").html(jkres[0]['elseplan']);
-                //处方
-                var str = '';
-                for(var i=0;i<jkres[1].length;i++){
-                    str += "<div style='margin-top:10px;'><span>【中药处方"+(i+1)+"】：</span><span><b>"+jkres[1][i]['presc_name']+"</b></span><span>(<span>"+jkres[1][i]['dose']+"</span><span>剂</span>)</span></div><div class='zylb'>";
-                    for(var j=0;j<jkres[1][i]['drug_name'].length;j++){
-                        str += "<ul><li><span>"+jkres[1][i]['drug_name'][j]+"</span><span> "+jkres[1][i]['amount'][j]+"</span><span> "+jkres[1][i]['drug_units'][j]+"</span><span> "+jkres[1][i]['usage'][j]+"</span></ul></li>";
-                    }
-                    str += "</div><div style='clear:both;'><span>【医嘱】：<span></span>"+jkres[1][i]['order_text']+"</span></div>";
-                }
-                $(".chufang").html(str);
-                var str1 = '';
-                for(var k=0;k<jkres[2].length;k++){
-                    if(jkres[2][k]['fs'] != ''){
-                        str1 += "<div style='margin-top:10px;'><span>【西药处方"+(k+1)+"】</span><span>：共"+jkres[2][k]['fs']+"天</span></div>";
-                    }else{
-                        str1 += "<div><span>【西药处方"+(k+1)+"】</span></div>";
-                    }
-                    str1 += "<table class='xytab'><tr><td width='25%'>"+jkres[2][k]['yp_name']+"</td><td width='25%'>"+jkres[2][k]['yp_spec']+"</td><td width='10%'>"+jkres[2][k]['yp_total_amount']+"/"+jkres[2][k]['danwei']+"</td><td width='12.5%'>"+jkres[2][k]['yp_yc_amount']+"/次</td><td width='17.5%'>"+jkres[2][k]['yp_useage']+"</td><td width='10%'>"+jkres[2][k]['yp_pl_day']+"</td></tr></table>";
-                    str1 += "<div style='clear:both;margin-bottom:10px;'>【备注】："+jkres[2][k]['yp_mem']+"</div>";
-                }
-                $(".xiyao").html(str1);
-            }
-        });
-	});
+				$("#zyzd").text(jkres[0]['zyzd']);
+				$("#xyzd").text(jkres[0]['xyzd']);
+				$("#zybz").text(jkres[0]['zybz']);
+				$("#zyzz").text(jkres[0]['zyzz']);
+				$("#qtjh").html(jkres[0]['elseplan']);
+				//处方
+				var str = '';
+				for(var i=0;i<jkres[1].length;i++){
+					str += "<div style='margin-top:10px;'><span>【中药处方"+(i+1)+"】：</span><span><b>"+jkres[1][i]['presc_name']+"</b></span><span>(<span>"+jkres[1][i]['dose']+"</span><span>剂</span>)</span></div><div class='zylb'>";
+					for(var j=0;j<jkres[1][i]['drug_name'].length;j++){
+						str += "<ul><li><span>"+jkres[1][i]['drug_name'][j]+"</span><span> "+jkres[1][i]['amount'][j]+"</span><span> "+jkres[1][i]['drug_units'][j]+"</span><span> "+jkres[1][i]['usage'][j]+"</span></ul></li>";
+					}
+					str += "</div><div style='clear:both;'><span>【医嘱】：<span></span>"+jkres[1][i]['order_text']+"</span></div>";
+				}
+				$(".chufang").html(str);
+				var str1 = '';
+				for(var k=0;k<jkres[2].length;k++){
+					if(jkres[2][k]['fs'] != ''){
+						str1 += "<div style='margin-top:10px;'><span>【西药处方"+(k+1)+"】</span><span>：共"+jkres[2][k]['fs']+"天</span></div>";
+					}else{
+						str1 += "<div><span>【西药处方"+(k+1)+"】</span></div>";
+					}
+					str1 += "<table class='xytab'><tr><td width='25%'>"+jkres[2][k]['yp_name']+"</td><td width='25%'>"+jkres[2][k]['yp_spec']+"</td><td width='10%'>"+jkres[2][k]['yp_total_amount']+"/"+jkres[2][k]['danwei']+"</td><td width='12.5%'>"+jkres[2][k]['yp_yc_amount']+"/次</td><td width='17.5%'>"+jkres[2][k]['yp_useage']+"</td><td width='10%'>"+jkres[2][k]['yp_pl_day']+"</td></tr></table>";
+					str1 += "<div style='clear:both;margin-bottom:10px;'>【备注】："+jkres[2][k]['yp_mem']+"</div>";
+				}
+				$(".xiyao").html(str1);
+			}
+		});
+	})
 	</script>
     <script>
         /*function clo(){

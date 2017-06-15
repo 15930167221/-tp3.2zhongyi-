@@ -28,7 +28,7 @@ class JiezhenController extends PublicController {
         $this->assign('page',$show);// 赋值分页输出
         //以上是分页 ， 以下是数据
         //'jz_flag=1'
-        $data =  $rect->where($where)->order('p_date desc')->limit($page->firstRow.','.$page->listRows)->field('convert(varchar(19),p_date,120) as p_date,br_name,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl,nl as nlt,tel,br_id,xh')->select();//查询数据（未完成就诊的）$Page->firstRow 起始条数 $Page->listRows 获取多少条
+        $data =  $rect->where($where)->order('isnull(jz_date,p_date) asc')->limit($page->firstRow.','.$page->listRows)->field('convert(varchar(19),isnull(jz_date,p_date),120) as p_date,convert(varchar(19),jz_date,120) as jz_date,convert(varchar(19),cs_date,120) as cs_date,br_name,xb, dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),isnull(jz_date,p_date),120)) as nl,nl as nlt,tel,br_id,xh')->select();//查询数据（未完成就诊的）$Page->firstRow 起始条数 $Page->listRows 获取多少条
         $this->assign('data',$data);// 赋值模板变量
         $this->display();
     }
@@ -52,7 +52,7 @@ class JiezhenController extends PublicController {
         $this->assign('page',$show);// 赋值分页输出
         //以上是分页 ， 以下是数据
         //'jz_flag=1'
-        $data =  $rect->where($where)->order('p_date desc')->limit($page->firstRow.','.$page->listRows)->field('convert(varchar(19),p_date,120) as p_date,br_name,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl,nl as nlt,tel,br_id,xh')->select();//查询数据（未完成就诊的）$Page->firstRow 起始条数 $Page->listRows 获取多少条
+        $data =  $rect->where($where)->order('isnull(jz_date,p_date) asc')->limit($page->firstRow.','.$page->listRows)->field('convert(varchar(19),isnull(jz_date,p_date),120) as p_date,convert(varchar(19),jz_date,120) as jz_date,convert(varchar(19),cs_date,120) as cs_date,br_name,xb, dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),isnull(jz_date,p_date),120)) as nl,nl as nlt,tel,br_id,xh')->select();//查询数据（未完成就诊的）$Page->firstRow 起始条数 $Page->listRows 获取多少条
         $this->assign('data',$data);// 赋值模板变量
         $this->display();
     }
@@ -77,7 +77,7 @@ class JiezhenController extends PublicController {
         $this->assign('page',$show);// 赋值分页输出
         //以上是分页 ， 以下是数据
         //'jz_flag=1'
-        $data =  $rect->where($where)->order('p_date desc')->limit($page->firstRow.','.$page->listRows)->field('convert(varchar(19),p_date,120) as p_date,br_name,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl,nl as nlt,tel,br_id,xh')->select();//查询数据（未完成就诊的）$Page->firstRow 起始条数 $Page->listRows 获取多少条
+        $data =  $rect->where($where)->order('isnull(jz_date,p_date) asc')->limit($page->firstRow.','.$page->listRows)->field('convert(varchar(19),isnull(jz_date,p_date),120) as p_date,convert(varchar(19),jz_date,120) as jz_date,convert(varchar(19),cs_date,120) as cs_date,br_name,xb, dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),isnull(jz_date,p_date),120)) as nl,nl as nlt,tel,br_id,xh')->select();//查询数据（未完成就诊的）$Page->firstRow 起始条数 $Page->listRows 获取多少条
         // echo $rect->getLastSql();
 
         $this->assign('data',$data);// 赋值模板变量

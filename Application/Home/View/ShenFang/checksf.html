@@ -15,6 +15,18 @@
 </script>
 <script>
 function cfmx(num){
+//    获取处方用法
+    $.ajax({
+        type:'post',
+        url:"{:U('ShenFang/huoquchufangyongfa')}",
+        data:{"num":num},
+        dataType:'json',
+        success:function(dd){
+            var str = '';
+            str +=dd[0].usage1+'&nbsp;|&nbsp;<span>'+dd[0].decoction+'</span>&nbsp;|&nbsp;'+dd[0].dosage;
+            $('#chufangyongfa').html(str);
+        }
+    });
     $.post("__CONTROLLER__/cfdetail",{"presc_no":num},function(res){
         var yfxx='';
         for(var i=0;i<res.length;i++){
@@ -51,7 +63,7 @@ function cfmx(num){
                     <td>{$vo.operator}</td>   
                     <td>
                         <if condition="$vo.patient_id neq ''">
-                            <span data-toggle="modal" data-target="#myModal1" onClick="brinfo({$vo.patient_id},{$vo.xh})">{$vo.br_info}</span>
+                            <span data-toggle="modal" data-target="#myModal1" onClick="brinfo({$vo.patient_id},{$vo.xh},{$vo.department})">{$vo.br_info}</span>
                         <else />
                             <span data-toggle="modal" data-target="#myModal2" onClick="hzimg({$vo.presc_no})">
                                 <img src="{$vo.hzsrc}"/>
@@ -409,7 +421,7 @@ function cfmx(num){
                                 </td>
                             </tr>
                             <tr>
-                                <th><label for="zybz">辩证</label></th>
+                                <th><label for="zybz">辨证</label></th>
                                 <td colspan="4" height="40">
                                     <span id="zybz"></span>
                                 </td>
@@ -455,7 +467,11 @@ function cfmx(num){
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">处 方 明 细</h4>
         </div>
-        <div id="cfscroll"> 
+        <div id="cfscroll">
+            <!--处方用法 次数等-->
+            <div>
+                <span style="margin-left:30px; ">【用法】：<span id="chufangyongfa"></span></span>
+            </div>
             <center>
                 <table id="cfmxtab" style="background:#fff;text-align:center;">
                 </table>
@@ -562,12 +578,12 @@ function tankuang(obj,num){
 function href(num){
     window.location.href="__CONTROLLER__/endcheck?presc_no="+num;
 }
-function brinfo(id,xh){
+function brinfo(id,xh,dpment){
     $.ajax({
         type:"post",
         url:"__CONTROLLER__/hzinfo",
         dataType:"json",
-        data:{"patient_id":id,"xh":xh},
+        data:{"patient_id":id,"xh":xh,"dpment":dpment},
         success:function(e){
             $('#hzname').val(e['br_name']);
             $('#hzxb').val(e['xb']);

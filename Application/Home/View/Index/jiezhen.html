@@ -24,6 +24,8 @@
 <body oncontextmenu=self.event.returnValue=false onselectstart="return false">
 <!-- 判断是接诊区页面还是别的页面 -->
 <input type="hidden" id="qufjiezheng" value="{$qufenjiez}">
+<!--隐藏详细信息的url值-->
+<input type="hidden" id="xiangxixinxiurlzhi" value="{:U('Index/jiezhenxiangqajax')}">
 <div class="yuyue">
     <div class="yyfont">
         <span class="glyphicon glyphicon-th-list" style="line-height:45px;font-size:16px;color:#404040;"></span><span style="font-size: 16px;line-height: 33px; margin-top: 6px;font-weight:bold;color: #333;">预约病人列表</span>
@@ -45,7 +47,7 @@
     <input type="hidden" id="dengjichuxh" value="{$dataxh}">
     <div class="yyinf center">
         <div class="yytab">
-            <table id="riqichaajax" width="100%" border="1" bordercolor="#ccc">
+            <table id="riqichaajax" style="table-layout: fixed;" width="100%" border="1" bordercolor="#ccc">
             <thead>
                  <tr>
                     <th width="10%" height="40px">预约/就诊日期</th>
@@ -60,6 +62,8 @@
                 <volist name="data" id="vo">
                 <tr class="sty1" name="tableSty">
                 <td class="brxh" style="display:none;">{$vo.xh}</td>
+                    <!-- 隐藏接诊日期 -->
+                    <td id="jz_date"  style="display:none;">{$vo.jz_date}</td>
                     <td class="datefenmiao">
                         {$vo.p_date}
                         <span><input type="hidden" class="brid" value="{$vo.br_id}"><input type="hidden" value="{$vo.xh}"><input class="nlt" type="hidden" value="{$vo.nlt}"></span>
@@ -84,9 +88,9 @@
                     </td>
                     <td>
                         <span style="font-size: 16px;margin-left: 20%;" data-toggle="modal" data-target="#myModal1" class="ajaxxinxishuju" >详细信息</span>
-                        <a href='{:U("Index/jiankang",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;">就诊</span></a>
+                        <a href='{:U("Index/jiankang",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;"  class="sjtiaozhuan">就诊</span></a>
                         <span style="font-size: 16px;" data-toggle="modal" data-target="#myModal2" class="ajaxxiugaishuju">修改</span>
-                        <a href='{:U("Huajia/huajia",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;">收费</span>
+                        <a href='{:U("Huajia/huajia",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;">收费</span></a>
                     </td>
                 </tr>
                 </volist>
@@ -151,17 +155,10 @@
                          <td>传　　真</td>
                         <td><input id="ajaxmtfax" type="text" readonly="readonly"></td>
                     </tr>
-                    <!-- <tr>
-                        <td>挂 号 费</td>
-                        <td><input id="ajaxmtghf" type="text" readonly="readonly"></td>
-                        <td>预约日期</td>
-                        <td><input id="ajaxmtpdate" type="text" readonly="readonly"></td>
-                    </tr> -->
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" style="background-color:#30bdb5;width: 100px;height: 30px;padding-top: 3px;" data-dismiss="modal">关 &nbsp;&nbsp; 闭</button>
-                <!--<button type="button" class="btn btn-primary">提交更改</button>-->
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -256,108 +253,8 @@
 </body>
 </html>
 <script type="text/javascript">
-    // 判断年龄不能超过150
-    $(document).on("click","#panduannianl",function(){
-        var shuruzhi = $("#ajaxmtXiugainl").val();//输入的值
-        //判断年龄不能超过150
-        if (shuruzhi > 150) {
-           layer.alert("年龄过大",{icon:6});
-        }else{
-            $("form").attr("action", "{:U('Index/dojiezhenajaxxiugai')}" ).submit();
-        }
-    });
-    //详细信息
-    $(document).on("click",".ajaxxinxishuju",function(){
-        $id = $(this).parent().parent().find(".ajaxcanshu").val();
-        var xh = $(this).parent().parent().find(".brxh").html();
-        $.ajax({
-            type:'get',
-            url:'{:U("Index/jiezhenxiangqajax")}',
-            data:{"id":$id,"xh":xh},
-            dataType:'json',
-            success:function(dd)
-            {
-                // 获取对应的病人基本信息
-                $br_id = dd[0]['br_id'];
-                $br_name = dd[0]['br_name'];
-                $nl = dd[0]['nl'];
-                $cs_date = dd[0]['cs_date'];
-                $pass = dd[0]['pass'];
-                $dw = dd[0]['dw'];
-                $tel = dd[0]['tel'];
-                $xb = dd[0]['xb'];
-                $email = dd[0]['e_mail'];
-                $ghf = dd[0]['ghf'];
-                $fax = dd[0]['fax'];
-                $p_date = dd[0]['p_date'];
-                // 通过js将信息添加到页面
-                $("#ajaxmtbrid").val($br_id);
-                $("#ajaxmtbrname").val($br_name);
-                $("#ajaxmtnl").val($nl);
-                $("#ajaxmtcsdate").val($cs_date);
-                $("#ajaxmtpass").val($pass);
-                $("#ajaxmtdw").val($dw);
-                $("#ajaxmttel").val($tel);
-                // 判断性别
-                if($xb=="男"){
-                    $("#ajaxmtxbnan").attr("checked","checked");
-                }else if($xb=="女"){
-                    $("#ajaxmtxbnv").attr("checked","checked");
-                }
-                $("#ajaxmtemail").val($email);
-                $("#ajaxmtghf").val($ghf);
-                $("#ajaxmtfax").val($fax);
-                $("#ajaxmtpdate").val($p_date);
-            }
-        });
-    });
-    //修改信息
-    $(document).on("click",".ajaxxiugaishuju",function(){
-        $id = $(this).parent().parent().find(".ajaxcanshu").val();
-        var xh = $(this).parent().parent().find(".brxh").html();
-        $.ajax({
-            type:'get',
-            url:'{:U("Index/jiezhenxiugaiajax")}',
-            data:{"id":$id,"xh":xh},
-            dataType:'json',
-            success:function(dd)
-            {
-                // 获取对应的病人基本信息
-                $xh = dd[0]['xh'];
-                $br_id = dd[0]['br_id'];
-                $br_name = dd[0]['br_name'];
-                $nl = dd[0]['nl'];
-                $cs_date = dd[0]['cs_date'];
-                $pass = dd[0]['pass'];
-                $dw = dd[0]['dw'];
-                $tel = dd[0]['tel'];
-                $xb = dd[0]['xb'];
-                $email = dd[0]['e_mail'];
-                $ghf = dd[0]['ghf'];
-                $fax = dd[0]['fax'];
-                $p_date = dd[0]['p_date'];
-                // 通过js将信息添加到页面
-                $("#xh").val($xh);
-                $("#ajaxmtXiugaibrid").val($br_id);
-                $("#ajaxmtXiugaibrname").val($br_name);
-                $("#ajaxmtXiugainl").val($nl);
-                $("#ajaxmtXiugaicsdate").val($cs_date);
-                $("#ajaxmtXiugaipass").val($pass);
-                $("#ajaxmtXiugaidw").val($dw);
-                $("#ajaxmtXiugaitel").val($tel);
-                // 判断性别
-                if($xb=="男"){
-                    $("#ajaxmtxiugaixbnan").attr("checked","checked");
-                }else if($xb=="女"){
-                    $("#ajaxmtxiugaixbnv").attr("checked","checked");
-                }
-                $("#ajaxmtXiugaiemail").val($email);
-                $("#ajaxmtXiugaighf").val($ghf);
-                $("#ajaxmtXiugaifax").val($fax);
-                $("#ajaxmtXiugaipdate").val($p_date);
-            }
-        });
-    });
+
+
     $(document).on("change","#xdri",function(){
         // 得到框内值//1-->当日  2-->明日 3-->后日 4-->全部 5-->上周（当天起前7天）
         var knztj = $(this).children("option:selected").val();
@@ -380,6 +277,11 @@
 </script>
 <script src="__PUBLIC__/js/tr.js"></script>
 <script>
+    //双击跳转接诊区
+    $(document).on("dblclick",".sty2",function(){
+        var aa = $(this).find(".sjtiaozhuan").click();
+
+    });
     //sty1点击存session
     $(document).on("click",".sty1",function(){
         var blh=$("#sblh", parent.document).html();//病历号
@@ -470,72 +372,57 @@
     })
     //页面离开回来再点击事件
     $(document).ready(function(){
+        // alert($("#dengjichuid").val());
         //区分是否是登记传来的值
-        //页面单击事件
-                // 判断是点击接诊还是登记页面跳转
-                if ($("#dengjichuid").val() == '') {
-                    // 接诊区
-                    var blh=$("#sblh", parent.document).html();//病历号
-                    var sblhxh=$("#sblhxh", parent.document).val();//序号
-                }else{
-                    var blh=$("#dengjichuid").val();//病历号
-                    var sblhxh=$("#dengjichuxh").val();//序号
-                }
-                
-                    
-                $(".brid").each(function(){
-                    var panduanxh = $(this).next().val();
-                    if ($(this).val() == blh && panduanxh == sblhxh) {
-                        $(this).parent().parent().trigger('click');
-                        
-                    }
-                  
-                });
-
-        //判断是否是接诊区内部的点击
-        if ($("#qufjiezheng").val() == 1) {
-            //页面单击事件
-                // 判断是点击接诊还是登记页面跳转
-                if ($("#dengjichuid").val() == '') {
-                    // 接诊区
-                    var blh=$("#sblh", parent.document).html();//病历号
-                    var sblhxh=$("#sblhxh", parent.document).val();//序号
-                }else{
-                    var blh=$("#dengjichuid").val();//病历号
-                    var sblhxh=$("#dengjichuxh").val();//序号
-                }
-                
-                    
-                $(".brid").each(function(){
-                    var panduanxh = $(this).next().val();
-                    if ($(this).val() == blh && panduanxh == sblhxh) {
-                        $(this).parent().parent().trigger('click');
-                        
-                    }
-                  
-                });
-        }else{
-            //判断那天
-            var hznatian=$("#hznatian", parent.document).html();//患者是哪天
-            //判断是否是点击的那天
-            if (hznatian == $('#xdri').val()) {
-                    //判断页数
-                    var dangqianye = $(".current").html();//当前页面页数
-                    var blh=$("#sblh", parent.document).html();//病历号
-                    var sblhxh=$("#sblhxh", parent.document).val();//序号
-                    $.ajax({
-                        type:'POST',
-                        url:"{:U('Huoquyeshu/dangri')}",
-                        data:{"blh":blh,"sblhxh":sblhxh},
-                        dataType:'json',
-                        success:function(dd)
+        if ($("#dengjichuid").val() != '') {
+            //判断页数
+            var dangqianye = $(".current").html();//当前页面页数
+            var blh=$("#dengjichuid").val()//病历号
+            var sblhxh=$("#dengjichuxh").val()//序号
+            $.ajax({
+                type:'POST',
+                url:"{:U('Huoquyeshu/dangri')}",
+                data:{"blh":blh,"sblhxh":sblhxh},
+                dataType:'json',
+                success:function(dd)
+                {
+                    if (dangqianye == "")
+                    {
+                        //页面单击事件
+                        // 接诊区
+                        var blh=$("#dengjichuid").val();//病历号
+                        var sblhxh=$("#dengjichuxh").val();//序号
+                            
+                        $(".brid").each(function(){
+                            var panduanxh = $(this).next().val();
+                            if ($(this).val() == blh && panduanxh == sblhxh) {
+                                $(this).parent().parent().trigger('click');
+                                
+                            }
+                          
+                        });
+                    }else{
+                        //排出为空的情况
+                        if (dangqianye == undefined)
                         {
-                            if (dangqianye == "")
-                            {
-                                      //页面单击事件
+                             //页面单击事件
+                            // 接诊区
+                            var blh=$("#dengjichuid").val();//病历号
+                            var sblhxh=$("#dengjichuxh").val();//序号
+                                
+                            $(".brid").each(function(){
+                                var panduanxh = $(this).next().val();
+                                if ($(this).val() == blh && panduanxh == sblhxh) {
+                                    $(this).parent().parent().trigger('click');
+                                    
+                                }
+                            });
+                        }else{
+                            if( dd == dangqianye){
+                                //是当前页数
                                     // 接诊区
-                                    var blh=$("#sblh", parent.document).html();//病历号
-                                    var sblhxh=$("#sblhxh", parent.document).val();//序号
+                                    var blh=$("#dengjichuid").val();//病历号
+                                    var sblhxh=$("#dengjichuxh").val();//序号
                                         
                                     $(".brid").each(function(){
                                         var panduanxh = $(this).next().val();
@@ -543,79 +430,151 @@
                                             $(this).parent().parent().trigger('click');
                                             
                                         }
-                                      
                                     });
                             }else{
-                                //排出为空的情况
-                                if (dangqianye == undefined)
-                                {
-                                     //页面单击事件
-                                    // 接诊区
-                                    var blh=$("#sblh", parent.document).html();//病历号
-                                    var sblhxh=$("#sblhxh", parent.document).val();//序号
-                                        
-                                    $(".brid").each(function(){
-                                        var panduanxh = $(this).next().val();
-                                        if ($(this).val() == blh && panduanxh == sblhxh) {
-                                            $(this).parent().parent().trigger('click');
-                                            
-                                        }
-                                      
-                                    });
-                                }else{
-                                    if( dd == dangqianye){
-                                        //是当前页数
-                                            // 接诊区
-                                            var blh=$("#sblh", parent.document).html();//病历号
-                                            var sblhxh=$("#sblhxh", parent.document).val();//序号
-                                                
-                                            $(".brid").each(function(){
-                                                var panduanxh = $(this).next().val();
-                                                if ($(this).val() == blh && panduanxh == sblhxh) {
-                                                    $(this).parent().parent().trigger('click');
-                                                    
-                                                }
-                                              
-                                            });
-                                    }else{
-                                        var blh=$("#sblh", parent.document).html();//病历号
-                                        // 也不是空的情况
-                                        if (blh != '') {
-                                             //执行页面跳转到指定页数
-                                             window.location='{:U("Index/jiezhen")}?p='+dd+'.html';
-                                        }
-                                           
-                                    } 
+                                var blh=$("#dengjichuid").val();//病历号
+                                var sblhxh=$("#dengjichuxh").val();//序号
+                                // 也不是空的情况
+                                if (blh != '') {
+                                    //执行页面跳转到指定页数
+                                    window.location='{:U("Index/jiezhen")}?p='+dd+'.html&djid='+blh+'&djxh='+sblhxh;
                                 }
-                                    
-                            }   
-                                                                                                                                                                                   
+                                   
+                            } 
                         }
-
-                     });
-                    
-            }else{
-                if(hznatian != ''){
-                    // 不是患者点击的那天自动调整到那天
-                    // js改变地址
-                    if (hznatian == 1) {
-                        window.location='{:U("Index/jiezhen")}';
-                    }
-                    if (hznatian == 2) {
-                        window.location='{:U("Jiezhen/mingri")}';
-                    }
-                    if (hznatian == 3) {
-                        window.location='{:U("Jiezhen/houri")}';
-                    }
-                    if (hznatian == 5) {
-                        window.location='{:U("Jiezhen/shangzhou")}';
-                    }
+                            
+                    }   
+                                                                                                                                                                           
                 }
+
+            });
+        }else{
+            //判断是否是接诊区内部的点击
+            if ($("#qufjiezheng").val() == 1) {
+                //页面单击事件
+                    // 判断是点击接诊还是登记页面跳转
+                    if ($("#dengjichuid").val() == '') {
+                        // 接诊区
+                        var blh=$("#sblh", parent.document).html();//病历号
+                        var sblhxh=$("#sblhxh", parent.document).val();//序号
+                    }else{
+                        var blh=$("#dengjichuid").val();//病历号
+                        var sblhxh=$("#dengjichuxh").val();//序号
+                    }
                     
+                        
+                    $(".brid").each(function(){
+                        var panduanxh = $(this).next().val();
+                        if ($(this).val() == blh && panduanxh == sblhxh) {
+                            $(this).parent().parent().trigger('click');
+                            
+                        }
+                      
+                    });
+            }else{
+                //判断那天
+                var hznatian=$("#hznatian", parent.document).html();//患者是哪天
+                //判断是否是点击的那天
+                if (hznatian == $('#xdri').val()) {
+                        //判断页数
+                        var dangqianye = $(".current").html();//当前页面页数
+                        var blh=$("#sblh", parent.document).html();//病历号
+                        var sblhxh=$("#sblhxh", parent.document).val();//序号
+                        // alert(blh);
+                        $.ajax({
+                            type:'POST',
+                            url:"{:U('Huoquyeshu/dangri')}",
+                            data:{"blh":blh,"sblhxh":sblhxh},
+                            dataType:'json',
+                            success:function(dd)
+                            {
+                                // alert(dd);
+                                // alert(dangqianye);
+                                if (dangqianye == "")
+                                {
+                                          //页面单击事件
+                                        // 接诊区
+                                        var blh=$("#sblh", parent.document).html();//病历号
+                                        var sblhxh=$("#sblhxh", parent.document).val();//序号
+                                            
+                                        $(".brid").each(function(){
+                                            var panduanxh = $(this).next().val();
+                                            if ($(this).val() == blh && panduanxh == sblhxh) {
+                                                $(this).parent().parent().trigger('click');
+                                                
+                                            }
+                                          
+                                        });
+                                }else{
+                                    //排出为空的情况
+                                    if (dangqianye == undefined)
+                                    {
+                                         //页面单击事件
+                                        // 接诊区
+                                        var blh=$("#sblh", parent.document).html();//病历号
+                                        var sblhxh=$("#sblhxh", parent.document).val();//序号
+                                            
+                                        $(".brid").each(function(){
+                                            var panduanxh = $(this).next().val();
+                                            if ($(this).val() == blh && panduanxh == sblhxh) {
+                                                $(this).parent().parent().trigger('click');
+                                                
+                                            }
+                                          
+                                        });
+                                    }else{
+                                        if( dd == dangqianye){
+                                            //是当前页数
+                                                // 接诊区
+                                                var blh=$("#sblh", parent.document).html();//病历号
+                                                var sblhxh=$("#sblhxh", parent.document).val();//序号
+                                                    
+                                                $(".brid").each(function(){
+                                                    var panduanxh = $(this).next().val();
+                                                    if ($(this).val() == blh && panduanxh == sblhxh) {
+                                                        $(this).parent().parent().trigger('click');
+                                                        
+                                                    }
+                                                  
+                                                });
+                                        }else{
+                                            var blh=$("#sblh", parent.document).html();//病历号
+                                            // 也不是空的情况
+                                            if (blh != '') {
+                                                 //执行页面跳转到指定页数
+                                                 window.location='{:U("Index/jiezhen")}?p='+dd+'.html';
+                                            }
+                                               
+                                        } 
+                                    }
+                                        
+                                }   
+                                                                                                                                                                                       
+                            }
+
+                        });
+                        
+                }else{
+                    if(hznatian != ''){
+                        // 不是患者点击的那天自动调整到那天
+                        // js改变地址
+                        if (hznatian == 1) {
+                            window.location='{:U("Index/jiezhen")}';
+                        }
+                        if (hznatian == 2) {
+                            window.location='{:U("Jiezhen/mingri")}';
+                        }
+                        if (hznatian == 3) {
+                            window.location='{:U("Jiezhen/houri")}';
+                        }
+                        if (hznatian == 5) {
+                            window.location='{:U("Jiezhen/shangzhou")}';
+                        }
+                    }
+                        
+                }
             }
-        }
-            
-       
+        } 
     });
     //点击页数添加参数
     $(document).on('click', '.num', function(){

@@ -109,7 +109,15 @@ function gethangliangNameByCode($code)
   // var_dump($res);die;
   return $res['dw'];
 }
-
+//前台收费项目显示（健康档案）
+function getShoufeixiangmu($code)
+{
+//    dump($code);die;
+    $user = M('p_price_list');
+    $where['ITEM_CODE'] = $code;
+    $rest = $user->where($where)->field('item_name')->find();
+    return $rest['item_name'];
+}
 function i_array_column($input, $columnKey, $indexKey=null){
     if(!function_exists('array_column')){
         $columnKeyIsNumber  = (is_numeric($columnKey))?true:false;

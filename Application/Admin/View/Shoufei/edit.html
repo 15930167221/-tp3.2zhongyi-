@@ -37,8 +37,9 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->单位</label>
             <div class="formControls col-xs-8 col-sm-9">
+                <input type="hidden" value="{$data.0.units_code}" class="danweizhenshi">
                 <!-- <input type="text" class="input-text"  placeholder="剂型名称" name="jxmc"> -->
-                <select name="units_code">
+                <select id="text" name="units_code">
                     <option>次</option>
                     <option>次/项</option>
                     <option>人</option>
@@ -79,5 +80,17 @@
             </div>
         </div>
     </form>
+    <script>
+        $(document).ready(function(){
+            $huoqu= $(".danweizhenshi").val();
+//            alert($huoqu);
+            $("#text option").each(function(){  //遍历所有option
+                var txt = $(this).text();   //获取option值
+                if(txt == $huoqu){
+                    $(this).attr("selected",true);
+                }
+            })
+        });
+    </script>
 </article>
 <include file="Layout/footer"/>

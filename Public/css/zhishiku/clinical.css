@@ -16,7 +16,7 @@
 	}
 	.zuozhong{
 		border: 1px #DDDDDD solid;
-		height: 540px;
+		height: 460px;
 		overflow: auto;
 	}
 /*中*/
@@ -62,7 +62,7 @@
 	}
 	.youzhong{
 		border: 1px #ddd solid;
-		height: 540px;
+		height: 460px;
 		overflow: auto;
 	}
 /*清除浮动*/

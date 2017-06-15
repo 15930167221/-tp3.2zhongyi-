@@ -43,13 +43,14 @@
                 <td width="30%">
                     <input type="text" value="{$vo.br_id}" onkeydown="fnKeyDown(event);" onfocus="this.select()" onpaste="return false" ondrop="return false" ondragenter="return false;" ondragstart="return false" name="br_id" readonly="readonly" id="blNum">
                 </td>
-                <input type="hidden" value="{$vo.br_id}" name="blqsh"/>
+                <input type="hidden" value="{$vo.br_id}" id="blqsh" name="blqsh"/>
                 <td style="text-align: right;">
                     身份证号：&nbsp;
                 </td>
                 <td>
                     <input type="text" name="pass" value="{$vo.pass}" id="idNum1">
                 </td>
+                <!-- 预约时间 -->
                 <input type="hidden" name="p_date" value="{$data.time|default=time()|date='Y-m-d H:i:s',###}" class="yyrq1" readonly="readonly">
             </tr>
             <tr>
@@ -61,6 +62,7 @@
                     <span style="color: red;">*</span>
                 </td>
                 <td style="text-align: right;">
+                <span style="color: red;">*</span>
                     性　　别：&nbsp;
                     <td class="jzhcsj" style="padding-left: 40px;padding-top: 2px;">
                         <php>
@@ -90,7 +92,7 @@
                         出生年月：&nbsp;
                     </td>
                     <td>
-                        <input type="text" name="cs_date" value="{$vo.cs_date}" placeholder="请选择时间！" id="datebut">
+                        <input type="text" name="cs_date" value="{$vo.cs_date}" placeholder="请选择时间！" id="datebut" readonly="readonly">
                     </td>
                 </tr>
                 <tr>
@@ -124,8 +126,6 @@
                         <input autocomplete="off" type="text" onfocus="this.select()" name="e_mail" value="{$vo.e_mail}" id="mail1">
                     </td>
                 </tr>
-                <!-- 就诊时间 -->
-                <input type="hidden" name="jz_date" value="{$data.time|default=time()|date='Y-m-d H:i:s',###}" class="yyrq">
                 </volist>
                 </table>
             </div>
@@ -258,6 +258,7 @@
         var dw = $(this).find("td :eq(9)").html();
         // 赋值
         $("#blNum").val(br_id);
+        $("#blqsh").val(br_id);
         $("#userName1").val(br_name);
         $("#age1").val(nl);
         $("#datebut").val(cs_date);
@@ -323,28 +324,40 @@
         var xb = $("input:radio[name='xb']:checked").val();
         var age = $("#age1").val();
         var ghf = $("#ghf").val();
-        //判断姓名
-        if (br_name == '') {
-            layer.alert("请填写姓名", {icon: 6});
+        //判断是否是频繁点击
+        if($(this).attr("name")=="ban"){
+            // layer.alert("请不要频繁点击！",{icon:7})
+            // alert("请不要频繁点击！")
         }else{
-            if (xb == undefined) {
-                layer.alert("请填写性别", {icon: 6});
+            //判断姓名
+            if (br_name == '') {
+                layer.alert("请填写姓名", {icon: 6});
             }else{
-                if (age == '') {
-                    layer.alert("请填写年龄", {icon: 6});
+                if (xb == undefined) {
+                    layer.alert("请填写性别", {icon: 6});
                 }else{
-                    if (ghf == '') {
-                        layer.alert("请填写挂号费", {icon: 6});
+                    if (age == '') {
+                        layer.alert("请填写年龄", {icon: 6});
                     }else{
-                        if (age > 150) {
-                            layer.alert("请输入正常年龄",{icon:6});
+                        if (ghf == '') {
+                            layer.alert("请填写挂号费", {icon: 6});
                         }else{
-                            $("form").attr("action", "{:U('Index/hzbc')}" ).submit();
+                            if (age > 150) {
+                                layer.alert("请输入正常年龄",{icon:6});
+                            }else{
+                                $(this).attr("name","ban");
+                                
+                                // setTimeout(function(){
+                                //     $("#jsPreservation").removeAttr("name");
+                                // },500)
+                                $("form").attr("action", "{:U('Index/hzbc')}" ).submit();
+                            }
                         }
                     }
                 }
             }
         }
+            
     });
     //判断姓名是否是正确格式
     $(document).on("blur","#userName1",function(){

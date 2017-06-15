@@ -12,6 +12,21 @@
 	<link href="__PUBLIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
 	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
+
+	<style type="text/css">
+	.zlznaa{
+		cursor:pointer;
+		display:inline-block;
+	}
+	.sty2{
+		color:#000;
+		
+	}
+	.sty2 span{
+		color:#fff;
+		font-weight:bold;
+	}
+	</style>
 </head>
 <body oncontextmenu=self.event.returnValue=false onselectstart="return false">
 <script type="text/javascript"></script>
@@ -81,7 +96,7 @@
 			<table id="youcezhengxing" style="width:90%; border: 1px #F0F0F0 solid;table-layout: fixed;" border='1' cellspacing="0">
 				<tr style="height: 30px;">
 					<th style="width:50px; text-align: center; background-color:#E2ECF8; ">选择</th>
-					<th style="width:130px; text-align: center; background-color:#E2ECF8;">辩证</th>
+					<th style="width:130px; text-align: center; background-color:#E2ECF8;">辨证</th>
 					<th style="width:200px; text-align: center; background-color:#E2ECF8;">说明</th>
 					<th style="width:200px; text-align: center; background-color:#E2ECF8;">分证论治</th>
 					<th style="width:240px; text-align: center; background-color:#E2ECF8;">处方名称</th>
@@ -219,7 +234,7 @@
 			success:function(dd)
 			{
 				//console.log(dd);
-				str = '<tr><th style="width:50px; height:30px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:130px;text-align:center;background-color:#E2ECF8">辩证</th><th style="width:200px;text-align:center;background-color:#E2ECF8">说明</th><th style="width:200px;text-align:center;background-color:#E2ECF8">分证论治</th><th style="width:230px;text-align:center;background-color:#E2ECF8">处方名称</th></tr>';
+				str = '<tr><th style="width:50px; height:30px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:130px;text-align:center;background-color:#E2ECF8">辨证</th><th style="width:200px;text-align:center;background-color:#E2ECF8">说明</th><th style="width:200px;text-align:center;background-color:#E2ECF8">分证论治</th><th style="width:230px;text-align:center;background-color:#E2ECF8">处方名称</th></tr>';
 				$.each(dd,function(idx,item){
 					if (item.cf_name == null) {
 						item.cf_name = "&nbsp;"
@@ -303,6 +318,11 @@
 				$("#zlznid").html(res);
 			}
 		});
+	});
+	$(document).on('mouseover', '.zlznaa', function(){
+		$(this).css('font-size','2em');
+	}).on('mouseout','.zlznaa',function(){
+		$(this).css('font-size','');
 	});
 	//按病名拼音查找
 	$(document).on("input","#bmtjchaxun",function(){
@@ -394,7 +414,7 @@
 			success:function(dd){
 				// console.log(dd)
 
-				str = '<tr><th style="width:50px; height:30px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:130px;text-align:center;background-color:#E2ECF8">辩证</th><th style="width:200px;text-align:center;background-color:#E2ECF8">说明</th><th style="width:200px;text-align:center;background-color:#E2ECF8">分证论治</th><th style="width:230px;text-align:center;background-color:#E2ECF8">处方名称</th></tr>';
+				str = '<tr><th style="width:50px; height:30px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:130px;text-align:center;background-color:#E2ECF8">辨证</th><th style="width:200px;text-align:center;background-color:#E2ECF8">说明</th><th style="width:200px;text-align:center;background-color:#E2ECF8">分证论治</th><th style="width:230px;text-align:center;background-color:#E2ECF8">处方名称</th></tr>';
 				$.each(dd,function(idx,item){
 					if (item.cf_name == null) {
 						item.cf_name = "&nbsp;"
@@ -409,6 +429,11 @@
 </script>
 <!-- 简单树形的js -->
 <script type="text/javascript">
+	$(document).on('mouseover','.panel-heading',function(){
+		$(this).css('backgroundColor','#275C9D').css('color','#fff');
+	}).on('mouseout','.panel-heading',function(){
+		$(this).css('backgroundColor','').css('color','');
+	});
 	window.onload = function()
 	{
 		var cate = document.getElementById("categoryTree");
@@ -539,7 +564,7 @@
 	 				zhenchufanghao += chufhcd + ' ';
 	 			});
 	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选证型",{icon:7});
 	 			}else{
 	 				// alert(123);
 	 				 $(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id);
@@ -553,7 +578,7 @@
 	 				zhenchufanghao += chufhcd + ' ';
 	 			});
 	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选证型",{icon:7});
 	 			}else{
 	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id);
 	 			}

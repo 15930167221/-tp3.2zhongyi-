@@ -13,9 +13,10 @@ class ChinaController extends AdminController
         $this->mod = new DrugDictModel();
     }
   public function index(){
+      // dump($_SESSION);die;
         $param = I('get.');
         $where = array();
-        $where['department'] = $_SESSION['dpment'];//这行以后再解开注释
+        $where['department'] = $_SESSION['uid'];//这行以后再解开注释
         (!empty($param)) && $where['drug_name'] = array('like',"%{$param['drug_name']}%");
         //总条数
         $where['drug_indicator'] = 2;
@@ -32,29 +33,129 @@ class ChinaController extends AdminController
   }
   public function add(){
 
-    $dict12 = M('drug_dict');
+    $dict12 = M('dict_drug_zy');
      $where1['drug_code'] = array('like','A%');
-        $where1['drug_indicator'] = 2;
-        $aa = $dict12->where($where1)->field('drug_code')->order('drug_code desc')->find();
+        // $where1['drug_indicator'] = 2;
+        $aa = $dict12->field('drug_code')->order('drug_code desc')->find();
+//      dump($aa);die;
         $bb = preg_replace('/\D/s', '', $aa['drug_code']);
         $newId = $bb+1;
         $new = 'A'.$newId;
-        $this->assign('newId',$new);
+      /*@YXY
+       * 显示性味归经
+       * ***/
+      $model = M('YMakenature');
+      $gjml = $model->query("select code,tree,convert(varchar(max),DECRYPTBYKEY(name)) as name  from y_makenature where tree like '0000.003%' AND isshow=0
+and len(tree)=12 ORDER BY tree");
+      $gjxj = $model->query("select tree,convert(varchar(max),DECRYPTBYKEY(name)) as name  from y_makenature where tree like '0000.003.001%'AND isshow=0 and len(tree)=16 ORDER BY tree");
+//      dump($gjml);die;
+      $this->assign('newId',$new);
+      $this->assign("gjml", $gjml);
+      $this->assign("gjxj", $gjxj);
       $this->display('Shuju/addZy');
   }
-  public function doAdd(){
 
+  public function doAdd(){
     $ly = $_POST['ly'];
     $xz = $_POST['xz'];
     $pz = $_POST['pz'];
     $xw = $_POST['xw'];
     $gj = $_POST['gj'];
+    $gjdl = $_POST['gjdl'];
+//      dump($gj);die;
     $gn = $_POST['gn'];
     $zz = $_POST['zz'];
     $yfyl = $_POST['yfyl'];
     $tsyf = $_POST['tsyf'];
     $zc = $_POST['zc'];
+//    $wrph = $_POST['wrph'];
+    $key = 'TcmSQL2005Key';
+        /*
+         *@杨旭亚
+         *2017-06-08
+         * 1.判断区分温热平寒
+         * 2.判断区分药物归经
+         */
+        //判断是否需要添加温热平寒
+      $makdict = M('y_makenature');
+      if(!empty($xw)){
+          $zushuzuwrph = explode("|",$xw);
+          $wrphhz =$zushuzuwrph['1'];//前台输入的温热平寒
+          //判断将温热平寒转换为对应数字
+          if($wrphhz =='大寒'){
+              $wrph = '001';
+          }elseif($wrphhz =='微寒'){
+              $wrph = '002';
+          }elseif($wrphhz =='寒'){
+              $wrph = '003';
+          }elseif($wrphhz =='大热'){
+              $wrph = '004';
+          }elseif($wrphhz =='热'){
+              $wrph = '005';
+          }elseif($wrphhz =='微温'){
+              $wrph = '006';
+          }elseif($wrphhz =='温'){
+              $wrph = '007';
+          }elseif($wrphhz =='平'){
+              $wrph = '008';
+          }elseif($wrphhz =='凉'){
+              $wrph = '009';
+          }
+          //去y_make表搞事情
+          $beg = '0000.002.'.$wrph;
 
+          // $find['tree'] = array('like',"0000.002.001%");
+          $mas = $makdict->query("select tree from y_makenature where tree like '$beg%' order by tree desc");
+          // dump($mas);die;
+          $mast = $mas[0]['tree'];
+          $ar = explode('.',$mast);
+          $tt = $ar[3]+1;
+          $newTree = $beg.'.'.$tt;
+          $dataa['CODE'] = $_POST['drug_code'];
+          $dataa['TREE'] = $newTree;
+          $dataa['NAME'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$_POST[name]'))");
+          $dataa['isshow'] = 1;
+          // dump($dataa);die;
+          $result = $makdict->add($dataa);
+      }
+      //2.判断是否添加药物归经
+      if(!empty($gj)){
+          //查出该归经下的药品区最大值
+              $maszilei = $makdict->query("select tree from y_makenature where tree like '$gj%' ORDER BY tree DESC");
+              $ar = explode('.',$maszilei[0][tree]);
+              $tt = $ar[4]+1;
+//          拼接最终tree
+              $newTree =  $ar[0].'.'.$ar[1].'.'.$ar[2].'.'.$ar[3].'.'.$tt;
+              $dataa['CODE'] = $_POST['drug_code'];
+              $dataa['TREE'] = $newTree;
+              $dataa['NAME'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$_POST[name]'))");
+              $dataa['isshow'] = 1;
+//               dump($dataa);die;
+              $result = $makdict->add($dataa);
+      }else{
+          //判断大类里是否有值
+          if(!empty($gjdl)){
+              //查出该归经下的药品区最大值
+              $maszilei = $makdict->query("select tree from y_makenature where tree like '$gjdl%'and isshow=1 ORDER BY tree DESC");
+              $ar = explode('.',$maszilei[0][tree]);
+              //判断子类下是否有值
+              if(isset($maszilei)){
+                  $newTree =  $gjdl.'.001';
+              }else{
+                  $tt = $ar[3]+1;
+                // 拼接最终tree
+                  $newTree =  $ar[0].'.'.$ar[1].'.'.$ar[2].'.'.$tt;
+              }
+
+//              dump($maszilei);dump($ar);dump($tt);die;
+              $dataa['CODE'] = $_POST['drug_code'];
+              $dataa['TREE'] = $newTree;
+              $dataa['NAME'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$_POST[name]'))");
+              $dataa['isshow'] = 1;
+//               dump($dataa);die;
+              $result = $makdict->add($dataa);
+          }
+      }
     $dict2 = M('dict_drug_zy_mx');
       $data['drug_name'] = $_POST['name'];
       $data['other_name'] = $_POST['other'];
@@ -64,27 +165,16 @@ class ChinaController extends AdminController
       $data['zysx'] = $_POST['zysx'];
       $data['drug_indicator']=(int)02;
       $data['drug_code'] = $_POST['drug_code'];
-      $data['department'] = $_SESSION['dpment'];
-      $dict = M('drug_dict');
+      $data['department'] = $_SESSION['did'];
+// dump($data);die;
+      $datazy['flag'] = I('post.bz');
+      $data['drug_units'] = '克';
+      $dict = M('dict_drug_zy');
       $res = $dict->add($data);
-
-      if($res){
-          //miracle7kill 同时插入 drug_dict_zy 开方选择药品时用
-          $dict_zy = M('dict_drug_zy');
-          $datazy['drug_code'] = I('post.drug_code');
-          $datazy['drug_name'] = I('post.name');
-          $datazy['name_alias'] = I('post.other');
-          $datazy['drug_units'] = '克';
-          $datazy['price'] = I('post.price');
-          $datazy['input_code'] = I('post.inputCode');
-          $datazy['flag'] = I('post.bz');
-          $datazy['department'] = $_SESSION['dpment'];
-          $dict_zy->add($datazy);
-          echo '添加成功';
-      }else{
-        echo '添加失败';
-      }
-        $key = 'TcmSQL2005Key';
+      $dict1 = M('drug_dict');
+      $res1 = $dict1->add($data);
+      //加入drug_dict
+      $key = 'TcmSQL2005Key';
       $lis['drug_code'] = $_POST['drug_code'];
       $lis['ly'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$ly'))");
       $lis['xz'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$xz'))");
@@ -96,17 +186,26 @@ class ChinaController extends AdminController
       $lis['yfyl'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$yfyl'))");
       $lis['tstf'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$tsyf'))");
       $lis['zc'] = array('exp',"CONVERT(varbinary(max),ENCRYPTBYKEY(Key_GUID('$key'),'$zc'))");
-      $lis['department'] = $_SESSION['dpment'];
+      $lis['department'] = $_SESSION['did'];
       $re = $dict2->add($lis);
       if($re){
-        echo '一大堆添加成功！';
+        echo '一大堆添加成功l！';
       }
+
+
+
   }
   public function delete(){
      $code = $_POST['code'];
-     $dict = M('drug_dict');
+     $dict = M('dict_drug_zy');
+     $dict1 = M('drug_dict');
+     $dict2 = M('dict_drug_zy_mx');
+     $dict3 = M('y_makenature');
      $res = $dict->where("drug_code ='$code'")->delete();
-     if ($res) {
+     $res1 = $dict1->where("drug_code ='$code'")->delete();
+     $res2 = $dict2->where("drug_code ='$code'")->delete();
+     $res3 = $dict3->where("CODE = '$code'")->delete();
+     if ($res3) {
             $this->ajaxReturn(array('status' => true, 'msg' => '删除成功!'));
         } else {
             $this->ajaxReturn(array('status' => false, 'msg' => '删除失败!'));
@@ -123,9 +222,14 @@ class ChinaController extends AdminController
     $code = $_POST['id'];
     $data['other_name'] = $_POST['other'];
     $data['price'] = $_POST['price'];
+    $data2['name_alias'] = $_POST['other'];
+    $data2['price'] = $_POST['price'];
+    $where['department'] = session('uid');
     $dict = M('drug_dict');
-    $res = $dict->where("drug_code='$code'")->save($data);
-    if($res){
+    $dic = M('dict_drug_zy');
+    $res = $dict->where("drug_code='$code'")->where($where)->save($data);
+    $ser = $dic->where($where)->where("drug_code='$code'")->save($data2);
+    if($ser){
           echo '修改成功';
         }else{
           echo '修改失败';
@@ -200,5 +304,15 @@ class ChinaController extends AdminController
 
 
       $this->ajaxReturn($pym);
+    }
+
+    /**
+     *性味归经点击子类
+     */
+    public function huoquzl(){
+        $xwgjdl = I('post.xwgjdl');
+        $user = M('y_makenature');
+        $data = $user->query("select tree,convert(varchar(max),DECRYPTBYKEY(name)) as name  from y_makenature where tree like '$xwgjdl%'AND isshow=0 and len(tree)=16 ORDER BY tree");
+        $this->ajaxReturn($data);
     }
 }

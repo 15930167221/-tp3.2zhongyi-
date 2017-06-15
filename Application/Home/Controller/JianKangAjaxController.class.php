@@ -364,7 +364,7 @@ class JianKangAjaxController extends PublicController {
         $zyWhere['patient_id']=$brid;
         $zyWhere['xh']=$xh;
         $zyWhere['indicate']=array(array('eq','1'),array('eq','2'),'or');
-        $zy=$pre->field('presc_no,dose')->where($zyWhere)->select();
+        $zy=$pre->field('presc_no,dose,presc_name')->where($zyWhere)->select();
         $this->ajaxReturn($zy);
     }
     //点击查看处方处方号查看处方详细信息
@@ -394,13 +394,13 @@ class JianKangAjaxController extends PublicController {
             $zyWhere['patient_id']=$brid;
             $zyWhere['xh']=$xh;
             $zyWhere['indicate']=array(array('eq','1'),array('eq','2'),'or');
-            $zy=$pre->field('presc_no,dose')->where($zyWhere)->select();
+            $zy=$pre->field('presc_no,dose,presc_name')->where($zyWhere)->select();
             $this->ajaxReturn($zy);
         }else if($cfType=="2"){     //西药
             $xycondition['BR_ID']=$brid;
             $xycondition['XH']=$xh;
             $xycondition['cf_flag']=array(array('eq','1'),array('eq','2'),'or');
-            $xy=$xydrug->field("cf_id")->where($xycondition)->group("cf_id")->select();
+            $xy=$xydrug->field("cf_id,yp_name")->where($xycondition)->select();
             $this->ajaxReturn($xy);
         }
     }
@@ -419,7 +419,7 @@ class JianKangAjaxController extends PublicController {
         $dname=session('wh_userName');
         if($cfType=="1"){            //中药
             //获取当日处方最大处方号
-            $day=date('ymd');
+            $day=session('wh_userId').date('ymd');
             $where['presc_no'] = array('like',"$day%");
             $mustId = $pre->where($where)->order("presc_no desc")->Field('presc_no')->find();
             $newId = $mustId['presc_no']+1;
@@ -489,5 +489,17 @@ class JianKangAjaxController extends PublicController {
         $date=date('Y-m-d H:i:s');
         $age=$user->field('dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl')->find();
         $this->ajaxReturn($age);
+    }
+    //看看健康档案保存没
+    public function saveOrNot(){
+        $bqxx = M('bqxx');
+        $where['BR_ID']=session('id');
+        $where['XH']=session('xh');
+        $list = $bqxx->where($where)->select();
+        if($list){
+            echo 1;//保存了
+        }else{
+            echo 2;//没保存
+        }
     }
 }

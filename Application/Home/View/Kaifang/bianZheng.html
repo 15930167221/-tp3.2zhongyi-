@@ -23,7 +23,7 @@
 <!-- 遮罩层 -->
 <div class="zhezhao" style="display:none;width:100%;height:100%;background-color:#444444;z-index:3;position:absolute;"></div>
 <div style="margin-left:42px;height:43px;line-height:43px;background-color:#E1E1E1;">
-	<span style="margin-left: 8px;color: #333; top:3px;" class="glyphicon glyphicon-list-alt"></span><span style="font-size: 16px;color: #333;font-weight:bold;margin-left: 8px;">辩证开方</span>
+	<span style="margin-left: 8px;color: #333; top:3px;" class="glyphicon glyphicon-list-alt"></span><span style="font-size: 16px;color: #333;font-weight:bold;margin-left: 8px;">辨证开方</span>
     <span style="margin-left:66%; ">
     	<!-- 按钮 -->
 		<input type="checkbox" class="chufanghbtjchenggong" id="chuFangHeBing">
@@ -82,7 +82,7 @@
 					<form class="form-inline" style="text-align: center;">
 						<div class="input_box">
 						    <input  id="bianzfuzhi" class="input_text" type="text" >
-						    <span  id="biangzhenganniu" class="input_btn" style="height:30px; cursor:pointer;">辩证</span>
+						    <span  id="biangzhenganniu" class="input_btn" style="height:30px; cursor:pointer;">辨证</span>
 						</div>
 					</form>
 				<!-- 主症模态框内容开始 -->
@@ -639,7 +639,7 @@
 				<ul id="myTab" class="nav nav-tabs" style="height: 40px;">
 					<li class="active">
 					<a href="#home" data-toggle="tab" style="height: 40px;padding-top: 5px;">
-					<button style="width: 70px;height:30px;background-color: #30bdb5;border: 0px;color: #fff;border-radius: 5px;">药解</button>
+					<button style="width: 70px;height:30px;background-color: #30bdb5;border: 0px;color: #fff;border-radius: 5px;">处方</button>
 					</a>
 					</li>
 					<li><a href="#ios" data-toggle="tab" style="height: 40px;padding-top: 5px;">
@@ -1828,7 +1828,7 @@
 				$(".xiacechufangyaopin").html('');
 	});
 </script>
-<!-- 点击辩证 -->
+<!-- 点击辨证 -->
 <script type="text/javascript">
 	$(document).on("click","#biangzhenganniu",function(){
 		//获取主症的tree号
@@ -1846,7 +1846,7 @@
 					dataType:'json',
 					success:function(dd){	
 						var str = '<tr style="height:30px;"><th style="width:50px;text-align:center;background-color:#E2ECF8">选择</th><th style="width:200px;text-align:center;background-color:#E2ECF8">证型</th><th style="width:200px;text-align:center;background-color:#E2ECF8">治则</th><th style="width:200px;text-align:center;background-color:#E2ECF8">选用类表</th><th style="width:300px;text-align:center;background-color:#E2ECF8">备注</th></tr>';
-						//将辩证的框里输入第一个证型
+						//将辨证的框里输入第一个证型
 						$("#bianzfuzhi").val(dd['0']['ze_name']);
 						for (var k in dd){
 
@@ -1909,7 +1909,7 @@
 
 			$(this).css("background-color","#80B0E1");
 			//功能
-			//改变辩证的框内的值
+			//改变辨证的框内的值
 			var bianzhengzhi = $(this).find("td:eq(2)").find("span").text();
 			$("#bianzfuzhi").val(bianzhengzhi);
 			
@@ -1938,7 +1938,7 @@
 
 			$(this).css("background-color","#fff");
 			//功能
-			//改变辩证的框内的值
+			//改变辨证的框内的值
 			var bianzhengzhi = $(this).find("td:eq(2)").find("span").text();
 			$("#bianzfuzhi").val(bianzhengzhi);
 			
@@ -2078,7 +2078,7 @@
 	 				zhenchufanghao += chufhcd + ' ';
 	 			});
  	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选方剂名称",{icon:7});
 	 			}else{
 	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id+'&zhengxing='+zhengxing+'&zhize='+zhize);
 	 			}
@@ -2095,7 +2095,7 @@
 	 				zhenchufanghao += chufhcd + ' ';
 	 			});
  	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选方剂名称",{icon:7});
 	 			}else{
 	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id+'&zhengxing='+zhengxing+'&zhize='+zhize);
 	 			}

@@ -24,7 +24,7 @@
 			<input type="button" name="tf" data-toggle="modal" data-target="#myModal" value="✍ 退费">
 			<input type="button" name="sc" value="✘ 删除" onClick="doFun('doShow')">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="button" name="wcjz" value="✔ 完成就诊" id="wcjz">
+			
 			<p id="demo"></p>
 		</div>
 	</div>
@@ -88,14 +88,20 @@
 				<div id="tb2">
 				<table id="tab4_1" class="tab4_1">
 					<!--中药处方 -->
-					<volist name="zykf" id="vo">
+					<volist name="zykf" id="vo" >
 						<tr class="sty1" name="tableSty" id="{$vo.presc_no}">
-							<td width="5%" class='cen'><input type="hidden" id="xuhao" name="xuhao[<?php echo $key+1;?>]" value="<?php echo $key+1;?>"><?php echo $key+1;?></td>
+							<td width="5%" class='cen'>
+								<input type="hidden" id="xuhao" name="xuhao[<?php echo $key+1;?>]" value="<?php echo $key+1;?>"><?php echo $key + 1;?></td>
 							<td class="left" width="35%"><input type="hidden" id="xmname" name="xmname[<?php echo $key+1;?>]" value="中草药">中草药</td>
-							<td class="left" width="15%"><input type="hidden" id="danwei" name="danwei[<?php echo $key+1;?>]" value="{$zyyp.drug_units}">{$zyyp.drug_units}</td>
-							<td width="15%"><input type="hidden" id="danjia" name="danjia[<?php echo $key+1;?>]" value="{$zyyp.price}">{$zyyp.price}</td>
-							<td width="15%"><input type="hidden" id="number" name="number[<?php echo $key+1;?>]" value="{$zykf.0.dose}"><?php echo number_format($zykf[0][dose],2);?></td>
-							<td width="15%"><input type="hidden" id="jine" name="jine[<?php echo $key+1;?>]" value="{$zyyp.costs}">{$zyyp.costs}</td>
+							<td class="left" width="15%"><input type="hidden" id="danwei" name="danwei[<?php echo $key+1;?>]" value="{$zyyp[$key].drug_units}">
+							{$zyyp[$key]['drug_units']}
+							</td>
+							<td width="15%"><input type="hidden" id="danjia" name="danjia[<?php echo $key+1;?>]" value="{$zyyp[$key].price}">{$zyyp[$key]['price']}</td>
+							<td width="15%"><input type="hidden" id="number" name="number[<?php echo $key+1;?>]" value="1">1</td>
+							<td width="15%"><input type="hidden" id="jine" name="jine[<?php echo $key+1;?>]" value="{$zyyp[$key].costs}">{$zyyp[$key]['costs']}</td>
+							<!-- 区分中西药 -->
+							<td><input type="hidden" class="xuexi" id="qufenzhongyao" name="qufenzhongyao[<?php echo $key+1;?>]" value="1"></td>
+							<td><input type="hidden" id="bill" name="bill[<?php echo $key+1;?>]" value="{$vo.presc_no}"></td>
 						</tr>
 					</volist>
 					<!--西药处方 -->
@@ -114,13 +120,14 @@
 							$xycf = $xy -> where("cf_id = '$te[cf_id]'") -> select();
 							$len = count($xycf);
 							$a = 0;
+							$res = 0;
 							for($i=0;$i<$len;$i++){
 								$code = $xycf[$i]['yp_code'];
 								$xycf_de = $xy_detail -> where("drug_indicator = 1 and drug_code = '$code'") -> count();
 								$a = $a + $xycf_de;
-								$res = $xycf[$i][yp_total_cost] + $xycf[$i][yp_total_cost];
-								$res = number_format($res,2);
+								$res = $res + $xycf[$i][yp_total_cost];
 							}
+							$res = number_format($res,2);
 							echo "<tr class='sty1' name='tableSty' id='$te[cf_id]'>
 								<td width='5%' class='cen'><input type='hidden' id='xuhao' name='xuhao[$num]' value='$num'>$num</td>";
 							if($a == 0){
@@ -128,11 +135,16 @@
 							}else{
 								echo "<td class='left' width='35%'><input type='hidden' id='xmname' name='xmname[$num]' value='西药'>西药</td>";
 							}
+
 							echo "<td class='left' width='15%'><input type='hidden' id='danwei' name='danwei[$num]' value='/'>/</td>
 								<td width='15%'><input type='hidden' id='danjia' name='danjia[$num]' value='$res'>$res</td>
 								<td width='15%'><input type='hidden' id='number' name='number[$num]' value='1.00'>1.00</td>
 								<td width='15%'><input type='hidden' id='jine' name='jine[$num]' value='$res'>$res</td>
+								<!-- 区分中西药 -->
+								<td><input type='hidden' id='qufenzhongyao' name='qufenzhongyao[$num]' value='2'></td>
+						<td><input type='hidden' name='bill[$num]' value='$te[cf_id]'></td>
 							</tr>";
+
 							$num += 1;
 						?>
 					</volist>
@@ -333,7 +345,7 @@
 		        var danjia = parseFloat($("#danjia").val()).toFixed(3);
 		        var number = parseFloat($("#number").val()).toFixed(2);
 		        var jine = $("#jine").val();
-		        $(".tab4_1").append("<tr class='sty1' name='tableSty'><td width='5%' class='cen'><input type='hidden' id='xuhao' name='xuhao["+(id+1)+"]' value='"+(id+1)+"'>"+(id+1)+"</td><td class='left' width='35%'><input type='hidden' id='xmname' name='xmname["+(id+1)+"]' value='"+name+"'>"+name+"</td><td class='left' width='15%'><input type='hidden' id='danwei' name='danwei["+(id+1)+"]' value='"+danwei+"'>"+danwei+"</td><td width='15%'><input type='hidden' id='danjia' name='danjia["+(id+1)+"]' value='"+danjia+"'>"+danjia+"</td><td width='15%'><input type='hidden' id='number' name='number["+(id+1)+"]' value='"+number+"'>"+number+"</td><td width='15%'><input type='hidden' id='jine' name='jine["+(id+1)+"]' value='"+jine+"'>"+jine+"</td></tr>");
+		        $(".tab4_1").append("<tr class='sty1' name='tableSty'><td width='5%' class='cen'><input type='hidden' id='xuhao' name='xuhao["+(id+1)+"]' value='"+(id+1)+"'>"+(id+1)+"</td><td class='left' width='35%'><input type='hidden' id='xmname' name='xmname["+(id+1)+"]' value='"+name+"'>"+name+"</td><td class='left' width='15%'><input type='hidden' id='danwei' name='danwei["+(id+1)+"]' value='"+danwei+"'>"+danwei+"</td><td width='15%'><input type='hidden' id='danjia' name='danjia["+(id+1)+"]' value='"+danjia+"'>"+danjia+"</td><td width='15%'><input type='hidden' id='number' name='number["+(id+1)+"]' value='"+number+"'>"+number+"</td><td width='15%'><input type='hidden' id='jine' name='jine["+(id+1)+"]' value='"+jine+"'>"+jine+"<input type='hidden' id='qufenzhongyao' name='qufenzhongyao["+(id+1)+"]' value='3'><input type= 'hidden' name = 'bill["+(id+1)+"]' value = ' '></td></tr>");
 
 			    //清空上方数据
 			    $("#name").val('');
@@ -346,7 +358,8 @@
 			        //总计
 			    var zje = 0.00;
 			    $(".tab4_1 tr").each(function(){
-              	obj = $(this).find("td:last").text();
+              		obj = $(this).find("td:last").text();
+              		obj = obj.replace(/,/g,'');
                 	zje = (Number(zje) + Number(obj)).toFixed(2);
             	});
 			    $(".tab3 tr td:last").text('￥'+zje);
@@ -392,8 +405,9 @@
 		//生成总金额
 		$(document).ready(function(){
 			var zje = 0.00;
-			$(".tab4_1 tr").not(":first").each(function(){
+			$(".tab4_1 tr").each(function(){
 				obj = $(this).find("td:last").text();
+				obj = obj.replace(/,/g,'');
 				zje = (Number(zje) + Number(obj)).toFixed(2);
 			});
 			$(".tab3 tr td:last").text('￥'+zje);
@@ -412,7 +426,8 @@
 			$(".zhezhao").css("filter","alpha(opacity:80)");
 			$(".zhezhao").css("opacity","0.8");
 			var id = $(this).attr("id");
-			var len = $(this).attr("id").length;
+			// var len = $("#xmname").val();
+			var len = $(this).find("#qufenzhongyao").val();
 			$.ajax({
 				type:"post",
 				url:"__CONTROLLER__/yplist",
@@ -426,9 +441,12 @@
 					for(var i=0;i<sfdetail.length;i++){
 						str += "<tr><td width='8%'>"+sfdetail[i]['id']+"</td><td align='left' width='25%'>"+sfdetail[i]['xmname']+"</td><td align='right' width='8%'>"+sfdetail[i]['amount']+"</td><td align='left' width='24%'>"+sfdetail[i]['units']+"</td><td align='right' width='8%'>"+sfdetail[i]['dose']+"</td><td align='right' width='12%'>"+sfdetail[i]['price']+"</td><td align='right' width='15%'>"+sfdetail[i]['costs']+"</td></tr>";
 						var count = i;
-						zcosts += parseFloat(sfdetail[i]['costs']);
+						var num = sfdetail[i]['costs'].replace(',','');
+
+						zcosts += parseFloat(num);
+
 					}
-					str1 = "<tr><td colspan='4' align='left'>共<font color='#30BEB2'><b>"+i+"</b></font>味药</td><td colspan='3' align='right'><font color='#30BEB2'><b>合计金额：<font color='#30BEB2'>￥"+zcosts.toFixed(2)+"</font></b></td></tr>";
+					str1 = "<tr><td colspan='4' align='left'>共<font color='#30BEB2'><b>"+i+"</b></font>味药</td><td colspan='3' align='right'><font color='#30BEB2'><b>合计金额：<font color='#30BEB2'>￥"+zcosts+"</font></b></td></tr>";
 					$("#dbtab_1").html(str);
 					$("#dbtab_3").html(str1);
 				}

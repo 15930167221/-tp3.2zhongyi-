@@ -1,0 +1,233 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+			xmlns:w="urn:schemas-microsoft-com:office:word"
+			xmlns="http://www.w3.org/TR/REC-html40"><style>
+    /*鉴定报告大标题*/
+     .rep-title{
+        text-align:center;padding-top:40px;font-size:28px;font-weight: bold;padding-bottom:25px;
+    }
+    table tr{height:30px;text-align: center;border:1px solid #000000;}
+    .rep-title1{font-size:16px;font-weight: bold;width:90%;margin:10px auto;}
+    .rep-inf{width:90%;margin:0px auto;text-indent:2em;}
+    .rep-inf img{text-align: center;}
+</style>
+<div class="rep-title">中医体制辨识鉴定报告</div>
+<div>
+    <table border="1" width="100%" class="center" cellpadding="0" style="border-collapse:collapse;">
+        <tr>
+            <td width="8%">姓名</td>
+            <td colspan="2" width="10%"></td>
+            <td width="5%">性别</td>
+            <td width="5%"></td>
+            <td width="5%">年龄</td>
+            <td width="5%"></td>
+            <td width="10%">日期</td>
+            <td colspan="3" width="10%"></td>
+        </tr>
+        <tr>
+            <td>身份证号</td>
+            <td colspan="6"></td>
+            <td>联系方式</td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td>工作单位</td>
+            <td colspan="10"></td>
+        </tr>
+        <tr>
+            <td rowspan="2">体制类型</td>
+            <td colspan="2">-</td>
+            <td colspan="2">-</td>
+            <td colspan="2">-</td>
+            <td colspan="2">-</td>
+            <td colspan="2">-</td>
+        </tr>
+        <tr>
+            <td colspan="2">-</td>
+            <td colspan="2">-</td>
+            <td colspan="2">-</td>
+            <td colspan="2">-</td>
+            <td colspan="2"></td>
+        </tr>
+    </table>
+</div>
+    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>    <div class="rep-title1">-</div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div>
+    <div class="rep-title1"></div>
+    <div class="rep-inf">
+        <p></p>
+    </div></html>

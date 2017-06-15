@@ -8,11 +8,13 @@ class HuajiaController extends PublicController {
         parent::_initialize();
     }
     public function huajia(){
+
         //病人信息
         $br_id = session('id');
         $xh = session('xh');
+        $department = session('dpment');
         $jbxx = M('station_p');//病人基本信息
-        $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh'") -> select();
+        $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh' and department = '$department'") -> select();
 
         //收费列表信息(审核处方之后)
         if($_POST){
@@ -22,72 +24,61 @@ class HuajiaController extends PublicController {
                 $flag = 2;
             }
             $shouf = M('g_outp_bill_item');
+
             $len = count($_POST['xuhao']);
-            for($i=0;$i<$len;$i++){
-                $arr = array();
+//           dump(I('post.'));die();
+            /**
+             * yxy
+             * @date 2017-05-23
+             */
+            $zongsz = I('post.'); 
+//             dump($zongsz);die;
+            //获取公共数据
+            $sf_pjh = $zongsz[sf_pjh];
+            $name = $zongsz[name];
+            $guige = $zongsz[guige];
+            //遍历子数组
+            $bill = $zongsz[bill];
+            foreach ($bill as $k => $v) {
+                $arr[$k][BILL_CODE] = $v;
+                $arr[$k][SERIAL_NO] = $zongsz[xuhao][$k];
+                //获取 item_code 
                 $it_code = M('p_price_list');//查询项目代码
-                $name = $_POST[xmname][$i+1];
-                $code = $it_code -> field('ITEM_CODE') -> where("item_name = '$name'") -> select();
-                if($code[0][item_code] != 01 && $code[0][item_code] != 02 && $code[0][item_code] != 03 ){
-                    $arr[BILL_CODE] = ' ';
-                    $arr[SERIAL_NO] = $i + 1;
-                }else{
-                    if($code[0][item_code] == 01){//西药
-                        $xy = M('xydrugcf_detial');
-                        $xy_ic = $xy -> distinct(true) -> field('cf_id') -> where("br_id = '$br_id' and xh = '$xh' and cf_flag = '1'") -> select();
-                        for($k=0;$k<count($xy_ic);$k++){
-                            $arr[BILL_CODE] = $xy_ic[$k][cf_id];
-                        }
-                        $arr[SERIAL_NO] = $i + 1;
-                    }
-                    if($code[0][item_code] == 03){//中草药
-                        $zcy = M('prescription');
-                        $zcy_ic = $zcy -> field('presc_no') -> where("patient_id = '$br_id' and xh = '$xh' and indicate = 1") -> select();
-                        for($j=0;$j<count($zcy_ic);$j++){
-                            $arr[BILL_CODE] = $zcy_ic[$j][presc_no];
-                        }
-                        $arr[SERIAL_NO] = $i + 1;
-                    }
-                    if($code[0][item_code] == 02){//中成药
-                        $zchy = M('xydrugcf_detial');
-                        $zchy_ic = $zchy -> distinct(true) -> field('cf_id') -> where("br_id = '$br_id' and xh = '$xh' and cf_flag = '1'") -> select();
-                        if($zchy_ic == ''){
-                            $arr[BILL_CODE] = '';
-                        }else{
-                            for($k=0;$k<count($zchy_ic);$k++){
-                                $arr[BILL_CODE] = $zchy_ic[$k][cf_id];
-                            }
-                        }
-                        $arr[SERIAL_NO] = $i + 1;
-                    }
-                }
-                //$arr[BILL_CODE] = '';//处方号
-                $arr[ITEM_CODE] = $code[0][item_code];//项目代码
-                $arr[CLINIC_NUM] = $br_id;//病人ID
-                $arr[xh] = $data[0]['xh'];//挂号序号
+                $name = $zongsz[xmname][$k];
+                $code = $it_code -> field('ITEM_CODE') -> where("item_name = '$name' and department = '$department'") -> select();
+                $arr[$k][ITEM_CODE] = $code[0][item_code];//项目代码
+                $arr[$k][CLINIC_NUM] = $br_id;//病人ID
+                $arr[$k][xh] = $data[0]['xh'];//挂号序号
                 $date = date('Y-m-d H:i:s');
-                $arr[CHARGE_DATE] = $date;//收费日期
-                $arr[UNIT_PRICE] = $_POST[danjia][$i+1];//单价
-                $arr[AMOUNT] = $_POST[number][$i+1];//数量
-                $arr[UNITS] = $_POST[danwei][$i+1];//单位
-                $arr[TOTAL] = $_POST[jine][$i+1];//金额
-                $arr[OPERATOR_CODE] = $_SESSION['wh_userId'];//操作员编码
-                $arr[BILL_STATUS] = $flag;//收费状态
-                //$arr[SERIAL_NO] = '$i';//项目收费序号
-                $arr[RETURN_DATE] = '';//退费日期
-                $arr[INVOICE_NO] = $_POST['sf_pjh'];//发票号
-                $res = $shouf -> add($arr);
+                $arr[$k][CHARGE_DATE] = $date;//收费日期
+                $arr[$k][UNIT_PRICE] = $zongsz[danjia][$k];//单价
+                $arr[$k][AMOUNT] = $zongsz[number][$k];//数量
+                $arr[$k][UNITS] = $zongsz[danwei][$k];//单位
+                $arr[$k][TOTAL] = $zongsz[jine][$k];//金额
+                $arr[$k][OPERATOR_CODE] = $_SESSION['wh_userId'];//操作员编码
+                $arr[$k][BILL_STATUS] = $flag;//收费状态
+                $arr[$k][RETURN_DATE] = '';//退费日期
+                $arr[$k][INVOICE_NO] = $sf_pjh;//发票号
+                $arr[$k][DEPARTMENT] = $department;
+                $arr[$k][qufenleibie] = $zongsz[qufenzhongyao][$k];//区分中药
+                $arr[$k][UNIT_PRICE] = str_replace(',','',$arr[$k][UNIT_PRICE]);
+                $arr[$k][TOTAL] = str_replace(',', '', $arr[$k][TOTAL]);
+
+                $res = $shouf -> add($arr[$k]);
                 if($res){
                     //收费成功后需将收费标识(indicate和cf_flag)更改为2(0是未审核，1是已审核，2是已收费)
-                    $presc_no = $arr[BILL_CODE];
-                    if($arr[ITEM_CODE] == '03'){
-                        $zcy -> where("presc_no = '$presc_no' and patient_id = '$br_id' and xh = '$xh'") -> setField(array('indicate'=>'2','rcpt_no'=>$_POST['sf_pjh']));
+                    $presc_no = $arr[$k][BILL_CODE];
+                    if($arr[$k][ITEM_CODE] == '03'){
+                        $zcy = M('prescription');
+                        $zcy -> where("presc_no = '$presc_no' and patient_id = '$br_id' and xh = '$xh' and department = '$department'") -> setField(array('indicate'=>'2','rcpt_no'=>$_POST['sf_pjh']));
                     }
-                    if($arr[ITEM_CODE] == '01'){
-                        $xy -> where("cf_id = '$presc_no' and br_id = '$br_id' and xh = '$xh'") -> setField(array('cf_flag'=>'2','invoice_no'=>$_POST['sf_pjh']));
+                    if($arr[$k][ITEM_CODE] == '01'){
+                        $xy = M('xydrugcf_detial');
+                        $xy -> where("cf_id = '$presc_no' and br_id = '$br_id' and xh = '$xh' and department = '$department'") -> setField(array('cf_flag'=>'2','invoice_no'=>$_POST['sf_pjh']));
                     }
-                    if($arr[ITEM_CODE] == '02'){
-                        $zchy -> where("cf_id = '$presc_no' and br_id = '$br_id' and xh = '$xh'") -> setField(array('cf_flag'=>'2','invoice_no'=>$_POST['sf_pjh']));
+                    if($arr[$k][ITEM_CODE] == '02'){
+                        $zchy = M('xydrugcf_detial');
+                        $zchy -> where("cf_id = '$presc_no' and br_id = '$br_id' and xh = '$xh' and department = '$department'") -> setField(array('cf_flag'=>'2','invoice_no'=>$_POST['sf_pjh']));
                     }
                 }
             }
@@ -96,10 +87,11 @@ class HuajiaController extends PublicController {
             }else{
                 $this -> error('系统异常，收费失败！',U('Huajia/huajia',array("id" => $br_id,"xh" => $xh)),2);
             }
-        }else{
+		}else{
             if($_GET){
+                $department = session('dpment');
                 $jbxx = M('station_p');//病人基本信息
-                $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh'") -> select();
+                $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh' and department = '$department'") -> select();
                 $shoufeib = M('g_outp_bill_item');//收费信息 票据号
                 //生成票据号
                 $pjhao = $shoufeib  -> field('invoice_no') -> select();
@@ -125,9 +117,10 @@ class HuajiaController extends PublicController {
                 $xy = M('xydrugcf_detial');//西药处方表
                 $xy_detail = M('drug_dict');//西药药品明细表
                 //查看当前病人信息(indicate为空表示未审核，为1表示已审核，为2表示已收费)
-                $zykf = $zy -> where("patient_id = '$br_id' and xh = '$xh' and indicate = 1") -> select();
+                $zykf = $zy -> where("patient_id = '$br_id' and xh = '$xh' and indicate = 1 and department = '$department'")->order('presc_no asc') -> select();
+                // dump($zykf);die;
                 $presc_no =  $zykf[0][presc_no];//查询该病人未收费的项目
-                $zykf1 = $zy_detail -> where("presc_no = '$presc_no'") -> select();
+                $zykf1 = $zy_detail -> where("presc_no = '$presc_no' and department = '$department'") -> select();
                 $zyyp = array();
                 $zylen = count($zykf1);
                 //循环生成页面数据：单位、单价、数量、金额
@@ -146,8 +139,8 @@ class HuajiaController extends PublicController {
                 //西药处方
                 //查看当前病人信息
                 //(cf_flag为空表示未审核，为1表示已审核，为2表示已收费)
-                $xykf = $xy -> field("cf_id") -> where("br_id = '$br_id' and xh = '$xh' and cf_flag = 1") -> group("cf_id") -> select();//查找开了几个处方
-                
+                $xykf = $xy -> field("cf_id") -> where("br_id = '$br_id' and xh = '$xh' and cf_flag = 1 and department = '$department'") -> group("cf_id") -> select();//查找开了几个处方
+
                 $this -> assign('zyyp',$zyyp);
                 $this -> assign('data',$data);
                 //$this -> assign('xydrug',$xydrug);
@@ -159,8 +152,9 @@ class HuajiaController extends PublicController {
                 $this -> assign('xh',$xh);
                 $this->display();
             }else{
+                $department = session('dpment');
                 $jbxx = M('station_p');//病人基本信息
-                $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh'") -> select();
+                $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh' and department = '$department'") -> select();
                 $shoufeib = M('g_outp_bill_item');//收费信息 票据号
                 //生成票据号
                 $pjhao = $shoufeib  -> field('invoice_no') -> select();
@@ -187,29 +181,35 @@ class HuajiaController extends PublicController {
                 $xy_detail = M('drug_dict');//西药药品明细表
                 //查看当前病人信息(indicate为空表示未审核，为1表示已审核，为2表示已收费)
                 //中药处方
-                $zykf = $zy -> where("patient_id = '$br_id' and xh = '$xh' and indicate = 1") -> select();
-                $presc_no =  $zykf[0][presc_no];//查询该病人未收费的项目
-                $zykf1 = $zy_detail -> where("presc_no = '$presc_no'") -> select();
+                $zykf = $zy -> where("patient_id = '$br_id' and xh = '$xh' and indicate = 1 and department = '$department'") -> select();
+                $sum = count($zykf);
                 $zyyp = array();
-                $zylen = count($zykf1);
-                //循环生成页面数据：单位、单价、数量、金额
-                for($i=0;$i<$zylen;$i++){
-                    $zyyp['amount'] += $zykf1[$i][amount];
-                    $zyyp['drug_units'] = '克';
-                    $zyyp['price'] += $zykf1[$i][costs];
-                    $zyyp['costs'] += $zykf1[$i][costs];
+                for ($j = 0; $j < $sum; $j++) {
+                    // dump($j);die;
+                    $presc_no =  $zykf[$j][presc_no];//查询该病人未收费的项目
+                    $dose =  $zykf[$j]['dose'];//查询该病人的位数
+                    // dump($presc_no);
+                    $zykf1 = $zy_detail -> where("presc_no = '$presc_no' and department = '$department'") -> select();
+                    $zylen = count($zykf1);
+                    //循环生成页面数据：单位、单价、数量、金额
+                    for($i=0;$i<$zylen;$i++){
+                        $zyyp[$j]['amount'] += $zykf1[$i][amount];
+                        $zyyp[$j]['drug_units'] = '克';
+                        $zyyp[$j]['price'] += $zykf1[$i][costs] * $dose;
+                        $zyyp[$j]['costs'] += $zykf1[$i][costs] * $dose;
+                        // dump($zyyp[$j]['costs']);
+                    }
+                    //小数位
+                    $zyyp[$j]['amount'] = number_format($zyyp[$j]['amount'],2);
+                    $zyyp[$j]['price'] = number_format($zyyp[$j]['price'],2);
+                    $zyyp[$j]['costs'] = number_format($zyyp[$j]['costs'],2);
                 }
-                $zyyp['costs'] = $zyyp['costs'] * $zykf[0][dose];
-                //小数位
-                $zyyp['amount'] = number_format($zyyp['amount'],2);
-                $zyyp['price'] = number_format($zyyp['price'],2);
-                $zyyp['costs'] = number_format($zyyp['costs'],2);
-
+                // die;
                 //西药处方
                 //查看当前病人信息
                 //(cf_flag为空表示未审核，为1表示已审核，为2表示已收费)
-                $xykf = $xy -> field("cf_id") -> where("br_id = '$br_id' and xh = '$xh' and cf_flag = 1") -> group('cf_id') -> select();//查找开了几个处方  
-
+                $xykf = $xy -> field("cf_id") -> where("br_id = '$br_id' and xh = '$xh' and cf_flag = 1 and department = '$department'") -> group('cf_id') -> select();//查找开了几个处方  
+                //dump($xykf);
                 $this -> assign('zyyp',$zyyp);
                 $this -> assign('data',$data);
                 //$this -> assign('xydrug',$xydrug);
@@ -226,25 +226,26 @@ class HuajiaController extends PublicController {
 
     public function tuifei(){
         if($_POST){
+            $department = session('dpment');
             $date = $_POST['sf_date'];
             $date1 = $date.' 00:00:00';
             $date2 = $date.' 23:59:59';
             $jbxx = M('station_p');//病人基本信息
             $shouf = M('g_outp_bill_item');
             //查询历史收费情况(退费页面)
-            $sfls = $shouf -> distinct(true) -> field('invoice_no,clinic_num') -> where("charge_date between '$date1' and '$date2' and bill_status = 1") -> select();
+            $sfls = $shouf -> distinct(true) -> field('invoice_no,clinic_num') -> where("charge_date between '$date1' and '$date2' and bill_status = 1 and DEPARTMENT = '$department'") -> select();
             //消费总额
             $arr = array();
             for($i=0;$i<count($sfls);$i++){
                 $czjine = 0;
                 $pjuhao = $sfls[$i][invoice_no];
                 $br_id = $sfls[$i]['clinic_num'];
-                $jbxinxi = $jbxx -> where("br_id = '$br_id'") -> select();
+                $jbxinxi = $jbxx -> where("br_id = '$br_id' and department = '$department'") -> select();
                 for($j=0;$j<count($jbxinxi);$j++){
                     $arr[$i]['br_name'] = $jbxinxi[$j]['br_name'];
                     $arr[$i]['br_id'] = $jbxinxi[$j]['br_id'];
                 }
-                $zjine = $shouf -> field('total') -> where("invoice_no = '$pjuhao'") -> select();
+                $zjine = $shouf -> field('total') -> where("invoice_no = '$pjuhao' and DEPARTMENT = '$department'") -> select();
                 for($k=0;$k<count($zjine);$k++){
                     $czjine = $czjine + $zjine[$k][total];
                 }
@@ -257,18 +258,19 @@ class HuajiaController extends PublicController {
         }else{
             $br_id = session('id');
             $xh = session('xh');
+            $department = session('dpment');
             $jbxx = M('station_p');//病人基本信息
-            $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh'") -> select();
+            $data = $jbxx -> where("br_id = '$br_id' and xh = '$xh' and department = '$department'") -> select();
             $shouf = M('g_outp_bill_item');
             //查询当前病人历史收费情况(退费页面)
-            $sfls = $shouf -> distinct(true) -> order('invoice_no') -> field('invoice_no') -> where("CLINIC_NUM = '$br_id' and xh = '$xh' and bill_status = 1") -> select();//票据号
+            $sfls = $shouf -> distinct(true) -> order('invoice_no') -> field('invoice_no') -> where("CLINIC_NUM = '$br_id' and xh = '$xh' and bill_status = 1 and DEPARTMENT = '$department'") -> select();//票据号
             //消费总额
             $arr = array();
             for($i=0;$i<count($sfls);$i++){
                 $czjine = 0;
                 $pjuhao = $sfls[$i][invoice_no];
                 $br_id = $sfls[$i]['clinic_num'];
-                $zjine = $shouf -> field('total') -> where("invoice_no = '$pjuhao'") -> select();
+                $zjine = $shouf -> field('total') -> where("invoice_no = '$pjuhao' and DEPARTMENT = '$department'") -> select();
                 for($j=0;$j<count($zjine);$j++){
                     $czjine = $czjine + $zjine[$j][total];
                 }
@@ -286,19 +288,20 @@ class HuajiaController extends PublicController {
     }
     //划价收费->退费
     public function tuifei2(){
+        $department = session('dpment');
         $pjh = $_POST['checked_pjh'];
         $id = $_POST['checked_id'];
         $sfb = M('g_outp_bill_item');
-        $br_id = $sfb -> field('clinic_num') -> where("clinic_num = '$id' and invoice_no = '$pjh'") -> select();
+        $br_id = $sfb -> field('clinic_num') -> where("clinic_num = '$id' and invoice_no = '$pjh' and DEPARTMENT = '$department'") -> select();
         $br_id = $br_id[0]['clinic_num'];
         if(session('id') != $br_id){
-            $res = $sfb -> where("invoice_no = '$pjh'") -> select();
+            $res = $sfb -> where("invoice_no = '$pjh' and DEPARTMENT = '$department'") -> select();
             $len = count($res);
             $Tfei = array();
             $date = date('Y-m-d H:i:s');
             for($i=0;$i<$len;$i++){
                 $up['BILL_STATUS'] = '2';
-                $sfb -> where("clinic_num = '$br_id' and invoice_no = '$pjh'") -> save($up);
+                $sfb -> where("clinic_num = '$br_id' and invoice_no = '$pjh' and DEPARTMENT = '$department'") -> save($up);
                 $Tfei['BILL_CODE'] = $res[$i]['bill_code'];
                 $Tfei['ITEM_CODE'] = $res[$i]['item_code'];
                 $Tfei['CLINIC_NUM'] = $res[$i]['clinic_num'];
@@ -313,6 +316,7 @@ class HuajiaController extends PublicController {
                 $Tfei['SERIAL_NO'] = $res[$i]['serial_no'];
                 $Tfei['RETURN_DATE'] = $date;
                 $Tfei['INVOICE_NO'] = 'T'.$res[$i]['invoice_no'];
+                $Tfei['DEPARTMENT'] = $department;
                 //dump($Tfei);die;
                 $result = $sfb -> add($Tfei);
             }
@@ -326,13 +330,14 @@ class HuajiaController extends PublicController {
             $br_id = session('id');
             $jbxx = M('station_p');
             $xh = session('xh');
-            $res = $sfb -> where("clinic_num = '$br_id' and invoice_no = '$pjh'") -> select();
+            $department = session('dpment');
+            $res = $sfb -> where("clinic_num = '$br_id' and invoice_no = '$pjh' and DEPARTMENT = '$department'") -> select();
             $len = count($res);
             $Tfei = array();
             $date = date('Y-m-d H:i:s');
             for($i=0;$i<$len;$i++){
                 $up['BILL_STATUS'] = '2';
-                $sfb -> where("clinic_num = '$br_id' and invoice_no = '$pjh'") -> save($up);
+                $sfb -> where("clinic_num = '$br_id' and invoice_no = '$pjh' and DEPARTMENT = '$department'") -> save($up);
                 $Tfei['BILL_CODE'] = $res[$i]['bill_code'];
                 $Tfei['ITEM_CODE'] = $res[$i]['item_code'];
                 $Tfei['CLINIC_NUM'] = $res[$i]['clinic_num'];
@@ -347,6 +352,7 @@ class HuajiaController extends PublicController {
                 $Tfei['SERIAL_NO'] = $res[$i]['serial_no'];
                 $Tfei['RETURN_DATE'] = $date;
                 $Tfei['INVOICE_NO'] = 'T'.$res[$i]['invoice_no'];
+                $Tfei['DEPARTMENT'] = $department;
                 //dump($Tfei);die;
                 $result = $sfb -> add($Tfei);
             }
@@ -355,16 +361,16 @@ class HuajiaController extends PublicController {
                 $xy = M('xydrugcf_detial');
                 $up1['indicate'] = '1';
                 $up2['cf_flag'] = '1';
-                $zy1 = $zy -> where("rcpt_no = '$pjh'") -> select();
+                $zy1 = $zy -> where("rcpt_no = '$pjh' and department = '$department'") -> select();
                 if(count($zy1) != 0){
                     for($i=0;$i<count($zy1);$i++){
-                        $zy -> where("rcpt_no = '$pjh'") -> save($up1);
+                        $zy -> where("rcpt_no = '$pjh' and department = '$department'") -> save($up1);
                     }
                 }
-                $xy1 = $xy -> where("invoice_no = '$pjh'") -> select();
+                $xy1 = $xy -> where("invoice_no = '$pjh' and department = '$department'") -> select();
                 if(count($xy1) != 0){
                     for($j=0;$j<count($zy1);$j++){
-                        $xy -> where("invoice_no = '$pjh'") -> save($up2);
+                        $xy -> where("invoice_no = '$pjh' and department = '$department'") -> save($up2);
                     }
                 }
                 $this -> success('病人退费成功！',U('Huajia/tuifei'),1);
@@ -375,15 +381,17 @@ class HuajiaController extends PublicController {
     }
 
     public function ajax(){
-    	$sfxm = M('p_price_list');//收费项目列表
-		$name = $_POST['name'];
-    	$sfxmdata = $sfxm -> where("item_name = '$name'") -> select();
-    	$this -> ajaxReturn($sfxmdata,'json');
+        $department = session('dpment');
+        $sfxm = M('p_price_list');//收费项目列表
+        $name = $_POST['name'];
+        $sfxmdata = $sfxm -> where("item_name = '$name' and department = '$department'") -> select();
+        $this -> ajaxReturn($sfxmdata,'json');
     }
     public function tuifei1(){
+        $department = session('dpment');
         $sf = M('g_outp_bill_item');//收费表
         $invoice_no = $_POST['invoice_no'];
-        $sflb = $sf -> where("invoice_no = '$invoice_no'") -> select();
+        $sflb = $sf -> where("invoice_no = '$invoice_no' and DEPARTMENT = '$department'") -> select();
         $sflbarr = array();
         $xm = M('p_price_list');
         //echo count($sflb);
@@ -391,20 +399,22 @@ class HuajiaController extends PublicController {
             $sflbarr[$i]['serial_no'] = $sflb[$i]['serial_no'];
             $sflbarr[$i]['id'] = $sflb[$i]['bill_code'];
             $item_code = $sflb[$i]['item_code'];
-            $xmname = $xm -> field("item_name") -> where("item_code = '$item_code'") -> select();
+            $xmname = $xm -> field("item_name") -> where("item_code = '$item_code' and department = '$department'") -> select();
             $sflbarr[$i]['item_name'] = $xmname[0]['item_name'];
             $sflbarr[$i]['units'] = $sflb[$i]['units'];
+            $sflbarr[$i]['qufenleibie'] = $sflb[$i]['qufenleibie'];
             $sflbarr[$i]['unit_price'] = number_format($sflb[$i]['unit_price'],2);
             $sflbarr[$i]['amount'] = number_format($sflb[$i]['amount'],2);
-            $sflbarr[$i]['total'] = $sflbarr[$i]['unit_price'] * $sflbarr[$i]['amount'];
-            $sflbarr[$i]['total'] = number_format($sflbarr[$i]['total'],2);
+            // $sflbarr[$i]['total'] = $sflbarr[$i]['unit_price'] * $sflbarr[$i]['amount'];
+            $sflbarr[$i]['total'] = number_format($sflb[$i]['total'],2);
             $sflbarr[$i]['ztotal'] += $sflbarr[$i]['total'];
             $sflbarr[$i]['ztotal'] = number_format($sflbarr[$i]['ztotal'],2);
         }
-        //dump($sflbarr);
+        // dump($sflbarr);die;
         $this -> ajaxReturn($sflbarr,'json');
     }
     public function yplist(){
+        $department = session('dpment');
         $sf = M('g_outp_bill_item');//收费表
         $price = M('p_price_list');//价格表
         $zy = M('prescription');//中药表
@@ -413,12 +423,12 @@ class HuajiaController extends PublicController {
         $id = $_POST['id'];
         $len = $_POST['len'];
         $sfdetail = array();
-        if($len == 11){//中药
-            $zyid = $zy -> where("presc_no =  '$id'") -> select();
+        if($len == '1'){//中药
+            $zyid = $zy -> where("presc_no =  '$id' and department = '$department'") -> select();
             if(count($zyid) != 0){
                 for($i=0;$i<count($zyid);$i++){
                     $presc_no = $zyid[$i]['presc_no'];
-                    $zymx_d = $zymx -> where("presc_no = '$presc_no'") -> select();
+                    $zymx_d = $zymx -> where("presc_no = '$presc_no' and department = '$department'") -> select();
                     for($j=0;$j<count($zymx_d);$j++){
                         $sfdetail[$j]['id'] = $j+1;
                         $sfdetail[$j]['xmname'] = $zymx_d[$j]['drug_name'];
@@ -435,7 +445,7 @@ class HuajiaController extends PublicController {
                 }
             }
         }else{//西药
-            $xyid = $xy -> where("cf_id = '$id'") -> select();
+            $xyid = $xy -> where("cf_id = '$id' and department = '$department'") -> select();
             if(count($xyid) != 0){
                 for($i=0;$i<count($xyid);$i++){
                     $sfdetail[$i]['id'] = $i+1;
@@ -445,7 +455,7 @@ class HuajiaController extends PublicController {
                     $sfdetail[$i]['dose'] = '';
                     $sfdetail[$i]['price'] = number_format($xyid[$i]['price'],2);
                     if($sfdetail[$i]['price'] == null){$sfdetail[$i]['price'] = 0.00;}
-                    $sfdetail[$i]['costs'] = $sfdetail[$i]['amount'] * $sfdetail[$i]['dose'] * $sfdetail[$i]['price'];
+                    $sfdetail[$i]['costs'] = $sfdetail[$i]['amount'] * $sfdetail[$i]['price'];
                     $sfdetail[$i]['costs'] = number_format($sfdetail[$i]['costs'],2);
                 }
             }
@@ -465,8 +475,9 @@ class HuajiaController extends PublicController {
         session('jkdaSave',null);//判断是否保存过
         session('save',null);    //判断是否保存过体质辨识
         //将station_p表的jz_flag字段值改为2
+        $department = session('dpment');
         $sta = M('station_p');
-        $sta -> where("br_id = '$br_id' and xh = '$xh'") -> setField('jz_flag','2');
+        $sta -> where("br_id = '$br_id' and xh = '$xh' and department = '$department'") -> setField('jz_flag','2');
         if($sta){
             $a = 1;
         }else{

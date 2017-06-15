@@ -1,5 +1,5 @@
 <?php
-namespace Home\Model;
+namespace Admin\Model;
 use Think\Model;
 class YMakenatureModel extends Model{
 	function getAll(array $condition){

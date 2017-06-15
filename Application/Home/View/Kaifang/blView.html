@@ -11,7 +11,36 @@
 	<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
 	<script src="__PUBLIC__/admin/lib/layer/2.1/layer.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/js/imgTable.js"></script>
+    <style type="text/css">
+        #leftimg{
+            float:left;
+            width:3em;
+            height:30%;
+            margin-top:3em;
+            background-color:rgba(243,31,13,0.5);
+            text-align:center;
+            font-family:楷体;
+            color:#FFF;
+            cursor:pointer;
+            /*border-radius:60px;*/
+            border-top-right-radius:50px;
+            border-bottom-right-radius:50px;
+        }
+        #return{
+            width:100%;
+            height:3em;
+        }
+        #tex{
+            width:100%;
+            height:8em;
+            margin-top:2em;
+            font-size:22px;
+            font-family:楷体;
+        }
+    </style>
+
 </head>
+
 <body>
 		<!-- 参照处方div -->
 		<div id="czcf">
@@ -37,6 +66,12 @@
 		</volist>
 
 	<div id="outBig">
+    <!-- //最左边放图标 -->
+<div id="leftimg" title="返回">
+<a href=" {:U('Kaifang/zyhome')}" style="color:#FFF;text-decoration:none;"><div id="tex">返<br/>回</div></a>
+    <!-- <img src="__PUBLIC__/img/3ec9fcef8f44eeb1992ca3cbc2c79c7a.png" alt="" id="return" title="返回"> -->
+</div>
+
 		<div class="y-div" id="leftX">
 			<div class="top" id="bing11"></div>
 			<div class="mid"><button class="buton" id="aft">原始处方</button></div>
@@ -56,6 +91,11 @@
 </body>
 <script type="text/javascript">
 	$(function(){
+        $('#leftimg').mouseover(function(){
+            $(this).css('backgroundColor','rgba(243,31,13,1)');
+        }).mouseout(function(){
+             $(this).css('backgroundColor','rgba(243,31,13,0.5)');
+        });
 		$('#aft').click(function(){
 			var zywrph100 = [];
      		var num100 = 0;
@@ -152,18 +192,18 @@
                 var wrph = [];
                 //取过来的经典方，温热平寒数组
                  $.each(dd,function(idx,item){
-              		wrph.push(item.xw1);
+              		wrph.push(item.xw);
                 });
                  setHop2(wrph);
                 var str1 = [];
                 $.each(dd,function(idx,item){
-              		str1.push(item.drug_name);
+              		str1.push(item.name);
                 });
                 var sstr = str1.join(',');
                 //经典code
                 var jdcode = [];
                 $.each(dd,function(idx,item){
-              		jdcode.push(item.drug_code);
+              		jdcode.push(item.code);
                 });
                 //结束
                 $('#difList').html(sstr);

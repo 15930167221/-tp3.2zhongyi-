@@ -39,11 +39,15 @@ function doFun(x){
 							var str3="danjia["+k+"]";
 							var str4="number["+k+"]";
 							var str5="jine["+k+"]";
+							var str6 = "qufenzhongyao["+k+"]";
+							var str7 = "bill["+k+"]";
 							$(".tab4_1 tr:nth-child("+k+")").children("td").eq(1).children("input").attr("name",str1);
 							$(".tab4_1 tr:nth-child("+k+")").children("td").eq(2).children("input").attr("name",str2);
 							$(".tab4_1 tr:nth-child("+k+")").children("td").eq(3).children("input").attr("name",str3);
 							$(".tab4_1 tr:nth-child("+k+")").children("td").eq(4).children("input").attr("name",str4);
 							$(".tab4_1 tr:nth-child("+k+")").children("td").eq(5).children("input").attr("name",str5);
+							$(".tab4_1 tr:nth-child("+k+")").children("td").eq(6).children("input").attr("name", str6);
+							$(".tab4_1 tr:nth-child("+k+")").children("td").eq(7).children("input").attr("name", str7);
 						}
 					}
 					$(".tab3 tr td:last").text('￥'+value);

@@ -12,25 +12,25 @@ class ShenFangController extends PublicController{
         $date1=date('Y-m-d H:i:s',strtotime("-7 day"));
         $date2=date("Y-m-d H:i:s");
         $condition['presc_date']=array('between',"$date1,$date2");
-		$res=$mod->field('presc_no,presc_date,operator,xh,patient_id,indicate,doctor_id,hzsrc,blsrc,cause,bhtoken,chief_id,department')
+		$res=$mod->field('presc_no,presc_date,operator,xh,patient_id,indicate,doctor_id,rcpt_no,hzsrc,blsrc,cause,bhtoken,tj_date,chief_id,department')
 		->where($condition)
-        ->order('indicate,presc_date')->page($_GET['p'],8)->select();
+        ->order('indicate,rcpt_no desc')->page($_GET['p'],8)->select();
 		foreach($res as $k=>$v){
 			$pat=M('station_p')->where("BR_ID='$v[patient_id]' and xh='$v[xh]' and department='$v[department]'")->find();
-			$res[$k]['br_info']=$pat['br_name']."--".$pat['xb']."--".$pat['nl'];
+			$res[$k]['br_info']=$pat['br_name']."/".$pat['xb']."/".$pat['nl'];
 			$res[$k]['blh']=$pat['blqsh'];
             $uname=M('user_info_dict')->field('userName')->where("id='$v[chief_id]'")->find();      
             $res[$k]['chiefname']=$uname['username'];
 		}
         //所有上级部门人员
+        $qufenshijian = session(wh_userId);
         $user=M('user_info_dict');
         $dpt=$user->field('b1.department,b2.pid')
                 ->alias('b1')
                 ->join('left join about as b2 on b1.department=b2.id')
-                ->where("b1.id=".session(wh_userId)." and b1.department=b2.id")
+                ->where("b1.id='$qufenshijian' and b1.department=b2.id")
                 ->find();
-        $chief=$user->field('id,userName')->where("department='$dpt[pid]'")->select();
-        
+        $chief=$user->field('id,userName,online')->where("department='$dpt[pid]'")->order('online desc')->select();
         $cons=$mod->where($condition)->count();
         $page = new \Think\Page($cons,8);
 
@@ -118,6 +118,11 @@ class ShenFangController extends PublicController{
 		}
 	}
 	function subcheck(){//提交审核
+        $code = $_GET['presc_no'];
+      $dict = M('prescription');
+      $data['indicate'] = 100;
+      $where['presc_no'] = $code;
+      $res = $dict->where($where)->save($data);
 		$mod=M('dshdict');
 		$data[indicate]='1';
 		$data[tj_date]=date('Y-m-d H:i:s');
@@ -360,6 +365,17 @@ class ShenFangController extends PublicController{
 		$result=M('dshdict_Detail')->query($sql);
 		$this->ajaxReturn($result);
 	}
+    /*
+     * @杨旭亚
+     * 2017-06-01
+     * 获取处方用法 次数等
+    **/
+    public function huoquchufangyongfa(){//获取处方用法
+        $unm = I('post.num');
+        $where['presc_no'] =$unm;
+        $user = M(prescription)->where($where)->field('usage1,decoction,dosage')->select();
+        $this->ajaxReturn($user);
+    }
 	function imginfo(){
 		$model=M('dshdict');
 		$result=$model->field('presc_no,blurl,hzurl')->where("presc_no='$_POST[presc_no]'")->find();
@@ -378,11 +394,12 @@ class ShenFangController extends PublicController{
         $injz=$model->field('br_id')->where("jz_flag='1'")->select();
         $injz=array_column($injz,'br_id');//未完成就诊的病人ID
         $condition['indicate']='1';
-        $condition['chief_id']=session(wh_userId);
+        $seid = session(wh_userId);
+        $condition['chief_id']="$seid";
         $condition['patient_id']=array('in',$injz);
-		$res=$mod->field('presc_no,operator,patient_id,xh,indicate,doctor_id,hzsrc,blsrc,hzurl,blurl,tj_date,chief_id,department')
+		$res=$mod->field('presc_no,operator,patient_id,xh,indicate,doctor_id,hzsrc,rcpt_no,blsrc,hzurl,blurl,tj_date,chief_id,department')
 		->where($condition)
-        ->order('tj_date')->page($_GET['p'],8)->select();
+       ->order('indicate,rcpt_no desc')->page($_GET['p'],8)->select();
 		foreach($res as $k=>$v){
 			$pat=$model->where("BR_ID='$v[patient_id]' and xh='$v[xh]' and department='$v[department]'")->find();
 			$res[$k]['br_info']=$pat['br_name']."--".$pat['xb']."--".$pat['nl'];
@@ -394,7 +411,7 @@ class ShenFangController extends PublicController{
 			$res[$k]['hospital']=$hos['hospital'];
 			$brinfo[]=$pat;
 		}
-        $cons=$mod->where("indicate='1' and chief_id=".session(wh_userId))->count();
+        $cons=$mod->where("indicate='1' and chief_id='$seid'")->count();
         $page = new \Think\Page($cons,8);
 
         $page->rollPage=5;
@@ -412,7 +429,7 @@ class ShenFangController extends PublicController{
 		
 		$this->display();
 	}
-	function bh(){//驳回处方
+	function bh(){//上级审核--驳回处方
 		$mod=M('dshdict');
 		$con=I('post.');
 		$data['cause']=$con['cause'];
@@ -424,7 +441,6 @@ class ShenFangController extends PublicController{
 		$this->redirect('ShenFang/checksf',0);
 	}
 	function endcheck(){//上级审核
-        //dump($_SESSION);exit;
         $mod=M('dshdict');
         $model=M('dshdict_detail');
         $yftoken=M('dshdict')->field('pregnant_woman,department as dpt')->where("presc_no='$_GET[presc_no]'")->find();
@@ -503,11 +519,14 @@ class ShenFangController extends PublicController{
                 $stab[$k]['zysx']=$v[zysx];
             }
         }
+        $token='';
         if(empty($str1) && empty($str2) && empty($str3) && empty($str4) && empty($str5) && empty($stab)){
+            $token='1';
             $sql="select * from dshdict_Detail where presc_no='".$_GET['presc_no']."' order by drug_no";
             $cfinfo=$model->query($sql);
             $this->assign('cfinfo',$cfinfo);
-            $this->assign('token',$_GET[presc_no]);
+            $this->assign('token',$token);
+            $this->assign('id',$_GET['presc_no']);
             $this->display();
         }else{
             $this->assign('str1',$str1);
@@ -516,11 +535,13 @@ class ShenFangController extends PublicController{
             $this->assign('str4',$str4);
             $this->assign('str5',$str5);
             $this->assign('stab',$stab);
-            $this->assign('id',$_GET[presc_no]);
+            $this->assign('token',$token);
+            $this->assign('id',$_GET['presc_no']);
             $this->display();
         }
 	}
     function pass(){
+        //dump($_GET[presc_no]);exit;
         $mod=M('dshdict');
         $data[indicate]='2';
         $info=$mod->where("presc_no='$_GET[presc_no]'")->save($data);

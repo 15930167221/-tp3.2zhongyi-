@@ -29,8 +29,10 @@
                 <th>销售规格</th>
                 <th>剂型</th>
                 <th>类别</th>
+                <th>系数</th>
                 <th>含量</th>
-                <th>含量单位</th>
+                <th>含量单位1</th>
+                <th>含量单位2</th>
                 <th>包装单位</th>
                 <th>零售价</th>
                 <th>备注</th>
@@ -52,9 +54,11 @@
                         <else />
                         <td>中成药</td>
                         </if>
+                        <td>{$item.bzsl1}</td>
                         <td>{$item.hl}</td>
                         <td>{$item.hl_unit|gethangliangNameByCode=###}</td>
                         <td>{$item.bzdw1|gethangliangNameByCode=###}</td>
+                        <td>{$item.bzdw2|gethangliangNameByCode=###}</td>
                         <td>{$item.price}</td>
                         <td>{$item.memos}</td>
                         <td>{$item.drug_code}</td>

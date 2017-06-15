@@ -22,6 +22,7 @@
 			border:1px #000000 solid;
 		}
 		.sel{background-color:cyan;}
+
     </style>
 </head>
 <body oncontextmenu=self.event.returnValue=false onselectstart="return false">
@@ -99,10 +100,10 @@
 			<div style="float: left;height: 100%;width: 57%;margin-left:5px;padding-left:25px;padding-right:10px;padding-top:5px;">
 				<div class="zhongjianhanzi">
 					<span class="zhongjianhanzichu"><b>处方信息</b></span>
-					<span style=" height:18px;line-height:23px;display:inline-block; width:300px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;cursor:pointer; ">
+					<span style=" height:18px;line-height:23px;display:inline-block; width:400px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;cursor:pointer; ">
 						<strong >方剂名称:<span title="" class="fuzhichufangmingcheng"></span></strong>
 					</span>
-					<span class="zhongjianhanzizhu "><b>注：双击药品显示药解！</b></span>
+					<!-- <span class="zhongjianhanzizhu "><b>注：双击药品显示药解！</b></span> -->
 				</div>
 				<!-- 下侧处方 -->
 				<div class="ka1xXiaceChufang">
@@ -323,7 +324,7 @@
 	 			});
 	 			// alert(zhenchufanghao);
 	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选证型",{icon:7});
 	 			}else{
 	 				// alert(123);
 	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id+'&bingming='+bingming);
@@ -340,7 +341,7 @@
 	 				zhenchufanghao += chufhcd + ' ';
 	 			});
 	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选证型",{icon:7});
 	 			}else{
 	 				// alert(123);
 	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id+'&bingming='+bingming);

@@ -70,7 +70,7 @@ body input[type=text]{color:#000!important;border:1px #DFD7D7 solid!important}
 .ka1xXiacehanzi>span{float:left;}
 /*处方信息*/
 .xiacechufangyaopin{
-	height:107%;overflow:auto;border:1px #cccccc solid;
+	height:107%;overflow:auto;border:1px #cccccc solid;width: 95%;
 }
 .sty1 td{color:#333333;background-color:#ffffff;cursor: pointer;}
 .sty1:hover{font-weight: bold;}

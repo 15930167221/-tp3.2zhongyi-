@@ -19,6 +19,6 @@ class BqxxModel extends Model
      * @return mixed
      */
     public function getHis(array $condition){
-        return $this->join('station_p on bqxx.BR_ID=station_p.br_id and bqxx.XH=station_p.xh')->field('bqxx.BR_ID,bqxx.XH,bqxx.jz_date')->where($condition)->select();
+        return $this->join('station_p on bqxx.BR_ID=station_p.br_id and bqxx.XH=station_p.xh')->field('bqxx.BR_ID,bqxx.XH,convert(varchar(19),bqxx.jz_date,120) as jz_date')->where($condition)->select();
     }
 }

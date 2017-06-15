@@ -96,7 +96,7 @@ class ShoufeiController extends AdminController
     		$user = M('p_price_list');
     		$where['id'] = $jxdm;
     		$data = $user->where($where)->select();
-    		// dump($data);die();
+//    		 dump($data);die();
     		$this->assign('data',$data);
     		$this->display();
     	}

@@ -349,7 +349,12 @@ function upsub(){
 				}
 			}
 			var str = '<div class="yongLaiKaZhude" style="width:730px"><div class="sty" style="float:left;margin:15px;width:150px;height:100px;border:1px #E1E1E1 solid"><div class="yaopinshidijige">'+(parseInt(num)+1)+'</div><input type="hidden" name="drug_no[]" value="'+(parseInt(num)+1)+'"><div class="tihuandeneirong"><div style="border:1px #ccc solid;width:60px;height:20px;border-width:0 0 1px 0;position:relative;left:70px;top:-15px"><select class="chufangyaopinjianfa" name="usage[]" id="cfjianfa"><option value=""></option><option value="冲">冲</option><option value="研面">研面</option><option value="煨">煨</option><option value="姜制">姜制</option><option value="麸炒">麸炒</option><option value="醋制">醋制</option><option value="炮">炮</option><option value="制">制</option><option value="去心">去心</option><option value="炙">炙</option><option value="先煎">先煎</option><option value="冲服">冲服</option><option value="包煎">包煎</option><option value="烊化">烊化</option><option value="研末">研末</option><option value="打碎">打碎</option><option value="兑服">兑服</option><option value="另包">另包</option><option value="研末冲服">研末冲服</option><option value="冲入">冲入</option><option value="姜汁炒">姜汁炒</option><option value="另炖">另炖</option><option value="加朱砂">加朱砂</option><option value="外用">外用</option><option value="包">包</option><option value="先下">先下</option><option value="后下">后下</option><option value="单煎">单煎</option><option value="打">打</option><option value="烊">烊</option><option value="炒">炒</option><option value="炸">炸</option><option value="炮制">炮制</option></select></div><div style="width:80px;border-width:0 0 1px 0;position:relative;left:10px;top:-5px;font-size:20px"><input type="text" name="drug_name[]" value="" id="drug_name" class="chufangyaopinmingcheng" onkeyup="jiansuo(this)" autocomplete="off"><input type="hidden" id="drug_nameid" value="" class="usecode"></div><div style="width:70px;border-width:0 0 1px 0;position:relative;left:70px;top:0;text-align:right"><input type="text" name="amount[]" class="chufangyaopinshuliang" id="ypyongliang" value="" autocomplete="off"><input type="text" name="drug_units[]" value="克" readonly="readonly" class="cfypslunits" autocomplete="off"></div></div></div></div>';
-			$(".yongLaiKaZhude:last").after(str);
+			if($('.yongLaiKaZhude').length>0){
+				$(".yongLaiKaZhude:last").after(str);
+			}else{
+				$("#jy2scroll").append(str);
+			}
+			
 			$(".chufangyaopinmingcheng").focus();
 		}	
 	});

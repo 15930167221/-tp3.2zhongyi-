@@ -34,7 +34,11 @@
                 <!-- <input type="text" class="input-text"  placeholder="剂型" value="{$data.0.drug_form}" name="drug_form"> -->
                  <select name="drug_form">
                     <volist name="jixingdata" id="jixingvo">
-                        <option value="{$jixingvo.jxdm}">{$jixingvo.jxmc}</option>
+                        <if condition="$jixingvo['jxdm'] eq $data['0']['drug_form']">
+                            <option value="{$jixingvo.jxdm}" selected="selected">{$jixingvo.jxmc}</option>
+                            <else />
+                            <option value="{$jixingvo.jxdm}">{$jixingvo.jxmc}</option>
+                        </if>
                     </volist>
                 </select>
             </div>
@@ -44,8 +48,13 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <!-- <input type="text" class="input-text"  placeholder="类别" value="{$data.0.drug_indicator}" name="drug_indicator"> -->
                 <select name="drug_indicator">
-                    <option value="1">西药</option>
-                    <option value="3">中成药</option>
+                    <if condition="$data['0']['drug_indicator'] eq 1">
+                        <option value="1" selected="selected">西药</option>
+                        <option value="3">中成药</option>
+                        <else />
+                        <option value="1">西药</option>
+                        <option value="3" selected="selected">中成药</option>
+                    </if>
                 </select>
             </div>
         </div>
@@ -56,23 +65,54 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->含量单位</label>
+            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->包装转换系数</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="包装转换系数" value="{$data.0.bzsl1}" name="bzsl1">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>含量单位</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <!-- <input type="text" class="input-text"  placeholder="含量单位" value="{$data.0.hl_unit}" name="hl_unit"> -->
                 <select name="hl_unit">
                     <volist name="hanliangdata" id="hanliangvo">
-                        <option value="{$hanliangvo.dwdm}">{$hanliangvo.dw}</option>
+                        <if condition="$hanliangvo['dwdm'] eq $data['0']['hl_unit']">
+                            <option value="{$hanliangvo.dwdm}" selected="selected">{$hanliangvo.dw}</option>
+                            <else />
+                            <option value="{$hanliangvo.dwdm}">{$hanliangvo.dw}</option>
+                        </if>
                     </volist>
                 </select>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->包装单位</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>包装单位1</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <!-- <input type="text" class="input-text"  placeholder="包装单位" value="{$data.0.bzdw1}" name="bzdw1"> -->
                 <select name="bzdw1">
                     <volist name="baozhuangdata" id="baozhuangvo">
-                        <option value="{$baozhuangvo.dwdm}">{$baozhuangvo.dw}</option>
+                        <if condition="$baozhuangvo['dwdm'] eq $data['0']['bzdw1']">
+                            <option value="{$baozhuangvo.dwdm}" selected="selected">{$baozhuangvo.dw}</option>
+                            <else />
+                            <option value="{$baozhuangvo.dwdm}">{$baozhuangvo.dw}</option>
+                        </if>
+
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>包装单位2</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <!-- <input type="text" class="input-text"  placeholder="包装单位" value="{$data.0.bzdw1}" name="bzdw1"> -->
+                <select name="bzdw2">
+                    <volist name="baozhuangdata" id="baozhuangvo">
+                        <if condition="$baozhuangvo['dwdm'] eq $data['0']['bzdw2']">
+                            <option value="{$baozhuangvo.dwdm}" selected="selected">{$baozhuangvo.dw}</option>
+                            <else />
+                            <option value="{$baozhuangvo.dwdm}">{$baozhuangvo.dw}</option>
+                        </if>
+
                     </volist>
                 </select>
             </div>

@@ -69,8 +69,8 @@
                     </if>
                 </ul>
                 <ul class="date-top" style="border-right:0px;">
-                    <if condition="$user.p_date neq ''">
-                        <div id="bdate">就诊时间: <span id="sbdate">{$user.p_date}</span></div>
+                    <if condition="$user.jz_date neq ''">
+                        <div id="bdate">就诊时间: <span id="sbdate">{$user.jz_date}</span></div>
                         <else/>
                         <div id="bdate">就诊时间: <span id="sbdate"></span></div>
                     </if>
@@ -79,8 +79,12 @@
                 <div id="xh" style="display:none;">{$user.xh}</div>
                 <div id="jkSave" style="display:none;">0</div>
             </div>
-            <ul style="margin-right:0" class="nav navbar-nav navbar-right">
-                <li><a data-toggle="dropdown" class="dropdown-toggle" href="#"><img alt="" class="admin-pic img-circle" src="<?php echo '__ROOT__/Uploads/20000000/182312.jpg'; ?>"> <php>echo $_SESSION['wh_userName'];</php> <b class="caret"></b></a>
+            <ul style="margin-right:0px;" class="nav navbar-nav navbar-right">
+                <li><a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                <!-- <span style="margin-top:10px;border:1px red solid;">尊敬的</span>  -->
+                 <php>echo '尊敬的 ' ;echo $_SESSION['wh_userName'];</php> 
+                
+                <b class="caret"></b></a>
                     <ul style="margin-top:14px" role="menu" class="dropdown-setting dropdown-menu">
                         <li><a href="{:U('Login/logOut')}"><span class="glyphicon glyphicon-record"></span>&#160;&#160;退出</a></li>
                     </ul>
@@ -121,10 +125,10 @@
                             <li class="li"><a id="zlznkf" class="tooltip-tip2 ajax-load" target="menu" href="" title="诊疗指南开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>诊疗指南开方</span></a></li>
                             <li class="li"><a id="qjdf" class="tooltip-tip2 ajax-load" target="menu" href="" title="取经典方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>取经典方</span></a></li>
                             <li class="li"><a id="qjyf" class="tooltip-tip2 ajax-load" target="menu" href="" title="取经验方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>取经验方</span></a></li>
-                            <li class="li"><a id="bzkf" class="tooltip-tip2 ajax-load" target="menu" href="" title="辩证开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>辩证开方</span></a></li>
+                            <li class="li"><a id="bzkf" class="tooltip-tip2 ajax-load" target="menu" href="" title="辨证开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>辨证开方</span></a></li>
                             <li class="li"><a id="zdykf" class="tooltip-tip2 ajax-load" target="menu" href="" title="自定义开方">&nbsp; &nbsp;<i class="entypo-doc-text"></i><span>自定义开方</span></a></li>
                             <if condition="($res.levelid eq 2) and ($res.pid neq 0)">
-                                <li class="li"><a class="tooltip-tip2 ajax-load" target="menu" href=" {:U('ShenFang/subsf')}" title="提交处方">&nbsp; &nbsp;<i class="glyphicon glyphicon-bell"></i><span>提交处方</span></a></li>
+                                <li class="li"><a class="tooltip-tip2 ajax-load" target="menu" href=" {:U('ShenFang/subsf')}" title="上级审方">&nbsp; &nbsp;<i class="glyphicon glyphicon-bell"></i><span>上级审方</span></a></li>
                             <elseif condition="$res.levelid eq 0"/>
                             <else />
                                 <li class="li"><a class="tooltip-tip2 ajax-load" target="menu" href=" {:U('ShenFang/checksf')}" title="审核处方">&nbsp; &nbsp;<i class="glyphicon glyphicon-bell"></i><span>审核处方</span></a></li>
@@ -157,8 +161,7 @@
                     <li><a class="tooltip-tip ajax-load" href="__MODULE__/Mynote" title="我的文档" target="menu"><i class="glyphicon glyphicon-folder-open"></i><span>我的文档</span></a></li>
                     <li><a class="tooltip-tip ajax-load" href="{:U('Book/clinical')}" title="临床诊断" target="menu"><i class="glyphicon glyphicon-file"></i><span>临床诊断</span></a></li>
                     <li><a href="#" style="border-left:0 solid!important" class="title-menu-left"><span>辅助考试系统</span><i data-toggle="tooltip" class="entypo-cog pull-right config-wrap"></i></a></li>
-                    <li><a class="tooltip-tip ajax-load" href="http://192.168.1.117/pkaoshi/index.php?user-app-login&username=<?php echo $_SESSION['wh_userName'];?>&userpassword=<?php echo $_SESSION['userpwd'];?>&usergroupid=8&usercoin=0&usersequence=0" target="_blank" title="中医执业医师考试辅助系统" target="menu"><i class="glyphicon glyphicon-pencil"></i><span>中医执业医师考试系统</span></a></li>
-
+                    <li><a id="kaoshi" class="tooltip-tip ajax-load" href="javascript:void(0)" onClick="Go()"  title="中医执业医师考试辅助系统" target="menu"><i class="glyphicon glyphicon-pencil"></i><span>中医执业医师考试系统</span></a></li>
                     <!--<li><a class="tooltip-tip ajax-load" href="#" title="中医药学会诊断指南" target="menu"><i class="glyphicon glyphicon-file"></i><span>中医药学会诊断指南</span></a></li>-->
                 </ul>
             </div>
@@ -173,7 +176,7 @@
         <center>
             <p></p>
             <p>
-                <a href="http://www.pengyukeji.com" target="_blank">河北鹏宇电子科技有限公司</a>
+                <a href="http://www.pengyukeji.com" target="_blank">珠海横琴博远中医药科技发展有限公司</a>
             </p>
         </center>
     </div>
@@ -205,6 +208,11 @@
 <block name="js"></block>
 </body>
 </html>
+<script type="text/javascript"> 
+    function Go() { 
+      window.open("http://192.168.1.5/pkaoshi/index.php?user-app-login&username=<?php echo $_SESSION['wh_userName'];?>&userpassword=<?php echo $_SESSION['userpwd'];?>&usergroupid=8&usercoin=0&usersequence=0");
+    } 
+  </script>
 <!-- 防止拖拽 -->
 <script type="text/javascript">
     $("a").on("copy cut paste dragstart dragenter",function(e){
@@ -701,12 +709,13 @@
     })
     //健康档案流程控制
     $("#mjkda").click(function(){
-        var blh = $("#sblh").html();
-        if ((blh||(brid && brxh)) && blh != '') {
+        var sbdate = $("#sbdate").html();
+        // alert(sbdate);
+        if (sbdate != '') {
             url="{:U('Index/jiankang')}";
             $("#mjkda").attr('href',"{:U('Index/jiankang')}");
         }else{
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#mjkda").attr('href',"{:U('Index/jiezhen')}");
         }
@@ -715,8 +724,9 @@
     $("#mtzbs").click(function(){
 
         var bmkf = $("#sblh").html();//名称
+        var sbdate = $("#sbdate").html();//接诊时间
         var age=$("#sbnl2").html();//年龄
-        if ((bmkf||(brid && brxh)) && bmkf!='') {
+        if (sbdate != '') {
             if(age>3){
                 url="{:U('Index/tizhi')}";
                 $("#mtzbs").attr('href',"{:U('Index/tizhi')}");
@@ -725,7 +735,7 @@
                 $("#mtzbs").attr('href',url);
             }
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#mtzbs").attr('href',"{:U('Index/jiezhen')}");
         }
@@ -733,9 +743,10 @@
     })
     //中医调养流程判断
     $("#mzyty").click(function(){
+        var sbdate = $("#sbdate").html();//接诊时间
         var bmkf = $("#sblh").html();//名称
         var age=$("#sbnl2").html();//年龄
-        if ((bmkf||(brid && brxh)) && bmkf!='') {
+        if (sbdate != '') {
             if(age<=3){
                 url="{:U('Index/tiaoyang')}";
                 $("#mzyty").attr('href',"{:U('Index/tiaoyang')}");
@@ -744,7 +755,7 @@
                 $("#mzyty").attr('href',url);
             }
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#mzyty").attr('href',"{:U('Index/jiezhen')}");
         }
@@ -752,12 +763,13 @@
 
     //病名开方流程控制
     $("#bmkf").click(function(){
+        var sbdate = $("#sbdate").html();//接诊时间
         var bmkf = $("#sblh").html();
-        if ((bmkf||(brid && brxh)) && bmkf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/bingMing')}";
             $("#bmkf").attr('href',"{:U('Kaifang/bingMing')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#bmkf").attr('href',"{:U('Index/jiezhen')}");
         }
@@ -765,108 +777,118 @@
     //证型开方流程控制
     $("#zxkf").click(function(){
 
+        var sbdate = $("#sbdate").html();//接诊时间
         var zxkf = $("#sblh").html();
-        if ((zxkf||(brid && brxh)) && zxkf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/zhengxing')}";
             $("#zxkf").attr('href',"{:U('Kaifang/zhengxing')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#zxkf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
     //诊疗指南开方
     $("#zlznkf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var zlznkf = $("#sblh").html();
-        if ((zlznkf||(brid && brxh)) && zlznkf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/zhiLiaoZhinan')}";
             $("#zlznkf").attr('href',"{:U('Kaifang/zhiLiaoZhinan')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#zlznkf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
+    
     //取经典方
     $("#qjdf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var qjdf = $("#sblh").html();
-        if ((qjdf||(brid && brxh)) && qjdf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/jingDian')}";
             $("#qjdf").attr('href',"{:U('Kaifang/jingDian')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#qjdf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
     //取经验方
     $("#qjyf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var qjyf = $("#sblh").html();
-        if ((qjyf||(brid && brxh)) && qjyf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/jingYan')}";
             $("#qjyf").attr('href',"{:U('Kaifang/jingYan')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#qjyf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
-    //辩证开方
+    //辨证开方
     $("#bzkf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var bzkf = $("#sblh").html();
-        if ((bzkf||(brid && brxh)) && bzkf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/bianZheng')}";
             $("#bzkf").attr('href',"{:U('Kaifang/bianZheng')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#bzkf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
     //自定义开放
     $("#zdykf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var zdykf = $("#sblh").html();
-        if ((zdykf||(brid && brxh)) && zdykf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/zyhome','system')}";
             $("#zdykf").attr('href',"{:U('Kaifang/zyhome','system')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#zdykf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
     //西药开方
     $("#xykf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var xykf = $("#sblh").html();
-        if ((xykf||(brid && brxh)) && xykf!='') {
+        if (sbdate != '') {
             url="{:U('Kaifang/west')}";
             $("#xykf").attr('href',"{:U('Kaifang/west')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#xykf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
     //划价收费
     $("#hjsf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var hjsf = $("#sblh").html();
-        if ((hjsf||(brid && brxh)) && hjsf!='') {
+        if (sbdate != '') {
             url="{:U('Huajia/huajia')}";
             $("#hjsf").attr('href',"{:U('Huajia/huajia')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#hjsf").attr('href',"{:U('Index/jiezhen')}");
         }
     })
     //门诊退费
     $("#mztf").click(function(){
+         var sbdate = $("#sbdate").html();//接诊时间
         var mztf = $("#sblh").html();
-        if ((mztf||(brid && brxh)) && mztf!='') {
+        if (sbdate != '') {
             url="{:U('Tuifei/index')}";
             $("#mztf").attr('href',"{:U('Tuifei/index')}");
         } else {
-            layer.alert("请在接诊区选择患者!!!",{icon:7});
+            layer.alert("该用户未点击就诊!!!",{icon:7});
             url="{:U('Index/jiezhen')}";
             $("#mztf").attr('href',"{:U('Index/jiezhen')}");
         }

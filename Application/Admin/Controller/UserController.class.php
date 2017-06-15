@@ -35,14 +35,19 @@ class UserController extends AdminController
 
     public function add()
     {
+        $dic = M('user_info_dict');
+        $code = $dic->field('code,department')->order('code desc')->find();
+        $nec = $code['code']+1;
+        $nn =  $nec;
         if (IS_POST) {
             $data = I('post.');
-            dump($data);
+            $data[passWord] = md5($_POST['password']);
             $res = $this->mod->insertUser($data);
             $res === true ? $this->success('添加成功') : $this->error('添加失败');
         } else {
             $sele = D('About')->getDepart();
             $this->assign('sele', $sele);
+            $this->assign('code',$nn);
             $this->display();
         }
     }
@@ -53,7 +58,9 @@ class UserController extends AdminController
             $condition['id'] = I('post.id');
             $data = I('post.');
             array_shift($data);
+            $data[passWord] = md5($_POST['passWord']);
             $res = $this->mod->updateUser($condition, $data);
+            echo $this->mod->getLastSql();
             $res === true ? $this->success('编辑成功') : $this->error('编辑失败');
         } else {
             $condition['id'] = I('get.id');

@@ -20,7 +20,7 @@ class StationPModel extends Model
      * @return mixed  返回二维数组或者多条数据
      */
     public function getMoreUserInf(array $condition){
-        return $this->field("br_id,br_name,dw,tel,fax,e_mail,p_date,jz_date,cs_date,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl,nl as nlt,pass")->where($condition)->select();
+        return $this->field("br_id,br_name,dw,tel,fax,e_mail,p_date,jz_date,cs_date,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),isnull(jz_date,p_date),120)) as nl,nl as nlt,pass")->where($condition)->select();
     }
 
     /**得到患者登记的条数

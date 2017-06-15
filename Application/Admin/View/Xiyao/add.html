@@ -50,13 +50,19 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->含量</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>含量</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text"  placeholder="含量" name="hl">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->含量单位</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>包装转换系数</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text"  placeholder="包装转换系数" name="bzsl1">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>含量单位</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <!-- <input type="text" class="input-text"  placeholder="含量单位" name="hl_unit"> -->
                 <select name="hl_unit">
@@ -67,10 +73,21 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><!-- <span class="c-red">*</span> -->包装单位</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>包装单位1</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <!-- <input type="text" class="input-text"  placeholder="包装单位" name="bzdw1"> -->
                 <select name="bzdw1">
+                    <volist name="baozhuangdata" id="baozhuangvo">
+                        <option value="{$baozhuangvo.dwdm}">{$baozhuangvo.dw}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>包装单位2</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <!-- <input type="text" class="input-text"  placeholder="包装单位" name="bzdw1"> -->
+                <select name="bzdw2">
                     <volist name="baozhuangdata" id="baozhuangvo">
                         <option value="{$baozhuangvo.dwdm}">{$baozhuangvo.dw}</option>
                     </volist>

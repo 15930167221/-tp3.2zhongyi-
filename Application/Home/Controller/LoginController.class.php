@@ -11,10 +11,10 @@ class LoginController extends Controller {
         $where = array();
         // dump($_POST);
         $name = $_POST['name'];
-        $pwd = $_POST['password'];
+        $pwd =md5($_POST['password']);
         $ip = get_client_ip();
         // dump($pwd);
-        $where['userName'] = $name;
+        $where['code'] = $name;
         $where['passWord'] = $pwd;
         $result = $user->where($where)->find();
 //         dump($result);die;
@@ -41,21 +41,21 @@ class LoginController extends Controller {
                             $path = $result['photopath'];
                             session('wh_power',$pow);
                             //用户名存入session
-                            session('wh_userName',$name);
+                            session('wh_userName',$result['username']);
                             session('wh_userId',$id);
-                           
+
                             session('logintime',time());
                             session('dpment',$result['department']);
                             session('ip',$ip);
                             session('days', $days);
+                            session('userpwd',$result['password']);
                                $di = M('user_message');
                                 $datat['userid'] = $id;
                                 $datat['logtime'] = time();
-                                $datat['name'] = $name;
+                                $datat['name'] = session('wh_userName');
                                 $datat['ip'] = $ip;
 
-                                $re = $di->add($datat);
-                           
+                                $di->add($datat);
                             //miracle7kill 修改登录状态online 1已登录 0未登录
                             $user->where(array('id' => $result['id']))->save(array('online' => 1, 'lastime' => time(), 'ip'=> $ip));
                             $this->redirect('index/home',array('rev'=>$level));
@@ -70,7 +70,7 @@ class LoginController extends Controller {
                 }
                 break;
             case 1:
-                if ((time() - $result['lastime']) >= 600) {
+                if ((time() - $result['lastime']) >= 60) {
                     if($result && $result['password'] == $pwd){
                         if(in_array($aboutInf['hospital'],$arr)){
                             if (($result['creatime'] - time()) > 0) {
@@ -83,13 +83,22 @@ class LoginController extends Controller {
                                 $pow = $result['power'];
                                 session('wh_power',$pow);
                                 //用户名存入session
-                                session('wh_userName',$name);
+                                session('wh_userName',$result['username']);
                                 session('wh_userId',$id);
                                 session('logintime',time());
                                 session('dpment',$result['department']);
                                 // var_dump($_SESSION);
                                 session('ip',$ip);
                                 session('days', $days);
+                                session('userpwd',$result['password']);
+
+                                $di = M('user_message');
+                                $datat['userid'] = $id;
+                                $datat['logtime'] = time();
+                                $datat['name'] = session('wh_userName');
+                                $datat['ip'] = $ip;
+
+                                $di->add($datat);
                                 //miracle7kill 修改登录状态online 1已登录 0未登录
 
                                 $user->where(array('id' => $result['id']))->save(array('online' => 1, 'lastime' => time(), 'ip'=> $ip));

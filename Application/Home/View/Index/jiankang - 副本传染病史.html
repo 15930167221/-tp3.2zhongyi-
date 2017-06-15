@@ -180,7 +180,6 @@
                                     </span>
                                 </td>
                             </tr>
-                            <!-- 既往史 -->
                             <tr>
                                 <th><label for="jws11">既往史</label></th>
                                 <td colspan="8">
@@ -206,14 +205,6 @@
                                             <!-- <input type="date" name="" style="width:130px;"> -->
                                             <input type="text" id="qrsj1" name="jws_date" value="{$jk1.jws_date}" style="width:80px;" onClick="$.jeDate('#qrsj1',{isTime:true,maxDate:$.nowDate(0),startMax:$.nowDate(0),format: 'YYYY-MM-DD'})" readonly="readonly">
                                         </span>
-
-                                </td>
-                            </tr>
-                            <!-- 传染病史 -->
-                            <tr>
-                                <th><label for="jws11">传染病史</label></th>
-                                <td colspan="8">
-
                                         <!--既往病史结束，传染病史开始-->
                                         <span>
                                             <input type="text" name="crbs" autocomplete="off" value="{$jk1.crbs}" ondblclick="douCli('crbs','jws2','jws2inp')" onkeydown="this.onkeyup();" onkeyup="this.size=(this.value.length>5?this.value.length*2:5);" size="5" id="crbs">
@@ -991,7 +982,7 @@
                                 </div>
                             </tr>
                             <tr>
-                                <th><label for="zybz">辨证</label></th>
+                                <th><label for="zybz">辩证</label></th>
                                 <td colspan="4">
                                     <span>
                                         <if condition="$zyflag eq 1">
@@ -1024,24 +1015,6 @@
                                 <else/>
                                     <td colspan="8" id="chuzhi">
                                         <div class="chufang">
-                                            <!--存放收费的项目-->
-                                            <foreach name="shoufeixiangm" item="voshoufeixiangm">
-                                                <div>
-                                                    <div>
-                                                        <span>【已收费项目】：</span>
-                                                        <span>
-                                                        {$voshoufeixiangm.item_code|getShoufeixiangmu=###}
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <div style="float:left;width:120px;margin-left:50px;"><span>单价：</span><span>{$voshoufeixiangm.unit_price|sprintf='%.2f',###}</span></div>
-                                                        <div style="float:left;width:120px;"><span>数量：</span><span>{$voshoufeixiangm.amount|sprintf='%.2f',###}</span></div>
-                                                        <div style="float:left;width:120px;"><span>单位：</span><span>{$voshoufeixiangm.units}</span></div>
-                                                        <div style="float:left;width:120px;"><span>总额：</span><span>{$voshoufeixiangm.total|sprintf='%.2f',###}</span></div>
-                                                    </div>
-
-                                                </div>
-                                            </foreach>
                                             <!--中医诊断循环-->
                                             <foreach name="zyChuzhi" item="cz" key="k">
                                                 <div>
@@ -1173,25 +1146,7 @@
             </div>
         </div>
     </div>
-    <b id="a123" style="display:none;"></b>
     <script type="text/javascript">
-        $(function(){
-
-                //看看健康档案保存没
-           $.ajax({
-            url:"{:U('JianKangAjax/saveOrNot')}",
-            type:'post',
-            dataType:'json',
-            success:function(data){
-               if(data == 2){
-                    $('#a123').html(222);
-               }else{
-                    $('#a123').html(111);
-               }
-            }
-        })
-
-        });
         $("#save").click(function(){
             $("#hiddenChuzhi").val($("#chuzhi").html());
             if($("#jkdaSave").val()==1){
@@ -1205,27 +1160,12 @@
             }else{
                 $("#form1").submit();
             }
-            $('#a123').html(111);
         })
     </script>
 </body>
 </html>
 <script src="__PUBLIC__/js/bingshi.js"></script>
 <script>
-    //wh
-    // $("#xyzd").blur(function(){
-    //     var xyn = $(this).val();
-    //     $.ajax({
-    //         url:"{:U('Ajax/westName')}",
-    //         type:'post',
-    //         dataType:'json',
-    //         data:{"xyn":xyn},
-    //         success:function(data){
-
-    //         }
-    //     })
-    // });
-    //wh
     //中医病名ajax
     $(document).on('dblclick','#zyzd',function(){
         var str="";
@@ -1863,14 +1803,14 @@ $("#fzcf").click(function(){
         strDate = "0" + strDate;
     }
     var today=year+"-"+month+"-"+strDate;
-
+    
     //出生年月控制年龄
     $(document).on('mouseover','body',function(){
         var date=$("#birthday").val();//显示时间
         var nian=date.substring(0,4);//显示的年
         var newAge=year-nian;
         $("#age").val(newAge);
-
+       
     })
     //完成就诊
     $("#wcjz").click(function(){
@@ -1888,12 +1828,12 @@ $("#fzcf").click(function(){
                     // 未审核
                     if (item.indicate == 0) {
                         wshenhezt = wshenhezt + 1;
-
+                       
                     }
                     // 驳回
                     if (item.indicate == 4) {
                         bohuizt = bohuizt + 1;
-
+                       
                     }
 
                 })
@@ -1921,7 +1861,7 @@ $("#fzcf").click(function(){
                         //         }
                         //     }
                         // })
-
+                     
                     });
                 }else{
                      layer.confirm('有'+bohuizt+'条处方被驳回！ 有'+wshenhezt+'条处方未审核',{
@@ -1946,11 +1886,11 @@ $("#fzcf").click(function(){
                         //         }
                         //     }
                         // })
-
+                     
                     });
                 }
                  // alert(bohuizt);
-
+                   
             }
         })
     })

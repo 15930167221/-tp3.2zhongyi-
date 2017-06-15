@@ -33,7 +33,7 @@
 			<span id="drcfhid"><php>echo $newId;</php></span>
 			
 			<div id="xybm1">
-			<div id="a123" style="line-height:30px;height:30px;"></div>
+			<div id="a123" style="line-height:30px;height:30px;"><if condition="$xyflag eq 1">{$xyNameXYB}<else/><php>echo $xyname;</php></if></div>
 				
 			</div>
 		</div>
@@ -84,14 +84,7 @@
 					<div class="left-content">
 						<table width="100%" border="0" id="table1">
 							<!--循环tr-->
-							<foreach name="xycfId" item="vo" key="k">
-							<tr height="30px" class="sty1" name="tableSty">
-								<!--存放序号-->
-								<td width="10%" align="center">{$k+1}</td>
-								<!--存放处方号-->
-								<td width="90%" align="center">{$vo.cf_id}</td>
-							</tr>
-							</foreach>
+							
 							<tr height="30px" class="sty2" name="tableSty"  id="lastTr">
 								<!--存放序号-->
 								<td width="10%" align="center">{$xytms}</td>
@@ -210,7 +203,48 @@
 							用药天数
 						</th>
 					</tr>
-					
+					<!--&lt;!&ndash;遍历药品&ndash;&gt;-->
+					<!--<volist name="yyxiyaoyaoming" id="voxyymyxy">-->
+						<!--<tr class="tr2">-->
+							<!--<td class="td1">-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--<input type="text" class="textlon" value="" name="bianma" id="bianma" autocomplete="off">-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.yp_name}-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.yp_spec}-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.yp_total_amount}-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.yp_useage}-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.yp_yc_amount}-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.yp_pl_day}-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.yp_speci_use_name}-->
+							<!--</td>-->
+							<!--<td class="td1">-->
+								<!--{$voxyymyxy.fs}-->
+							<!--</td>-->
+						<!--</tr>-->
+					<!--</volist>-->
+
+					<!--&lt;!&ndash;便利结束&ndash;&gt;-->
 					<tr class="tr2">
 						<td class="td1">
 							X
@@ -231,7 +265,7 @@
 							<input type="text" class="sspan" readonly="readonly" name="baozhuang" autocomplete="off">
 						</td>
 						<td class="td1">
-							<input type="text" class="textlonsl ypnum" value="1.00" name="shuliang" autocomplete="off">
+							<input type="number" class="textlonsl ypnum" value="1.00" name="shuliang" autocomplete="off">
 							<span class="sldw"></span>
 						</td>
 						<td class="td1">
@@ -240,22 +274,22 @@
 						<td class="td1">
 							<select class="textlon tuj" name="tujing">
 								<foreach name='useage' item='do'>
-                            	<php>$powerid = $do['useage_code'];</php>
-                                <option value=<php>echo '"'.$powerid.'"';</php>>{$do.useage_name}</option>
-                            </foreach>
+									<php>$powerid = $do['useage_code'];</php>
+									<option value=<php>echo '"'.$powerid.'"';</php>>{$do.useage_name}</option>
+								</foreach>
 							</select>
 						</td>
 						<td class="td1">
-							<input type="text" class="textlonsl ypcyl" value="1" name="yongliang" autocomplete="off">
+							<input type="number" class="textlonsl ypcyl" value="1" name="yongliang" autocomplete="off">
 							<span class="ylxdw"></span>
 						</td>
 						<td class="td1">
 							<select class="textlon pinl" name="cishu">
-                               <foreach name='usepl' item='ao'>
-                            	<php>$plid = $ao['nm'];</php>
-                                <option value=<php>echo '"'.$plid.'"';</php>>{$ao.usep_name}</option>
-                            </foreach>  
-                            </foreach>  
+								<foreach name='usepl' item='ao'>
+									<php>$plid = $ao['nm'];</php>
+									<option value=<php>echo '"'.$plid.'"';</php>>{$ao.usep_name}</option>
+								</foreach>
+								</foreach>
 							</select>
 						</td>
 						<td class="td1">
@@ -484,7 +518,7 @@
             	var str='';
                 $.each(dd,function(idx,item){
                 	var nea = item.yp_yc_amount.split('+');
-               		str += '<tr class="tr2"><td class="td1">X</td><td class="td1"><input type="text" name="bianma" class="textlon" value="'+item.yp_code+'"></td><td class="td1"><input type="text"  class="ypname" name="mingcheng" value="'+item.yp_name+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="guige" value="'+item.yp_spec+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="hanliang" value="'+item.rl+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="baozhuang" value="'+item.bzsl2+'"></td><td class="td1"><input type="text" class="textlonsl ypnum" value="'+item.yp_total_amount+'" name="shuliang"><span class="sldw">'+item.yp_rldw+'</span></td><td class="td1"><input type="text" class="sspan" value = "'+item.bzsl2+'"readonly="readonly" name="zongliang"></td><td class="td1"><select class="textlon tuj" name="tujing"><option>'+item.yp_useage+'</option></select></td><td class="td1"><input type="text" class="textlonsl ypcyl" value="'+nea[0]+'" name="yongliang"><span class="ylxdw">'+nea[1]+'</span></td><td class="td1"><select class="textlon pinl" name="cishu"><option value="1">'+item.yp_pl_day+'</option></select></td><td class="td1"><select name="tsyf" class="textlon yongf"><option value="0">'+item.yp_speci_use_name+'</option></select></td><td class="td1"><input type="text"  class="textlon ypdays sspan" readonly="readonly" name="tianshu" value="'+item.fs+'"></td></tr>';
+               		str += '<tr class="tr2"><td class="td1">X</td><td class="td1"><input type="text" name="bianma" class="textlon" value="'+item.yp_code+'"></td><td class="td1"><input type="text"  class="ypname" name="mingcheng" value="'+item.yp_name+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="guige" value="'+item.yp_spec+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="hanliang" value="'+item.rl+'"></td><td class="td1"><input type="text" class="sspan" readonly="readonly" name="baozhuang" value="'+item.bzsl2+'"></td><td class="td1"><input type="number" class="textlonsl ypnum" value="'+item.yp_total_amount+'" name="shuliang"><span class="sldw">'+item.yp_rldw+'</span></td><td class="td1"><input type="text" class="sspan" value = "'+item.bzsl2+'"readonly="readonly" name="zongliang"></td><td class="td1"><select class="textlon tuj" name="tujing"><option>'+item.yp_useage+'</option></select></td><td class="td1"><input type="number" class="textlonsl ypcyl" value="'+nea[0]+'" name="yongliang"><span class="ylxdw">'+nea[1]+'</span></td><td class="td1"><select class="textlon pinl" name="cishu"><option value="1">'+item.yp_pl_day+'</option></select></td><td class="td1"><select name="tsyf" class="textlon yongf"><option value="0">'+item.yp_speci_use_name+'</option></select></td><td class="td1"><input type="text"  class="textlon ypdays sspan" readonly="readonly" name="tianshu" value="'+item.fs+'"></td></tr>';
                		$('#drcfhid').html(item.cf_id);
                		$('#a123').html(item.xy_name);
                		$('#bztext').val(item.yp_mem);
@@ -528,6 +562,15 @@
 			// $(document).on('change','select[name="cishu"]',function(){
 			// 	Days();
 			// });
+			// 
+			// 
+			// 点击西医病名
+			$('#westBi').click(function(){
+				var aa = $('#a123').html();
+//				if(aa.length>1){
+//					return false;
+//				}
+			});
 			//西药病名
 			$(document).on('input','#xybmtext',function(){
 				// 前台实现查询，效率太低，pass
@@ -551,7 +594,7 @@
                 $.each(dd,function(idx,item){
                 //输出
                 // alert(item.id+"号："+item.name);
-              		str += '<tr class="westtr" style="border-bottom:1px solid #000;height:30px;"><td class="ttd1">'+item.name+'</td><td><input type="checkbox" style="width:16px;height:16px;" class="che"></td></tr>';
+              		str += '<tr class="westtr" style="border-bottom:1px solid #000;height:30px;"><td class="ttd1">'+item.name+'</td><td><input type="radio" name="radio" style="width:16px;height:16px;" class="che"></td></tr>';
                 });
                 str += '</table>';
                $('#fangk').html(str);
@@ -602,8 +645,9 @@
                 }
                 //输出
                 if(item)
+                	console.log(item);
                 // alert(item.id+"号："+item.name);
-              		str += '<tr class="drugli"><td>'+item.input_code+'</td><td>'+item.drug_name+'</td><td>'+item.drug_spec+'</td><td>'+hl+'</td><td>'+item.units+'</td><td>'+pri+'</td><td style="display:none;">'+item.drug_code+'</td></tr>';
+              		str += '<tr class="drugli"><td>'+item.input_code+'</td><td>'+item.drug_name+'</td><td>'+item.package_units+'</td><td>'+hl+'</td><td>'+item.units+'</td><td>'+pri+'</td><td style="display:none;">'+item.drug_code+'</td></tr>';
               		
                 });
                 str += '</table>';
@@ -765,6 +809,7 @@
             dataType:'json',
             success:function(aa)
             {
+
             	var bian = [];
             	var num = 0;
             	$("input[name='bianma']").each(function(){
@@ -778,11 +823,12 @@
 
             	}
             	//待完善，应改成this
-                // alert(aa['drug_spec']);
-                $('.del:last .sspan:nth(0)').val(aa['drug_spec']);
+                // alert(aa['package_units']);
+                
+                $('.del:last .sspan:nth(0)').val(aa['package_units']);
                 $('.del:last .sspan:nth(1)').val(aa['hl']);
                 $('.del:last .sspan:nth(2)').val(aa['bzsl2']);
-                $('.del:last .sspan:nth(3)').val(aa['bzsl1']);
+                $('.del:last .sspan:nth(3)').val(aa['bzsl1']);//包装系数
                 $('.del:last .sspan:nth(4)').val('');
                 $('.del:last .textlon:nth(0)').val(aa['drug_code']);
                 $('.del:last .ypname:nth(0)').val(aa['drug_name']);
@@ -843,6 +889,8 @@
 
 		//处方保存
 		$('#qdcf').click(function(){
+			var xyn = $('#a123').html();
+
 				var hidcf = $('#drcfhid').html();
 				if(hidcf.length>0){
 					cfid = hidcf;
@@ -910,7 +958,7 @@
 				$.ajax({
             type:'POST',
             url:"{:U('Ajax/Chufang')}",
-            data:{bianma:bianma,mingcheng:mingcheng,guige:guige,hanliang:hanliang,baozhuang:baozhuang,shuliang:shuliang,zongliang:zongliang,tujing:tujing,yongliang:yongliang,cishu:cishu,bz:bz,tsyf:tsyf,xybm:xy,tianshu:tianshu,cfid:hidcf,zdw:zdw},
+            data:{bianma:bianma,mingcheng:mingcheng,guige:guige,hanliang:hanliang,baozhuang:baozhuang,shuliang:shuliang,zongliang:zongliang,tujing:tujing,yongliang:yongliang,cishu:cishu,bz:bz,tsyf:tsyf,xybm:xy,tianshu:tianshu,cfid:hidcf,zdw:zdw,xyn:xyn},
             dataType:'json',
             success:function(dd)
             {
@@ -918,7 +966,7 @@
             },
             error:function()
             {
-                // alert('Ajax请求失败');
+                alert('Ajax请求失败');
             }
         });
 				

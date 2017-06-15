@@ -19,12 +19,13 @@ body{
 	font-weight:bold;color:#333333;margin-left:0px;line-height:40px;font-size:16px;
 }
 .left{
-	width:100%;
+	width:50%;
 	height:100%;
+	float: left;
 }
 .zuokuaicxtj{
 	width: 100%;
-	height: 20%;
+	height: 38%;
 	margin-top: 6px;
 }
 .chaxtjhanzi{
@@ -44,7 +45,7 @@ body{
 }
 /*内容*/
 .chaxtjxinxi{
-	width: 95%;
+	width: 90%;
 	height:100%;
 	float: right;
 	margin-right:10px;
@@ -66,7 +67,7 @@ body{
 }
 	/*内容*/
 	.bingrxinxi{
-		height: 60%;
+		height: 50%;
 		text-align: center;
 	}
 	.bingrxinxihz{
@@ -82,20 +83,21 @@ body{
 	line-height:35px;
 }
 	/*表格*/
-	
-	.chaochubufyc{
+	.bingrxinxibaog{
+		border-radius: 5px;
 		border: 1px #DFD7D7 solid;
-		width:92%;
-		height:100%;
+		width:90%;
+		height:90%;
 		overflow: auto;
-		margin-left:4%;
+		float: right;
+		margin-right:10px;
 		background-color:#ffffff;
 	}
-	.jbxxtr td{
-		border:1px #DFD7D7 solid;
+	.chaochubufyc{
+		width: 200%;
 	}
 .chaochubufyc table tr th{
-	white-space: nowrap;background-color:#FBFBFB;text-align: center;
+	white-space: nowrap;background-color:#FBFBFB;
 }
 	.jiuzhengjiru{
 		border-radius: 5px;
@@ -152,28 +154,16 @@ textarea{background:none;}
 }
 /*查询条件*/
 .input-group{
-	width:100%;height:30px;line-height:30px;margin-top: 10px;
+	width:100%;height:30px;line-height:30px;
 }
 .input-group input[type='text']{
 	width:160px;height:30px;
 }
-.binglihao{
-	width:30%;float: left;text-align: center;margin-left: 40px;
+.input-group div:first-child{
+	width:50%;float: left;text-align: center;
 }
-.br_name{
-	width:30%;float: left;text-align: center;
-}
-.xb{
-	width:30%;float: left;text-align: center;
-}
-.pass{
-	width:30%;float: left;text-align: center;margin-left: 40px;
-}
-.kaidate{
-	width:30%;float: left;text-align: center;
-}
-.zhongdate{
-	width:30%;float: left;text-align: center;
+.input-group div:last-child{
+	width:50%;float: right;text-align: center;
 }
 .input-group div span{
 	font-size:15px;font-weight: bold;

@@ -62,9 +62,9 @@
 							<volist name="data" id="vo">
 								<tr class="sty1" name="tableSty">
 								  <td style="width:3.4%;text-align:center;"><input type="checkbox"></td>
-								  <td title="{$vo.zx}" style="width:8.6%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.zx}</td>
+								  <td title="{$vo.zx}" style="width:13.6%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.zx}</td>
 								  <td title="{$vo.zf}" style="width:11%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.zf}</td>
-								  <td title="{$vo.name}" style="width:10%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.name}</td>
+								  <td title="{$vo.name}" style="width:5%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{$vo.name}</td>
 								  <td style="width:200px;display: none;"><span>{$vo.cf_name}</span><input type="hidden" value="{$vo.cf_tree}"></td>
 								</tr>
 							</volist>
@@ -325,7 +325,7 @@
 	 				zhenchufanghao += chufhcd + ' ';
 	 			});
 	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选证型",{icon:7});
 	 			}else{
 	 				// alert(123);
 	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id);
@@ -339,7 +339,7 @@
 	 				zhenchufanghao += chufhcd + ' ';
 	 			});
 	 			if (zhenchufanghao == ' ') {
-					layer.alert("请选择药品",{icon:7});
+					layer.alert("请勾选证型",{icon:7});
 	 			}else{
 	 				// alert(123);
 	 				$(this).attr("href",'{:U("Kaifang/jieShouChuFang")}'+'?pid='+zhenchufanghao+'&id='+id);

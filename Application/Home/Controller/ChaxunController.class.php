@@ -31,7 +31,7 @@ class ChaxunController extends PublicController {
             //拼接时间
             $where['charge_date'] = array('between',"$startTime 00:00:00,$endTime 23:59:59");
             $count =  M('v_sfmx')->where($where)->count();// 查询满足要求的总记录数 $map表示查询条件
-            $page = getpage($count,6);//控制页面显示条数
+            $page = getpage($count,7);//控制页面显示条数
             // 分页数据
             if (empty($data)) {
                     foreach ($data as $key => $val) {
@@ -75,6 +75,8 @@ class ChaxunController extends PublicController {
     }
     //费用汇总ajax
     public function fyhuizongAjax(){
+        // 获取所属机构
+            $dpment = session('dpment');
         $staTime=I('post.startTime');
         $endTime=I('post.endTime');
         $date=I('post.date');
@@ -86,6 +88,7 @@ class ChaxunController extends PublicController {
                                 from v_sfmx a left join p_price_list b
                                 on a.item_code=b.item_code
                                 where a.charge_date>='$staTime 00:00:00' and a.charge_date<='$endTime 23:59:59'
+                                and b.department = '$dpment'
                                 group by convert(varchar(4),charge_date,120) ,
                                 case when a.item_code='挂号费' then '00' else a.item_code end ,
                                 case when a.item_code='挂号费' then a.item_code else b.item_name end
@@ -100,6 +103,7 @@ class ChaxunController extends PublicController {
                                 from v_sfmx a left join p_price_list b
                                 on a.item_code=b.item_code
                                 where a.charge_date>='$staTime 00:00:00' and a.charge_date<='$endTime 23:59:59'
+                                and b.department = '$dpment'
                                 group by convert(varchar(7),charge_date,120) ,
                                 case when a.item_code='挂号费' then '00' else a.item_code end ,
                                 case when a.item_code='挂号费' then a.item_code else b.item_name end
@@ -114,6 +118,7 @@ class ChaxunController extends PublicController {
                                 from v_sfmx a left join p_price_list b
                                 on a.item_code=b.item_code
                                 where a.charge_date>='$staTime 00:00:00' and a.charge_date<='$endTime 23:59:59'
+                                and b.department = '$dpment'
                                 group by convert(varchar(10),charge_date,120) ,
                                 case when a.item_code='挂号费' then '00' else a.item_code end ,
                                 case when a.item_code='挂号费' then a.item_code else b.item_name end
@@ -142,17 +147,18 @@ class ChaxunController extends PublicController {
         $ypName = $ypName ? $ypName : '%';
 
         $user_id = session('wh_userId');
+        $dpId = session('dpment');
         $sql = "SET NOCOUNT ON
         DECLARE	@return_value int
 EXEC	@return_value = [dbo].[PRO_COUNT_YP]
 		@IP = $user_id,
 		@startdate = N'$staTime',
 		@enddate = N'$endTime',
-		@drugname = N'$ypName'
+		@drugname = N'$ypName',
+		@dpId = $dpId
 SELECT	'Return Value' = @return_value";
         $mod->query($sql);
-        echo $mod->getLastSql();
-        $count = M('count_yp')->where()->count();
+        $count = M('count_yp')->where(array('IP' => $user_id))->count();
         $page = getpage($count, 7);
         // 分页数据
         if (empty($data)) {
@@ -162,8 +168,7 @@ SELECT	'Return Value' = @return_value";
         }
         $show = $page->show();// 分页显示输出
         $this->assign('page',$show);// 赋值分页输出
-        $yptj = M('count_yp')->where(array('ip' => $user_id))->limit($page->firstRow,$page->listRows)->order('id desc')->select();
-
+        $yptj = M('count_yp')->where(array('IP' => $user_id))->limit($page->firstRow,$page->listRows)->order('id desc')->select();
         // 把查询信息带到页面
         $this->assign("yptj",$yptj);
         //把查询条件带到页面
@@ -184,43 +189,49 @@ SELECT	'Return Value' = @return_value";
     }
     //病历查询
     public function blchaxun(){
-        if($_POST){
-            $chaxuntiaojian = I('post.');
+        $tyN = I('get.typeName');
+        if($tyN!=1) {
+            $this->display();
+        } else {
+            $chaxuntiaojian = I('get.');
             $this->assign('chaxuntiaojian',$chaxuntiaojian);
             $jbxx = M('station_p');
-            if($_POST['blh'] != '' || $_POST['name'] != '' || $_POST['idcard'] != '' || $_POST['sex'] != '' || $_POST['starttime'] != '' || $_POST['endtime'] != ''){
-                $starttime = $_POST['starttime'];
-                $endtime = $_POST['endtime'];
-                $where = array();
-                //判断是否为空
-                if($_POST['blh'] != ''){$where['br_id'] = $_POST['blh'];}
-                if($_POST['name'] != ''){$where['br_name'] = $_POST['name'];}
-                if($_POST['idcard'] != ''){$where['pass'] = $_POST['idcard'];}
-                if($_POST['sex'] != ''){$where['xb'] = $_POST['sex'];}
-                //判断时间是否为空
-                if($_POST['starttime'] != '' && $_POST['endtime'] != ''){
-                    $where['jz_date'] = array('between',"$starttime 00:00:00,$endtime 23:59:59");
-                }
-                $dangqian =date('Y-m-d');
-                if($_POST['starttime'] != '' && $_POST['endtime'] == ''){
-                    $where['jz_date'] = array('between',"$starttime 00:00:00,$dangqian 23:59:59");
-                } 
-                $where['jz_flag'] = 2;
-                //使用in 方法
-                $where['xh'] = 1;
-                $res = $jbxx -> order('br_id desc') ->Distinct('br_id')-> where($where)->field('convert(varchar(19),p_date,120) as p_date,br_name,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl,tel,br_id,dw,pass,e_mail,ghf,fax,convert(varchar(10),cs_date,120) as cs_date') -> select();
-                $this -> assign('jbxx',$res);
-                $this -> display();
-            }else{
-                $where['jz_flag'] = 2;
-                $where['xh'] = 1;
-                $resu = $jbxx -> order('br_id desc') ->Distinct('br_id')-> where($where)->field('convert(varchar(19),p_date,120) as p_date,br_name,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl,tel,br_id,dw,pass,e_mail,ghf,fax,convert(varchar(10),cs_date,120) as cs_date') -> select();
-                $this -> assign('jbxx',$resu);
-                $this -> display();
+            $starttime = $_GET['starttime'];
+            $endtime = $_GET['endtime'];
+            $where = array();
+            //判断是否为空
+            if($_GET['blh'] != ''){$where['br_id'] = $_GET['blh'];}
+            if($_GET['name'] != ''){$where['br_name'] = $_GET['name'];}
+            if($_GET['idcard'] != ''){$where['pass'] = $_GET['idcard'];}
+            if($_GET['sex'] != ''){$where['xb'] = $_GET['sex'];}
+            //判断时间是否为空
+            if($_GET['starttime'] != '' && $_GET['endtime'] != ''){
+                $where['jz_date'] = array('between',"$starttime 00:00:00,$endtime 23:59:59");
             }
-        }else{
-            $this->display();
-        }
+            $dangqian =date('Y-m-d');
+            if($_GET['starttime'] != '' && $_GET['endtime'] == ''){
+                $where['jz_date'] = array('between',"$starttime 00:00:00,$dangqian 23:59:59");
+            } 
+            $where['jz_flag'] = 2;
+            //使用in 方法
+            // $where['xh'] = 1;
+            // 分页开始
+            $count =  $jbxx->where($where)->count();// 查询满足要求的总记录数 $map表示查询条件
+            $page = getpage($count,7);//控制页面显示条数
+            // 分页数据
+            if (empty($chaxuntiaojian)) {
+                foreach ($chaxuntiaojian as $key => $val) {
+                    $page->parameter[$key] = urlencode($val);
+                }
+            }
+            $show = $page->show();// 分页显示输出
+            $this->assign('page',$show);// 赋值分页输出
+            //以上是分页 ， 以下是数据
+            $res = $jbxx -> order('br_id desc') ->Distinct('br_id')-> where($where)->limit($page->firstRow.','.$page->listRows)->field('convert(varchar(19),p_date,120) as p_date,convert(varchar(19),jz_date,120) as jz_date,br_name,xb,dbo.get_age(convert(varchar(19),cs_date,120),convert(varchar(19),jz_date,120)) as nl,tel,br_id,dw,pass,e_mail,ghf,fax,convert(varchar(10),cs_date,120) as cs_date,department') -> select();
+            $this -> assign('jbxx',$res);
+            $this -> display();
+        }     
+        
     }
     //就诊记录
     public function jiuzhenjl(){
@@ -231,6 +242,7 @@ SELECT	'Return Value' = @return_value";
     }
     public function jiuzhenls(){
         $jz_date = $_POST['jz_date'];//'2017-03-23 15:06:22';
+        $dpment = $_POST['dpment'];//部门
         $jbxx = M('station_p');//病人基本信息表
         $jkda = M('jkda_xx');//健康档案信息表
         $bq = M('bqxx');//病情信息表
@@ -238,7 +250,7 @@ SELECT	'Return Value' = @return_value";
         $zy_detail = M('prescription_detail');//中药明细表
         $xy = M('xydrugcf_detial');//西药明细表
         //查询基本信息
-        $result = $jbxx -> where("jz_date = '$jz_date' and jz_flag = 2") -> select();
+        $result = $jbxx -> where("jz_date = '$jz_date' and department = '$dpment' and jz_flag = 2") -> select();
         //根据jz_date查询病情（健康档案显示的内容）
         $bqres = $bq -> where("jz_date = '$jz_date'") -> select();
         $br_id = $result[0]['br_id'];
@@ -306,8 +318,8 @@ SELECT	'Return Value' = @return_value";
                 CROSS APPLY dbo.fnGetZYName(c.br_id,c.xh) d
                 where b.br_id=c.br_id and b.xh=c.xh
                 and b.jz_flag='2'
-                and c.jz_date>='$sub[zyzz_start]'
-                and c.jz_date<='$sub[zyzz_end]'
+                and c.jz_date>='$sub[zyzz_start] 00:00:00.000'
+                and c.jz_date<='$sub[zyzz_end] 23:59:59.000'
                 )a
                 group by case when isnull(diag_name,' 未定义') in('中医病名','') then ' 未定义' else  isnull(diag_name,' 未定义') end,datediff(year,cs_date,getdate()),xb;
             ";
@@ -318,8 +330,8 @@ SELECT	'Return Value' = @return_value";
                 CROSS APPLY dbo.fnGetZX(c.br_id,c.xh) d
                 where b.br_id=c.br_id and b.xh=c.xh
                 and b.jz_flag='2'
-                and c.jz_date>='$sub[zyzz_start]'
-                and c.jz_date<='$sub[zyzz_end]'
+                and c.jz_date>='$sub[zyzz_start] 00:00:00.000'
+                and c.jz_date<='$sub[zyzz_end] 23:59:59.000'
                 )a
                 group by case when isnull(diag_name,' 未定义') in('中医病名','') then ' 未定义' else  isnull(diag_name,' 未定义') end,datediff(year,cs_date,getdate()),xb;
             ";
@@ -330,8 +342,8 @@ SELECT	'Return Value' = @return_value";
                 CROSS APPLY dbo.fnGetZF(c.br_id,c.xh) d
                 where b.br_id=c.br_id and b.xh=c.xh
                 and b.jz_flag='2'
-                and c.jz_date>='$sub[zyzz_start]'
-                and c.jz_date<='$sub[zyzz_end]'
+                and c.jz_date>='$sub[zyzz_start] 00:00:00.000'
+                and c.jz_date<='$sub[zyzz_end] 23:59:59.000'
                 )a
                 group by case when isnull(diag_name,' 未定义') in('中医病名','') then ' 未定义' else  isnull(diag_name,' 未定义') end,datediff(year,cs_date,getdate()),xb;
             ";
@@ -349,6 +361,7 @@ SELECT	'Return Value' = @return_value";
     }
     function xyselect(){
         $sub=I('post.');
+
         $sql="select count(distinct br_id) rs,
             count(distinct br_id+cast(xh as varchar(10))) ls,
             case when isnull(diag_name,'未定义') in('西医病名','') then '未定义' else  isnull(diag_name,'未定义') end,
@@ -359,11 +372,12 @@ SELECT	'Return Value' = @return_value";
             CROSS APPLY dbo.fnGetXYName(c.br_id,c.xh) d
             where b.br_id=c.br_id and b.xh=c.xh
 			and b.jz_flag='2'
-            and c.jz_date>='$sub[zyzz_start]'
-            and c.jz_date<='$sub[zyzz_end]') ss
+            and c.jz_date>='$sub[zyzz_start] 00:00:00.000'
+            and c.jz_date<='$sub[zyzz_end] 23:59:59.000') ss
             group by case when isnull(diag_name,'未定义') in('西医病名','') then '未定义' else  isnull(diag_name,'未定义') end,
             datediff(year,cs_date,getdate()) ,xb;";
         $result['res']=M()->query($sql);
+
         $result['nld']=$sub[zyzz_nld];
         $result['sex']=$sub[zyzz_sex];
         $this->ajaxReturn($result);

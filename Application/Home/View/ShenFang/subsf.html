@@ -21,7 +21,7 @@ function bhxx(num){
 <script>
     document.oncontextmenu=new Function("event.returnValue=false;");
 </script>
-<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+<body>
 <div class="bg">
     <div class="yuyue">
         <div class="yyfont">
@@ -39,7 +39,7 @@ function bhxx(num){
     </div>
     <div class="yyinf center">
         <div class="yytab" id="check">
-         <!--<php>dump($res);</php>-->  
+         <!--<php>dump($res);</php>-->
             <table border="0" width="100%">
                 <tr border="0">
                     <th width="20%">处方号</th>
@@ -52,7 +52,7 @@ function bhxx(num){
                 </tr>
                 <volist name="res" id="vo">
                 <tr class="sty1" name="tableSty">
-                    <td>{$vo.presc_no}</td>  
+                    <td>{$vo.presc_no}</td>
                     <td>
                         <if condition="$vo.patient_id neq ''">
                             <span data-toggle="modal" data-target="#myModal1" onClick="hzinfo({$vo.patient_id},{$vo.xh},{$vo.department})">
@@ -112,7 +112,7 @@ function bhxx(num){
                         </td>
                         <td>{$vo.chiefname}</td>
                         <td>
-                            <span onClick="Tojump({$vo.presc_no},{$vo.patient_id},{$vo.xh},{$vo.department})">返回</span>
+                            <a href=" {:U('Kaifang/zyhome')}"><span>返回</span></a>
                         </td>
                     </if>
                 </tr>
@@ -443,7 +443,7 @@ function bhxx(num){
                                 </td>
                             </tr>
                             <tr>
-                                <th><label for="zybz">辩证</label></th>
+                                <th><label for="zybz">辨证</label></th>
                                 <td colspan="4" height="40">
                                     <span id="zybz"></span>
                                 </td>
@@ -490,6 +490,10 @@ function bhxx(num){
             <h4 class="modal-title" id="myModalLabel">处 方 明 细</h4>
         </div>
         <div id="cfscroll">
+            <!--处方用法 次数等-->
+            <div>
+                <span style="margin-left:30px; ">【用法】：<span id="chufangyongfa"></span></span>
+            </div>
             <center>	
         		<table id="cfmxtab">
         		</table>
@@ -578,6 +582,18 @@ function blup(num){
     $('#blcfh').val(num);
 }
 function cfmx(num){
+    //    获取处方用法
+    $.ajax({
+        type:'post',
+        url:"{:U('ShenFang/huoquchufangyongfa')}",
+        data:{"num":num},
+        dataType:'json',
+        success:function(dd){
+            var str = '';
+            str +=dd[0].usage1+'&nbsp;|&nbsp;<span>'+dd[0].decoction+'</span>&nbsp;|&nbsp;'+dd[0].dosage;
+            $('#chufangyongfa').html(str);
+        }
+    });
     $.ajax({
         type:"post",
         url:"__CONTROLLER__/cfdetail",

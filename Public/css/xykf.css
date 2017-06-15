@@ -296,6 +296,9 @@ body input{
 
 
 .td1:nth-child(1){
+
+
+
 	display:none;
 }
 .th1:nth-child(1){

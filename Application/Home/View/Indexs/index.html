@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <!--a href="#" class="pull-right label-forgot">Forgot email?</a-->
                             <label for="inputUsernameEmail">用户名</label>
-                            <input type="text" id="inputUsernameEmail" autocomplete="off" class="form-control" name="name">
+                            <input type="text" id="inputUsernameEmail" autocomplete="off" class="form-control" name="name" onfocus="this.select();">
                             <!-- <input type="text" autocomplete="off"> -->
                         </div>
                         <div class="form-group">
@@ -58,7 +58,7 @@
                         </php>
                         </div>
                         <div class="checkbox pull-left">
-                        <a href="{:U('indexs/forget')}" style="margin-left:-15px">忘记密码</a>
+
                         </div>
                         <button class="btn btn btn-primary pull-right" type="submit">
                             登 录
@@ -76,7 +76,8 @@
     <center>
         <h5>
             <!-- Copyright(C)2016 --> pengyukeji.com All Rights Reserved<br/><br/>
-            河北鹏宇科技有限公司 版权所有
+            <!-- 河北鹏宇电子科技有限公司 版权所有 -->
+            珠海横琴博远中医药科技发展有限公司 版权所有
         </h5>
     </center>
 </div>
@@ -86,13 +87,13 @@
 </div>
 <!--  END OF PAPER WRAP -->
 <!-- MAIN EFFECT -->
-<script type="text/javascript" src="__PUBLIC__/muban/assets/js/preloader.js"></script>
-<script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
-<script type="text/javascript" src="__PUBLIC__/muban/assets/js/app.js"></script>
-<script type="text/javascript" src="__PUBLIC__/muban/assets/js/load.js"></script>
-<script type="text/javascript" src="__PUBLIC__/muban/assets/js/main.js"></script>
-<script type="text/javascript" src="__PUBLIC__/muban/assets/js/map/gmap3.js"></script>
 <!-- 防止拖拽 -->
     <script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#inputUsernameEmail").focus();
+    });
+    
+</script>
 </body>
 </html>

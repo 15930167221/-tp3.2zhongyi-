@@ -37,7 +37,7 @@ body input[type=text]{border:1px #DFD7D7 solid!important;color:#000!important}
 .zhongjianhanzi{height:40px;background-color:#e2ecf8;border-radius: 5px;}
 .zhongjianhanziimg{margin-left:60px;width:30px}
 .zhongjianhanzichu{font-size:20px;line-height:40px;margin-left:20px;color:#858d90;}
-.zhongjianhanzizhu{float: right;line-height:43px;color:#333333;}
+.zhongjianhanzizhu{float: right;line-height:43px;color:#333333;font-size:10px;}
 .ka1xXiaceChufang{
 	float:left;height:84%;width:100%;padding-left:0px;background-color:#ffffff;
 }

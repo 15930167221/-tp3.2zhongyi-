@@ -60,6 +60,8 @@
                 <volist name="data" id="vo">
                 <tr class="sty1" name="tableSty">
                 <td class="brxh" style="display:none;">{$vo.xh}</td>
+                 <!-- 隐藏接诊日期 -->
+                    <td id="jz_date"  style="display:none;">{$vo.jz_date}</td>
                     <td class="datefenmiao">
                         {$vo.p_date}
                         <span><input type="hidden" class="brid" value="{$vo.br_id}"><input type="hidden" value="{$vo.xh}"><input class="nlt" type="hidden" value="{$vo.nlt}"></span>
@@ -84,7 +86,7 @@
                     </td>
                     <td>
                         <span style="font-size: 16px;margin-left: 20%;" data-toggle="modal" data-target="#myModal1" class="ajaxxinxishuju" >详细信息</span>
-                        <a href='{:U("Index/jiankang",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;">就诊</span></a>
+                        <a href='{:U("Index/jiankang",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;" class="sjtiaozhuan">就诊</span></a>
                         <span style="font-size: 16px;" data-toggle="modal" data-target="#myModal2" class="ajaxxiugaishuju">修改</span>
                         <a href='{:U("Huajia/huajia",array("id"=>$vo[br_id],"xh"=>$vo[xh]))}' ><span style="font-size: 16px;">收费</span>
                     </td>
@@ -368,6 +370,11 @@
 </script>
 <script src="__PUBLIC__/js/tr.js"></script>
 <script>
+//双击跳转接诊区
+    $(document).on("dblclick",".sty2",function(){
+        var aa = $(this).find(".sjtiaozhuan").click();
+
+    });
     //sty1点击存session
     $(document).on("click",".sty1",function(){
         var blh=$("#sblh", parent.document).html();//病历号

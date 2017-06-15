@@ -16,14 +16,15 @@ class PublicController extends Controller
     public function _initialize()
     {
         $this->logtime = session('logintime');
+        // echo date('y-m-d h:i:s',session('logintime'));
         $this->checkLoginSession();
     }
 
     public function checkLoginSession()
     {
         $nowTime = $_SERVER['REQUEST_TIME'];
-//        echo $nowTime;
-        if (($nowTime - $this->logtime) > 600) {
+       // echo date("y-m-d h:i:s",$nowTime);
+        if (($nowTime - $this->logtime) > 6000) {
             $user = M('user_info_dict');
             $user->where(array('id' => session('wh_userId')))->save(array('online' => 0, 'lastime' => time()));
             session_unset();

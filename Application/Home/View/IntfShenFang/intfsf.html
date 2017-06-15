@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>处方审核</title>
+    <link rel="stylesheet" href="__PUBLIC__/muban/assets/css/bootstrap.css">
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/muban/assets/js/bootstrap.js"></script>
+</head>
+<body oncontextmenu="self.event.returnValue=false" onselectstart="return false">
+    <!--上-->
+    <div style="height:50px;">
+        <span style="font-size: 20px;color: #757272;padding-left: 50px;line-height: 50px;">处方审核</span>
+    </div>
+    <!--中-->
+    <div style="overflow:auto; border-bottom: 3px #E5E5E5 solid;border-top: 3px #E5E5E5 solid;height: 500px;">
+        <if condition="$pdbiaozhun eq '0'">
+            <!--没有不合理指标时-->
+            <div>
+                <table class="table table-bordered" style="text-align:center;margin-left: 20px;margin-top:20px;width: 1000px;">
+                    <tr >
+                        <th style="text-align:center;font-size: 18px;">药品</th>
+                        <th style="text-align:center;font-size: 18px;">用量</th>
+                    </tr>
+                    <foreach name="dataypm['yp_info']" item="voyaopinming">
+                        <tr>
+                            <td>{$voyaopinming['drug_name']}</td>
+                            <td>{$voyaopinming['drug_amount']}克</td>
+                        </tr>
+                    </foreach>
+                </table>
+            </div>
+            <else />
+            <!--有不合理指标时-->
+            <div>
+                <div style="float:left;width: 50%;border-right: 1px #E5E5E5 solid;height: 100%;margin-left: 50px;">
+                    <br/><span style="color:#6F1111;font-size: 15px;">当前处方存在以下不合理用药情况，请仔细核对</span><br/>
+                    <!--显示18反19畏-->
+                    <br>
+                    <span style="color:blue;">药品配伍禁忌（反）</span><br/>
+                    <foreach name="fanwei" item="vofanwei">
+                        <if condition="$vofanwei['lx'] eq '1'">
+                            <div style="margin-left: 30px;">
+                                第{$vofanwei['aypcode']}味药【{$vofanwei['yp1']}】　与　
+                                第{$vofanwei['bypcode']}味药【{$vofanwei['yp2']}】是反药
+                            </div>
+                            <elseif condition="$vofanwei['lx'] eq '50'"/>
+                            <div style="margin-left: 30px;">无</div>
+                        </if>
+                    </foreach>
+                    <br>
+                    <span style="color:blue;">药品配伍禁忌（畏）</span><br/>
+                    <foreach name="fanwei" item="vofanwei">
+                        <if condition="$vofanwei['lx'] eq '2'">
+                            <div style="margin-left: 30px;">
+                                第{$vofanwei['aypcode']}味药【{$vofanwei['yp1']}】　与　
+                                第{$vofanwei['bypcode']}味药【{$vofanwei['yp2']}】是畏药
+                            </div>
+                            <elseif condition="$vofanwei['lx'] eq '50'"/>
+                            <div style="margin-left: 30px;">无</div>
+                        </if>
+                    </foreach>
+                    <br>
+                    <!--孕妇禁用慎用-->
+                    <if condition="$pdyfdj eq '1'">
+                        <div style="color:blue;">孕妇禁用药品</div>
+                        <foreach  name="women" item="vowomen">
+                            <if condition="$vowomen['bz'] eq '禁用'">
+                                <div style="margin-left: 30px;">
+                                    第{$vowomen['yaopinxh']}味药【{$vowomen['xxmc']}】是孕妇禁用药品<br>
+                                </div>
+                                <elseif condition="$vowomen['bz'] eq '空'"/>
+                                <div style="margin-left: 30px;">无</div>
+                            </if>
+                        </foreach>
+                        <div style="color:blue;">孕妇慎用药品</div>
+                        <foreach  name="women" item="vowomen">
+                            <if condition="$vowomen['bz'] eq '慎用'">
+                                <div style="margin-left: 30px;">
+                                    第{$vowomen['yaopinxh']}味药【{$vowomen['xxmc']}】是孕妇慎用药品<br>
+                                </div>
+                                <elseif condition="$vowomen['bz'] eq '空'"/>
+                                <div style="margin-left: 30px;">
+                                    无
+                                </div>
+                            </if>
+                        </foreach>
+                        <else />
+                        <!--此处不显示-->
+                    </if>
+
+                    <!--显示超标药品-->
+                    <if condition="chaobiao eq ' '">
+                        aa
+                        <else />
+                        <div style="color:blue;">用量超标药品</div>
+                        <div style="margin-left: 30px;">
+                            {$chaobiao}
+                        </div>
+                    </if>
+                </div>
+                <div style="float:left;width: 40%;">
+                    <br/><span style="color:#0D1B4E;font-size: 15px;">
+            当前处方存在以下有毒药品，请谨慎使用</span><br/><br/>
+                    <table class="table table-bordered" style="margin-left: 20px;">
+                        <tr>
+                            <th>药品</th>
+                            <th>毒性</th>
+                            <th style="width: 300px;">注意事项</th>
+                        </tr>
+                        <foreach name="duxing" item="voduxing">
+                            <tr>
+                                <td>{$voduxing['drug_name']}</td>
+                                <if condition="$voduxing['dx'] eq '1'">
+                                    <td>有毒</td>
+                                    <elseif condition="$voduxing['dx'] eq '2'"/>
+                                    <td>小毒</td>
+                                    <elseif condition="$voduxing['dx'] eq '3'"/>
+                                    <td>大毒</td>
+                                    <elseif condition="$voduxing['dx'] eq '4'"/>
+                                    <td>剧毒</td>
+                                    <else />
+                                    <td>无</td>
+                                </if>
+
+                                <td>{$voduxing['zysx']}</td>
+                            </tr>
+
+                        </foreach>
+                    </table>
+                </div>
+            </div>
+        </if>
+    </div>
+    <!--下-->
+    <div style="height: 50px;margin-top: 10px;padding-left:10%;color: red;">
+        <if condition="$sfyoujinyong eq '1'">
+            <h1>当前处方存在孕妇禁用药品</h1>
+        </if>
+    </div>
+
+</body>
+<!-- 防止拖拽 -->
+<script type="text/javascript" src="__PUBLIC__/js/zuzhituoz.js"></script>
+</html>

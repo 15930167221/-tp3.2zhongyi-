@@ -1,6 +1,10 @@
+
+
+
+
 function suan()
 {
-  
+
     var wena = 0;
     var rea = 0;
     var pinga = 0;
@@ -33,15 +37,25 @@ function suan()
         }
     });
     zonga = $('.cfmx').find('.wrphhid').length;
-    wenbia = Math.round((wena / zonga * 10000) / 100.00);
-    rebia = Math.round((rea / zonga * 10000) / 100.00);
-    pingbia = Math.round((pinga / zonga * 10000) / 100.00);
-    hanbia = Math.round((hana / zonga * 10000) / 100.00);
-    weiwenbia = Math.round((weiwena / zonga * 10000) / 100.00);
-    weihanbia = Math.round((weihana / zonga * 10000) / 100.00);
-    liangbia = Math.round((lianga / zonga * 10000) / 100.00);
-    dahanbia = Math.round((dahana / zonga * 10000) / 100.00);
-    darebia = Math.round((darea / zonga * 10000) / 100.00);
+    // wenbia = Math.round((wena / zonga * 10000) / 100.00);
+    // rebia = Math.round((rea / zonga * 10000) / 100.00);
+    // pingbia = Math.round((pinga / zonga * 10000) / 100.00);
+    // hanbia = Math.round((hana / zonga * 10000) / 100.00);
+    // weiwenbia = Math.round((weiwena / zonga * 10000) / 100.00);
+    // weihanbia = Math.round((weihana / zonga * 10000) / 100.00);
+    // liangbia = Math.round((lianga / zonga * 10000) / 100.00);
+    // dahanbia = Math.round((dahana / zonga * 10000) / 100.00);
+    // darebia = Math.round((darea / zonga * 10000) / 100.00);
+
+    wenbia = parseFloat(((wena / zonga) * 100).toFixed(2));
+    rebia = parseFloat(((rea / zonga) * 100).toFixed(2));
+    pingbia = parseFloat(((pinga / zonga) * 100).toFixed(2));
+    hanbia = parseFloat(((hana / zonga) * 100).toFixed(2));
+    weiwenbia = parseFloat(((weiwena / zonga) * 100).toFixed(2));
+    weihanbia = parseFloat(((weihana / zonga) * 100).toFixed(2));
+    liangbia = parseFloat(((lianga / zonga) * 100).toFixed(2));
+    dahanbia = parseFloat(((dahana / zonga) * 100).toFixed(2));
+    darebia = parseFloat(((darea / zonga) * 100).toFixed(2));
     jieguoa = [wenbia,rebia,pingbia,hanbia,weiwenbia,weihanbia,darebia,dahanbia,liangbia];
     return jieguoa;
 }

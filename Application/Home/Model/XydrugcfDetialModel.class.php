@@ -23,6 +23,6 @@ class XydrugcfDetialModel extends Model
      * @return mixed
      */
     public function getXyName(array $condition){
-        return $this->where($condition)->field('xy_name')->group('xy_name')->select();
+        return $this->where($condition)->field('xy_name,cf_id')->order('cf_id asc')->select();
     }
 }

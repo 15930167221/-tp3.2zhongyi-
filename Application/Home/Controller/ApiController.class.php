@@ -32,7 +32,7 @@ class ApiController extends Controller
             )
         );
 //        echo json_encode($data);
-        $type = 1;
+        $type = 4;
 
         switch ($type) {
             //开方

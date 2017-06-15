@@ -20,7 +20,7 @@ class YRecipemainModel extends Model{
 	public function getNew($cf){
 		$dpment = session('dpment');
 		$where['TREE'] = $cf;
-		return $this->where($where)->where("drug_dict.department=$dpment")->join("bz_cf on bz_cf.CFDM='$cf'")->join("drug_dict on drug_dict.drug_code=bz_cf.YPDM")->field('bz_cf.YPDM,bz_cf.yf,drug_dict.drug_name,drug_dict.price,drug_dict.drug_code,bz_cf.sl,drug_dict.xw1,bz_cf.dw,CONVERT(VARCHAR(MAX),DECRYPTBYKEY(NAME)) as cf_name')->select();
+		return $this->where($where)->where("drug_dict.department=$dpment")->join("bz_cf on bz_cf.CFDM='$cf'")->join("drug_dict on drug_dict.drug_code=bz_cf.YPDM")->field('bz_cf.YPDM,bz_cf.serial_no,bz_cf.yf,drug_dict.drug_name,drug_dict.price,drug_dict.drug_code,bz_cf.sl,drug_dict.xw1,bz_cf.dw,CONVERT(VARCHAR(MAX),DECRYPTBYKEY(NAME)) as cf_name')->select();
 	}
 	// public function getNew($cf){
 	// 	return $this->where("TREE='$cf'")->join("bz_cf on bz_cf.CFDM='$cf'")->join("drug_dict on drug_dict.drug_code=bz_cf.YPDM")->field('bz_cf.YPDM,drug_dict.drug_name,drug_dict.drug_code,bz_cf.sl,drug_dict.xw1,bz_cf.dw,CONVERT(VARCHAR(MAX),DECRYPTBYKEY(NAME)) as cf_name')->select();
